@@ -1,7 +1,7 @@
-import BaseResource from "./BaseResource";
+import { Resource } from './Resource'
 
-export class SafeUserResource extends BaseResource {
-  username: string;
-  email: string;
-  name: string;
+export class SafeUserResource extends Resource {
+  username: string
+  email: string
+  name: string
 }

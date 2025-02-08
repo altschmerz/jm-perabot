@@ -30,20 +30,15 @@ async function seed() {
     purchasePrice: 100000,
     retailPrice: 100000,
     wholesalerPrice: 100000,
-    totalStock: 2,
+    totalStock: 11,
     variants: [
       {
-        name: 'Originality',
-        options: [
-          {
-            name: 'Real',
-            stock: 1,
-          },
-          {
-            name: 'Fake',
-            stock: 1,
-          },
-        ],
+        name: 'Original',
+        stock: 1,
+      },
+      {
+        name: 'Fake',
+        stock: 10,
       },
     ],
   })

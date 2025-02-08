@@ -1,20 +1,19 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { BaseEntity } from "./BaseEntity";
-import Product from "./Product";
-import VariantOption from "./VariantOption";
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+import { BaseEntity } from './BaseEntity'
+import Product from './Product'
 
 @Entity()
 export default class Variant extends BaseEntity {
   @Column()
-  name: string;
+  name: string
 
   @Column()
-  productId: number;
+  productId: number
 
   @ManyToOne(() => Product, (product) => product.variants)
   @JoinColumn()
-  product: Product;
+  product: Product
 
-  @OneToMany(() => VariantOption, (variantOption) => variantOption.variant)
-  options: VariantOption[];
+  @Column({ default: 0 })
+  stock: number
 }

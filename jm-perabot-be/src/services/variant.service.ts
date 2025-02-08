@@ -1,7 +1,8 @@
-import { ProductNotFound } from '../errors/product.error'
+import { ILike } from 'typeorm'
+import { ProductNotFoundError } from '../errors/product.error'
+import { VariantAlreadyExistsError } from '../errors/variant.error'
 import Product from '../models/Product'
 import Variant from '../models/Variant'
-import VariantOption from '../models/VariantOption'
 import BaseService from './BaseService'
 
 export default class VariantService extends BaseService {
@@ -13,7 +14,7 @@ export default class VariantService extends BaseService {
   async createVariant(options: {
     productId: number
     name: string
-    variantOptions: VariantOptionRequest[]
+    stock: number
   }): Promise<Variant> {
     await this.checkVariantUniqueness({
       productId: options.productId,
@@ -22,22 +23,15 @@ export default class VariantService extends BaseService {
 
     const product = await Product.findOne({
       where: { id: options.productId },
-      relations: ['variants', 'variants.options'],
     })
-    if (!product) ProductNotFound({ attribute: 'ID', value: options.productId })
+    if (!product)
+      ProductNotFoundError({ attribute: 'ID', value: options.productId })
 
     const variant = new Variant()
     variant.name = options.name
+    variant.stock = options.stock
     variant.productId = options.productId
     await variant.save()
-
-    for (const option of options.variantOptions) {
-      const variantOption = new VariantOption()
-      variantOption.name = option.name
-      variantOption.stock = option.stock
-      variantOption.variantId = variant.id
-      await variantOption.save()
-    }
 
     return variant
   }
@@ -45,10 +39,10 @@ export default class VariantService extends BaseService {
   async checkVariantUniqueness(options: {
     productId: number
     name: string
-  }): Promise<boolean> {
+  }): Promise<void> {
     const variant = await Variant.findOne({
-      where: { productId: options.productId, name: options.name },
+      where: { productId: options.productId, name: ILike(options.name) },
     })
-    if (variant) return true
+    if (variant) VariantAlreadyExistsError()
   }
 }

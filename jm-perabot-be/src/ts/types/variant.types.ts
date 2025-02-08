@@ -1,4 +1,4 @@
 type VariantRequest = {
-  name: string;
-  options: VariantOptionRequest[];
-};
+  name: string
+  stock: number
+}

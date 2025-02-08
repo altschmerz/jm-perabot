@@ -61,7 +61,7 @@ productRouter.get(
     const product = await productService.getProductById({
       id: Number(req.params.id),
     })
-    res.sendResource({ statusCode: StatusCodes.OK, data: product })
+    res.sendJsonApiResource(StatusCodes.OK, product)
   })
 )
 

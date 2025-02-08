@@ -1,10 +1,10 @@
-import { Response } from "express";
-import { BaseEntity } from "typeorm";
-import BaseResource from "../resources/BaseResource";
+import { Response } from 'express'
+import { BaseEntity } from 'typeorm'
+import { Resource } from '../resources/Resource'
 
 interface ResponsePayload {
-  data: BaseEntity | BaseEntity[] | BaseResource | BaseResource[];
-  count?: number;
+  data: BaseEntity | BaseEntity[] | Resource | Resource[]
+  count?: number
 }
 
 export function sendError(res: Response, statusCode: number, message: string) {
@@ -12,17 +12,17 @@ export function sendError(res: Response, statusCode: number, message: string) {
     error: {
       message,
     },
-  });
+  })
 }
 
 export function sendResource(
   res: Response,
   statusCode: number,
-  data: BaseEntity | BaseEntity[] | BaseResource | BaseResource[],
+  data: BaseEntity | BaseEntity[] | Resource | Resource[],
   count?: number
 ) {
-  const payload: ResponsePayload = { data };
-  if (count) payload.count = count;
+  const payload: ResponsePayload = { data }
+  if (count) payload.count = count
 
-  res.status(statusCode).send(payload);
+  res.status(statusCode).send(payload)
 }

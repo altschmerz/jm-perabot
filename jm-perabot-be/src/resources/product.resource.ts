@@ -1,7 +1,7 @@
 import Variant from '../models/Variant'
-import BaseResource from './BaseResource'
+import { Resource } from './Resource'
 
-export default class ProductResource extends BaseResource {
+export default class ProductResource extends Resource {
   sku: string
   name: string
   description: string

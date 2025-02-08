@@ -1,7 +1,7 @@
 import { FindManyOptions, FindOptionsWhere } from 'typeorm'
 import {
   ProductAlreadyExistsError,
-  ProductNotFound,
+  ProductNotFoundError,
 } from '../errors/product.error'
 import Product from '../models/Product'
 import BaseService from './BaseService'
@@ -37,14 +37,14 @@ export default class ProductService extends BaseService {
         await variantService.createVariant({
           productId: product.id,
           name: variant.name,
-          variantOptions: variant.options,
+          stock: variant.stock,
         })
       }
     }
 
     const refetchedProduct = await Product.findOne({
       where: { id: product.id },
-      relations: ['variants', 'variants.options'],
+      relations: ['variants'],
     })
 
     return product
@@ -70,9 +70,10 @@ export default class ProductService extends BaseService {
   async getProductById(options: { id: number }): Promise<Product> {
     const product = await Product.findOne({
       where: { id: options.id },
-      relations: ['variants', 'variants.options'],
+      relations: ['variants'],
     })
-    if (!product) ProductNotFound({ attribute: 'ID', value: options.id })
+    if (!product) ProductNotFoundError({ attribute: 'ID', value: options.id })
+
     return product
   }
 

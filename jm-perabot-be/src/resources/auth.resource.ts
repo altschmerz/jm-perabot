@@ -1,5 +1,5 @@
-import BaseResource from "./BaseResource";
+import { Resource } from './Resource'
 
-export default class AuthResource extends BaseResource {
-  token: string;
+export default class AuthResource extends Resource {
+  token: string
 }

@@ -1,16 +1,18 @@
-import { StatusCodes } from "http-status-codes";
-import ApiError from "./ApiError";
+import { StatusCodes } from 'http-status-codes'
+import ApiError from './ApiError'
 
 export function IncorrectPasswordError() {
-  throw new ApiError({
-    statusCode: StatusCodes.UNAUTHORIZED,
-    message: "The password provided is incorrect",
-  });
+  throw new ApiError(
+    StatusCodes.UNAUTHORIZED,
+    'Incorrect password',
+    'The password provided is incorrect'
+  )
 }
 
 export function UnauthorizedAccessError() {
-  throw new ApiError({
-    statusCode: StatusCodes.UNAUTHORIZED,
-    message: "You are trying to access a secured route",
-  });
+  throw new ApiError(
+    StatusCodes.UNAUTHORIZED,
+    'Unauthorized access',
+    'You are trying to access a secured route'
+  )
 }

@@ -1,16 +1,16 @@
-import { BaseEntity } from "../../models/BaseEntity";
-import BaseResource from "../../resources/BaseResource";
+import { BaseEntity } from '../../models/BaseEntity'
+import { Resource } from '../../resources/Resource'
 
-declare module "express" {
+declare module 'express' {
   export interface Request {
-    context?: { [key: string]: any };
+    context?: { [key: string]: any }
   }
 
   export interface Response {
     sendResource(options: {
-      statusCode: number;
-      data: BaseResource | BaseResource[] | BaseEntity | BaseEntity[];
-      count?: number;
-    }): void;
+      statusCode: number
+      data: Resource | Resource[] | BaseEntity | BaseEntity[]
+      count?: number
+    }): void
   }
 }

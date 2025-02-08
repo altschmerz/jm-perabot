@@ -1,7 +1,6 @@
-import { array, object, string } from "yup";
-import { variantOptionBodySchema } from "./variantOption.schema";
+import { number, object, string } from 'yup'
 
 export const variantBodySchema = object().shape({
   name: string().required(),
-  options: array().of(variantOptionBodySchema).min(1).required(),
-});
+  stock: number().required(),
+})
