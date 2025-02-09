@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import Layout from '../components/Layout'
 import ProductCard from '../components/ProductCard'
 
@@ -12,7 +13,9 @@ const ProductListPage = () => {
       <div className="flex flex-wrap justify-between">
         {SEARCH_RESULTS.map(({ id, name, sku }) => (
           <div key={id} className="w-[49%]">
-            <ProductCard name={name} sku={sku} />
+            <NavLink to={`/products/${id}`}>
+              <ProductCard name={name} sku={sku} />
+            </NavLink>
           </div>
         ))}
       </div>
