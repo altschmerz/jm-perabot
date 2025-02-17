@@ -4,20 +4,11 @@ import {
   makeApiRequestThunk,
 } from './makeApiRequest'
 class ApiCallActionCreator {
-  getProducts() {
+  createCategory(name) {
     return makeApiRequestThunk(
-      HTTP_METHODS.GET,
-      `/products`,
-      null,
-      ACTION_TYPES.MERGE
-    )
-  }
-
-  getProductById(id) {
-    return makeApiRequestThunk(
-      HTTP_METHODS.GET,
-      `/products/${id}`,
-      null,
+      HTTP_METHODS.POST,
+      `/categories`,
+      { name },
       ACTION_TYPES.MERGE
     )
   }
@@ -43,6 +34,24 @@ class ApiCallActionCreator {
         wholesalerPrice,
         totalStock,
       },
+      ACTION_TYPES.MERGE
+    )
+  }
+
+  getProducts() {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/products`,
+      null,
+      ACTION_TYPES.MERGE
+    )
+  }
+
+  getProductById(id) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/products/${id}`,
+      null,
       ACTION_TYPES.MERGE
     )
   }

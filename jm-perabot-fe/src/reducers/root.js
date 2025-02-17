@@ -19,6 +19,7 @@ const rootReducer = persistReducer(
   persistConfig,
   combineReducers({
     authUser: authUserReducer,
+    category: createSimpleReducer('categories'),
     product: createSimpleReducer('products'),
   })
 )
