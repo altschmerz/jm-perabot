@@ -4,6 +4,7 @@ import path from 'path'
 import { attachJsonApiSender } from './middlewares/attachJsonApiSender'
 import errorHandlingMiddleware from './middlewares/errorHandling.middleware'
 import authRouter from './routers/auth.router'
+import categoryRouter from './routers/category.router'
 import noMatchRouter from './routers/noMatch.router'
 import productRouter from './routers/product.router'
 import userRouter from './routers/user.router'
@@ -38,6 +39,7 @@ v1.use(
 // NOTE: TEMPORARY FIX
 
 v1.use('/auth', authRouter)
+v1.use('/categories', categoryRouter)
 v1.use('/products', productRouter)
 v1.use('/users', userRouter)
 v1.use('/', noMatchRouter)
