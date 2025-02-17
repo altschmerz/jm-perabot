@@ -7,6 +7,7 @@ import authRouter from './routers/auth.router'
 import noMatchRouter from './routers/noMatch.router'
 import productRouter from './routers/product.router'
 import userRouter from './routers/user.router'
+import { jsonApiBodyValidatorAndFormatter } from './utils/jsonApiBodyValidatorAndFormatter'
 import { wrapAsyncHandler } from './utils/wrapAsyncHandler'
 
 const fs = require('fs')
@@ -31,6 +32,7 @@ v1.use(
     trim: true,
     mergeAttrs: true,
   }),
+  jsonApiBodyValidatorAndFormatter,
   express.urlencoded({ limit: '5mb', extended: true })
 )
 // NOTE: TEMPORARY FIX

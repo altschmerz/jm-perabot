@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 
 const CreateProductPage = () => {
@@ -13,13 +14,20 @@ const CreateProductPage = () => {
     console.log('FORM ERRORS', formErrors)
   }, [formErrors])
 
-  useEffect(() => {
-    console.log('WATCH NAME', watch('name'))
-  }, [watch('name')])
-
   const onSubmit = (data) => {
-    // dispatch(fromApi.createProduct())
-    console.log('FORM SUBMIT', data)
+    dispatch(
+      fromApi.createProduct(
+        data.name,
+        data.sku,
+        data.description,
+        data.purchasePrice,
+        data.retailPrice,
+        data.wholesalerPrice,
+        data.totalStock
+      )
+    )
+      .then((res) => console.log('RES', res))
+      .catch((err) => console.warn('ERROR', err))
   }
 
   return (
@@ -49,10 +57,10 @@ const CreateProductPage = () => {
             <input
               type={'text'}
               className="border border-black focus:outline-none px-2 py-1"
-              {...register('code', { required: true })}
+              {...register('sku', { required: true })}
             />
           </div>
-          {formErrors.code && <div>Kode wajib diisi</div>}
+          {formErrors.sku && <div>Kode wajib diisi</div>}
 
           {/*  // TODO: Use the Input component instead, problem: register passing not working; example provided below
            */}

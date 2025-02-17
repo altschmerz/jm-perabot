@@ -1,17 +1,18 @@
 import { NavLink } from 'react-router-dom'
+import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import ProductCard from '../components/ProductCard'
+import useFromApi from '../hooks/useFromApi'
+import useResourceMapper from '../hooks/useResourceMapper'
 
 const ProductListPage = () => {
-  const SEARCH_RESULTS = [
-    { id: 1, name: 'Product 1', sku: 'p1' },
-    { id: 2, name: 'Product 2 and Much Much MUCH MUCH MUCH Longer', sku: 'p2' },
-    { id: 3, name: 'Product 3', sku: 'p3' },
-  ]
+  const productsReq = useFromApi(fromApi.getProducts())
+  const products = useResourceMapper('product', productsReq?.sortOrder)
+
   return (
     <Layout>
       <div className="flex flex-wrap justify-between">
-        {SEARCH_RESULTS.map(({ id, name, sku }) => (
+        {products.map(({ id, name, sku }) => (
           <div key={id} className="w-[49%]">
             <NavLink to={`/products/${id}`}>
               <ProductCard name={name} sku={sku} />

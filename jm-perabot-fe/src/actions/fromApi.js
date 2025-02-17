@@ -4,6 +4,15 @@ import {
   makeApiRequestThunk,
 } from './makeApiRequest'
 class ApiCallActionCreator {
+  getProducts() {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/products`,
+      null,
+      ACTION_TYPES.MERGE
+    )
+  }
+
   getProductById(id) {
     return makeApiRequestThunk(
       HTTP_METHODS.GET,
@@ -13,11 +22,27 @@ class ApiCallActionCreator {
     )
   }
 
-  getGameDetailsById(id) {
+  createProduct(
+    name,
+    sku,
+    description,
+    purchasePrice,
+    retailPrice,
+    wholesalerPrice,
+    totalStock
+  ) {
     return makeApiRequestThunk(
-      HTTP_METHODS.GET,
-      `/gameItems/details?id=${id}`,
-      null,
+      HTTP_METHODS.POST,
+      `/products`,
+      {
+        name,
+        sku,
+        description,
+        purchasePrice,
+        retailPrice,
+        wholesalerPrice,
+        totalStock,
+      },
       ACTION_TYPES.MERGE
     )
   }

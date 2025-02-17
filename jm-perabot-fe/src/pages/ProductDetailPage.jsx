@@ -31,7 +31,7 @@ const ProductDetailPage = () => {
             <div>Harga modal: {product?.purchasePrice}</div>
             <div>Harga ecer: {product?.retailPrice}</div>
             <div>Harga grosir: {product?.wholesalerPrice}</div>
-            {product?.variants?.length && (
+            {product?.variants?.length > 0 && (
               <div>
                 <div className="mt-5 section-subtitle mb-3">Varian</div>
                 <div className="flex">

@@ -15,12 +15,12 @@ productRouter.post(
     const bodySchema = object().shape({
       sku: string().required(),
       name: string().required(),
-      description: string().required(),
+      description: string(),
       purchasePrice: number().positive().required(),
       retailPrice: number().positive().required(),
       wholesalerPrice: number().positive().required(),
       totalStock: number().integer().positive().required(),
-      variants: array().of(variantBodySchema).min(1),
+      variants: array().of(variantBodySchema),
     })
     const body = bodySchema.validateSync(req.body)
 
@@ -34,7 +34,7 @@ productRouter.post(
       totalStock: body.totalStock,
       variants: body.variants,
     })
-    res.sendResource({ statusCode: StatusCodes.CREATED, data: product })
+    res.sendJsonApiResource(StatusCodes.CREATED, product)
   })
 )
 
@@ -51,7 +51,7 @@ productRouter.get(
       page: queryStr.page,
       pageSize: queryStr.pageSize,
     })
-    res.sendResource({ statusCode: StatusCodes.OK, data: products, count })
+    res.sendJsonApiResource(StatusCodes.OK, products, count)
   })
 )
 
@@ -89,7 +89,7 @@ productRouter.put(
       wholesalerPrice: body.wholesalerPrice,
       totalStock: body.totalStock,
     })
-    res.sendResource({ statusCode: StatusCodes.OK, data: product })
+    res.sendJsonApiResource(StatusCodes.OK, product)
   })
 )
 

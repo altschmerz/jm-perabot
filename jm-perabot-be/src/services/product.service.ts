@@ -47,7 +47,7 @@ export default class ProductService extends BaseService {
       relations: ['variants'],
     })
 
-    return product
+    return refetchedProduct
   }
 
   async getProducts(options: {
