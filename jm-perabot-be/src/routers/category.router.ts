@@ -56,7 +56,7 @@ categoryRouter.put(
   asyncHandler(async (req, res) => {
     const bodySchema = object().shape({
       id: string(),
-      name: string(),
+      name: string().required(),
     })
     const body = bodySchema.validateSync(req.body)
 
