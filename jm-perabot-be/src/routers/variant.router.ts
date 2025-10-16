@@ -54,4 +54,15 @@ variantRouter.put(
   })
 )
 
+// TODO: Ideally delete shouldn't return anything except status code
+variantRouter.delete(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const deletedVariant = await variantService.deleteVariant({
+      id: Number(req.params.id),
+    })
+    res.sendJsonApiResource(StatusCodes.OK, deletedVariant)
+  })
+)
+
 export default variantRouter

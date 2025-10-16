@@ -72,6 +72,16 @@ export default class VariantService extends BaseService {
     return variant
   }
 
+  async deleteVariant(options: { id: number }) {
+    const variant = await Variant.findOne({ where: { id: options.id } })
+    if (!variant) VariantNotFoundError({ id: options.id })
+    await variant.remove()
+
+    // ! Oh god this is such a bad practice, get rid of this workaround, delete shouldn't return anything
+    variant.id = options.id
+    return variant
+  }
+
   async checkVariantUniqueness(options: {
     productId: number
     name: string
