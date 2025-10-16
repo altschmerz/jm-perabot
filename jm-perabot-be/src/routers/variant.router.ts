@@ -35,4 +35,23 @@ variantRouter.get(
   })
 )
 
+// TODO: Product ID redundant
+variantRouter.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const bodySchema = object().shape({
+      name: string(),
+      stock: number().min(0),
+    })
+    const body = bodySchema.validateSync(req.body)
+
+    const variant = await variantService.updateVariant({
+      id: Number(req.params.id),
+      name: body.name,
+      stock: body.stock,
+    })
+    res.sendJsonApiResource(StatusCodes.OK, variant)
+  })
+)
+
 export default variantRouter

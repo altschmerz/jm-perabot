@@ -8,3 +8,11 @@ export function VariantAlreadyExistsError() {
     'There already exists a variant with this name associated with this product'
   )
 }
+
+export function VariantNotFoundError(options: { id: number }) {
+  throw new ApiError(
+    StatusCodes.NOT_FOUND,
+    'Variant not found',
+    `Variant with ID ${options.id} not found`
+  )
+}

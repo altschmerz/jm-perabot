@@ -1,6 +1,9 @@
 import { ILike } from 'typeorm'
 import { ProductNotFoundError } from '../errors/product.error'
-import { VariantAlreadyExistsError } from '../errors/variant.error'
+import {
+  VariantAlreadyExistsError,
+  VariantNotFoundError,
+} from '../errors/variant.error'
 import Product from '../models/Product'
 import Variant from '../models/Variant'
 import BaseService from './BaseService'
@@ -46,6 +49,27 @@ export default class VariantService extends BaseService {
     })
 
     return { variants, count }
+  }
+
+  async updateVariant(options: { id: number; name: string; stock: number }) {
+    const variant = await Variant.findOne({ where: { id: options.id } })
+    if (!variant) VariantNotFoundError({ id: options.id })
+
+    if (
+      options.name &&
+      options.name.toLowerCase() !== variant.name.toLowerCase()
+    ) {
+      this.checkVariantUniqueness({
+        productId: variant.productId,
+        name: options.name,
+      })
+      variant.name = options.name
+    }
+
+    if (options.stock !== null) variant.stock = options.stock
+    await variant.save()
+
+    return variant
   }
 
   async checkVariantUniqueness(options: {
