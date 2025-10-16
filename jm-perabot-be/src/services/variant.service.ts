@@ -36,6 +36,18 @@ export default class VariantService extends BaseService {
     return variant
   }
 
+  async getVariants(options: { productId: number }) {
+    const product = await Product.findOne({ where: { id: options.productId } })
+    if (!product)
+      ProductNotFoundError({ attribute: 'ID', value: options.productId })
+
+    const [variants, count] = await Variant.findAndCount({
+      where: { productId: options.productId },
+    })
+
+    return { variants, count }
+  }
+
   async checkVariantUniqueness(options: {
     productId: number
     name: string

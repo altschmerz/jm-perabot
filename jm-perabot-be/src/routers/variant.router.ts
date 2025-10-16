@@ -25,4 +25,14 @@ variantRouter.post(
   })
 )
 
+variantRouter.get(
+  '/',
+  asyncHandler(async (req, res) => {
+    const { variants, count } = await variantService.getVariants({
+      productId: Number(req.context.productId),
+    })
+    res.sendJsonApiResource(StatusCodes.OK, variants, count)
+  })
+)
+
 export default variantRouter
