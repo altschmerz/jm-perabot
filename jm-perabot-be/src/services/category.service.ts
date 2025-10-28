@@ -58,6 +58,17 @@ export default class CategoryService extends BaseService {
     return category
   }
 
+  // ! BAD PRACTICE, SEE DELETE VARIANT SERVICE FUNCTION
+  // TODO: category not found error faulty
+  async deleteCategory(options: { id: number }) {
+    const category = await Category.findOne({ where: { id: options.id } })
+    if (!category) CategoryNotFoundError({ attribute: 'ID', value: options.id })
+    await category.remove()
+
+    category.id = options.id
+    return category
+  }
+
   private async checkNameUniqueness(options: {
     name: string
   }): Promise<boolean> {

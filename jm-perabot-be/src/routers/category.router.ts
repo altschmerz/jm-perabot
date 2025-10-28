@@ -68,4 +68,11 @@ categoryRouter.put(
   })
 )
 
+categoryRouter.delete('/:id', async (req, res) => {
+  const category = await categoryService.deleteCategory({
+    id: Number(req.params.id),
+  })
+  res.sendJsonApiResource(StatusCodes.OK, category)
+})
+
 export default categoryRouter
