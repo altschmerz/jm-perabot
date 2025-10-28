@@ -106,6 +106,26 @@ export default class ProductService extends BaseService {
     return product
   }
 
+  async deleteProduct(options: { id: number }) {
+    const product = await Product.findOne({
+      where: { id: options.id },
+      relations: ['variants'],
+    })
+    if (!product) ProductNotFoundError({ attribute: 'ID', value: options.id })
+
+    if (product.variants) {
+      for (const variant of product.variants) {
+        await variant.remove()
+      }
+    }
+
+    await product.remove()
+
+    // ! BAD PRACTICE, SEE DELETE VARIANT SERVICE FUNCTION
+    product.id = options.id
+    return product
+  }
+
   private async checkSkuUniqueness(options: { sku: string }): Promise<boolean> {
     const product = await Product.findOne({ where: { sku: options.sku } })
     if (product) ProductAlreadyExistsError()

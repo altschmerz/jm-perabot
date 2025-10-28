@@ -93,6 +93,17 @@ productRouter.put(
   })
 )
 
+productRouter.delete(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const deletedProduct = await productService.deleteProduct({
+      id: Number(req.params.id),
+    })
+
+    res.sendJsonApiResource(StatusCodes.OK, deletedProduct)
+  })
+)
+
 productRouter.use(
   '/:productId/variants',
   asyncHandler(async (req, res, next) => {
