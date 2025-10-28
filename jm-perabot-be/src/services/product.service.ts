@@ -5,15 +5,17 @@ import {
 } from '../errors/product.error'
 import Product from '../models/Product'
 import BaseService from './BaseService'
+import CategoryService from './category.service'
 import VariantService from './variant.service'
 
 const variantService = new VariantService()
-
+const categoryService = new CategoryService()
 export default class ProductService extends BaseService {
   async createProduct(options: {
     name: string
     sku: string
     description: string
+    categoryId: number
     purchasePrice: number
     retailPrice: number
     wholesalerPrice: number
@@ -22,10 +24,15 @@ export default class ProductService extends BaseService {
   }): Promise<Product> {
     await this.checkSkuUniqueness({ sku: options.sku })
 
+    const category = await categoryService.getCategoryById({
+      id: options.categoryId,
+    })
+
     const product = new Product()
-    product.sku = options.sku
     product.name = options.name
+    product.sku = options.sku
     product.description = options.description
+    product.categoryId = category.id
     product.purchasePrice = options.purchasePrice
     product.retailPrice = options.retailPrice
     product.wholesalerPrice = options.wholesalerPrice
