@@ -12,10 +12,10 @@ export default function Routes() {
       <RRRoutes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/categories/add" element={<CreateCategoryPage />} />
+        <Route path="/categories/:id" element={<ProductListPage />} />
         <Route path="/categories" element={<CategoryListPage />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/products/add" element={<CreateProductPage />} />
-        <Route path="/products" element={<ProductListPage />} />
       </RRRoutes>
     </BrowserRouter>
   )

@@ -46,12 +46,14 @@ productRouter.get(
     const queryStrSchema = object().shape({
       page: number().integer().min(0).default(0),
       pageSize: number().integer().min(0).default(10),
+      categoryId: number().integer(),
     })
     const queryStr = queryStrSchema.validateSync(req.query)
 
     const { products, count } = await productService.getProducts({
       page: queryStr.page,
       pageSize: queryStr.pageSize,
+      categoryId: queryStr.categoryId,
     })
     res.sendJsonApiResource(StatusCodes.OK, products, count)
   })

@@ -60,6 +60,7 @@ export default class ProductService extends BaseService {
   async getProducts(options: {
     page: number
     pageSize: number
+    categoryId?: number
   }): Promise<{ products: Product[]; count: number }> {
     let findOptions: FindManyOptions<Product> = {
       take: options.pageSize,
@@ -67,6 +68,8 @@ export default class ProductService extends BaseService {
     }
 
     let whereFilters: FindOptionsWhere<Product> = {}
+
+    if (options.categoryId) whereFilters.categoryId = options.categoryId
 
     findOptions.where = whereFilters
 

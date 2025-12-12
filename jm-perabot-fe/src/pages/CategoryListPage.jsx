@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import useFromApi from '../hooks/useFromApi'
@@ -15,7 +16,9 @@ const CategoryListPage = () => {
             key={id}
             className="bg-zinc-100 cursor-pointer p-[1rem] mb-3 w-[10rem] text-lg font-medium text-center"
           >
-            <div>{name}</div>
+            <NavLink to={`/categories/${id}`}>
+              <div>{name}</div>
+            </NavLink>
           </div>
         ))}
       </div>
