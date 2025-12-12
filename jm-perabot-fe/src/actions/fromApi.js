@@ -13,6 +13,15 @@ class ApiCallActionCreator {
     )
   }
 
+  getCategories() {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/categories`,
+      null,
+      ACTION_TYPES.MERGE
+    )
+  }
+
   createProduct(
     name,
     sku,
