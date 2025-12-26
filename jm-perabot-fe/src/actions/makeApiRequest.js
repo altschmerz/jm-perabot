@@ -37,7 +37,11 @@ export const makeApiRequestThunk =
 
     const authorizationToken = localStorage.getItem(localStorageKey)
 
-    return fetch(`/api/v1${url}`, {
+    var apiUrl =
+      process.env.REACT_APP_ENV === 'prod' ? process.env.REACT_APP_API_URL : ''
+    apiUrl += `/api/v1${url}`
+
+    return fetch(apiUrl, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
