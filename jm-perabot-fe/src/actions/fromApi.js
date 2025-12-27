@@ -56,6 +56,15 @@ class ApiCallActionCreator {
     )
   }
 
+  getProductsByCategory(categoryId) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/products?categoryId=${categoryId}`,
+      null,
+      ACTION_TYPES.MERGE
+    )
+  }
+
   getProductById(id) {
     return makeApiRequestThunk(
       HTTP_METHODS.GET,
