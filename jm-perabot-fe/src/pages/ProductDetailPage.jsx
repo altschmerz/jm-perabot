@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
@@ -17,23 +17,22 @@ const ProductDetailPage = () => {
     <Layout>
       <div>
         <div className="mt-10">
-          <div className="section-title mb-5 text-center">
-            {product?.name} ({product?.sku})
-          </div>
-          <div className="mt-10">
+          <div className="section-title mb-5 text-center">{product?.name}</div>
+          <img
+            src={product?.imageUrl}
+            alt={product?.name}
+            className="w-full aspect-square"
+          />
+          <div className="mt-5">
             {product?.description && (
               <div>
                 <div className="mt-5 section-subtitle">Deskripsi</div>
                 <div>{product?.description}</div>
               </div>
             )}
-            <div className="mt-5 section-subtitle">Harga</div>
-            <div>Harga modal: {product?.purchasePrice}</div>
-            <div>Harga ecer: {product?.retailPrice}</div>
-            <div>Harga grosir: {product?.wholesalerPrice}</div>
             {product?.variants?.length > 0 && (
               <div>
-                <div className="mt-5 section-subtitle mb-3">Varian</div>
+                <div className="mt-5 section-subtitle">Varian</div>
                 <div className="flex">
                   {product?.variants?.map((variant) => (
                     <div key={variant.id} className="mb-2">
@@ -44,7 +43,6 @@ const ProductDetailPage = () => {
                 </div>
               </div>
             )}
-            <div className="font-bold">Total stok: {product?.totalStock}</div>
           </div>
         </div>
       </div>
