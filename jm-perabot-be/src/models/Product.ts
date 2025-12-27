@@ -14,6 +14,9 @@ export default class Product extends BaseEntity {
   @Column({ nullable: true })
   description: string
 
+  @Column({ nullable: true })
+  imageUrl: string
+
   @Column()
   purchasePrice: number
 
