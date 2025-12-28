@@ -1,6 +1,7 @@
 import {
   ACTION_TYPES,
   HTTP_METHODS,
+  makeApiRequestFileThunk,
   makeApiRequestThunk,
 } from './makeApiRequest'
 class ApiCallActionCreator {
@@ -22,29 +23,11 @@ class ApiCallActionCreator {
     )
   }
 
-  createProduct(
-    categoryId,
-    name,
-    sku,
-    description,
-    purchasePrice,
-    retailPrice,
-    wholesalerPrice,
-    totalStock
-  ) {
-    return makeApiRequestThunk(
+  createProduct(formData) {
+    return makeApiRequestFileThunk(
       HTTP_METHODS.POST,
       `/products`,
-      {
-        categoryId,
-        name,
-        sku,
-        description,
-        purchasePrice,
-        retailPrice,
-        wholesalerPrice,
-        totalStock,
-      },
+      formData,
       ACTION_TYPES.MERGE
     )
   }

@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import multer from 'multer'
 import { array, number, object, string } from 'yup'
 import ProductService from '../services/product.service'
 import { variantBodySchema } from '../ts/schemas/variant.schema'
@@ -9,8 +10,16 @@ import variantRouter from './variant.router'
 const productRouter = Router()
 const productService = new ProductService()
 
+const storage = multer.memoryStorage()
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+})
+
 productRouter.post(
   '/',
+  upload.single('image'),
   asyncHandler(async (req, res) => {
     const bodySchema = object().shape({
       sku: string().required(),
@@ -25,17 +34,20 @@ productRouter.post(
     })
     const body = bodySchema.validateSync(req.body)
 
-    const product = await productService.createProduct({
-      sku: body.sku,
-      name: body.name,
-      description: body.description,
-      categoryId: body.categoryId,
-      purchasePrice: body.purchasePrice,
-      retailPrice: body.retailPrice,
-      wholesalerPrice: body.wholesalerPrice,
-      totalStock: body.totalStock,
-      variants: body.variants,
-    })
+    const product = await productService.createProduct(
+      {
+        sku: body.sku,
+        name: body.name,
+        description: body.description,
+        categoryId: body.categoryId,
+        purchasePrice: body.purchasePrice,
+        retailPrice: body.retailPrice,
+        wholesalerPrice: body.wholesalerPrice,
+        totalStock: body.totalStock,
+        variants: body.variants,
+      },
+      req.file
+    )
     res.sendJsonApiResource(StatusCodes.CREATED, product)
   })
 )

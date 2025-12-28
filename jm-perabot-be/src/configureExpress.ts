@@ -9,7 +9,6 @@ import noMatchRouter from './routers/noMatch.router'
 import productRouter from './routers/product.router'
 import userRouter from './routers/user.router'
 import { jsonApiBodyValidatorAndFormatter } from './utils/jsonApiBodyValidatorAndFormatter'
-import { wrapAsyncHandler } from './utils/wrapAsyncHandler'
 
 const fs = require('fs')
 const cors = require('cors')
@@ -56,12 +55,3 @@ if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
     'build'
   )
 }
-
-app.use('/static', express.static(path.resolve(pathToClientBuild, 'static')))
-
-app.get(
-  '/*',
-  wrapAsyncHandler(async (_, res) => {
-    res.sendFile(path.resolve(pathToClientBuild, 'index.html'))
-  })
-)

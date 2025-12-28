@@ -15,18 +15,19 @@ const CreateProductPage = () => {
   const formErrors = formState.errors
 
   const onSubmit = (data) => {
-    dispatch(
-      fromApi.createProduct(
-        data.categoryId,
-        data.name,
-        data.sku,
-        data.description,
-        data.purchasePrice,
-        data.retailPrice,
-        data.wholesalerPrice,
-        data.totalStock
-      )
-    )
+    const formData = new FormData()
+    formData.append('categoryId', data.categoryId)
+    formData.append('name', data.name)
+    formData.append('sku', data.sku)
+    formData.append('description', data.description)
+    formData.append('purchasePrice', data.purchasePrice)
+    formData.append('retailPrice', data.retailPrice)
+    formData.append('wholesalerPrice', data.wholesalerPrice)
+    formData.append('totalStock', data.totalStock)
+
+    if (data.image && data.image[0]) formData.append('image', data.image[0])
+
+    dispatch(fromApi.createProduct(formData))
       .then((res) => navigate(`/products/${res?.data?.[0]?.id}`))
       .catch((err) => console.warn('ERROR', err))
   }
@@ -40,6 +41,17 @@ const CreateProductPage = () => {
         <div className="section-title text-center mt-10">Tambah Produk</div>
         <div className="mt-5">
           <Form>
+            <Form.Group className="mb-3">
+              <Form.Label className="mr-5 text-lg font-medium">
+                Gambar produk
+              </Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                {...register('image')}
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3">
               <div className="flex justify-between">
                 <Form.Label className="mr-5 text-lg font-medium">

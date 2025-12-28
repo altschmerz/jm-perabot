@@ -4,6 +4,7 @@ import {
   ProductNotFoundError,
 } from '../errors/product.error'
 import Product from '../models/Product'
+import { supabase } from '../utils/supabase'
 import BaseService from './BaseService'
 import CategoryService from './category.service'
 import VariantService from './variant.service'
@@ -11,17 +12,20 @@ import VariantService from './variant.service'
 const variantService = new VariantService()
 const categoryService = new CategoryService()
 export default class ProductService extends BaseService {
-  async createProduct(options: {
-    name: string
-    sku: string
-    description: string
-    categoryId: number
-    purchasePrice: number
-    retailPrice: number
-    wholesalerPrice: number
-    totalStock: number
-    variants?: VariantRequest[]
-  }): Promise<Product> {
+  async createProduct(
+    options: {
+      name: string
+      sku: string
+      description: string
+      categoryId: number
+      purchasePrice: number
+      retailPrice: number
+      wholesalerPrice: number
+      totalStock: number
+      variants?: VariantRequest[]
+    },
+    image: any
+  ): Promise<Product> {
     await this.checkSkuUniqueness({ sku: options.sku })
 
     const category = await categoryService.getCategoryById({
@@ -37,6 +41,18 @@ export default class ProductService extends BaseService {
     product.retailPrice = options.retailPrice
     product.wholesalerPrice = options.wholesalerPrice
     product.totalStock = options.totalStock
+
+    if (image) {
+      const fileName = `${Date.now()}-${image.originalname}`
+
+      await supabase.storage
+        .from('product-images')
+        .upload(fileName, image.buffer, { contentType: image.mimetype })
+
+      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`
+      product.imageUrl = imageUrl
+    }
+
     await product.save()
 
     if (options.variants) {
