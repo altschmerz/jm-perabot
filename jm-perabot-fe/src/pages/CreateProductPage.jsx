@@ -1,8 +1,11 @@
 import { useEffect } from 'react'
+import { Button, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
+import useFromApi from '../hooks/useFromApi'
+import useResourceMapper from '../hooks/useResourceMapper'
 
 const CreateProductPage = () => {
   const dispatch = useDispatch()
@@ -17,6 +20,7 @@ const CreateProductPage = () => {
   const onSubmit = (data) => {
     dispatch(
       fromApi.createProduct(
+        data.categoryId,
         data.name,
         data.sku,
         data.description,
@@ -30,106 +34,115 @@ const CreateProductPage = () => {
       .catch((err) => console.warn('ERROR', err))
   }
 
+  const categoriesReq = useFromApi(fromApi.getCategories())
+  const categories = useResourceMapper('category', categoriesReq.sortOrder)
+
   return (
     <Layout>
       <div>
         <div className="section-title text-center mt-10">Add Product</div>
         <div className="mt-5">
-          {/*  // TODO: Use the Input component instead, problem: register passing not working; example provided below
-           */}
-          {/* <Input
-            label="Nama"
-            // pseudoRef={{ ...register('name', { required: true }) }}
-            {...register('name', { required: true })}
-          /> */}
-          <div className={`flex justify-between items-center`}>
-            <div className="mr-5 text-lg font-medium">Nama</div>
-            <input
-              type={'text'}
-              className="border border-black focus:outline-none px-2 py-1"
-              {...register('name', { required: true })}
-            />
-          </div>
-          {formErrors.name && <div>Nama wajib diisi</div>}
+          <Form>
+            <Form.Group>
+              <Form.Label className="mr-5 text-lg font-medium">
+                Kategori
+              </Form.Label>
+              <Form.Select {...register('categoryId', { required: true })}>
+                <option value="" selected>
+                  Pilih kategori
+                </option>
+                {categories?.map((category) => {
+                  return (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  )
+                })}
+              </Form.Select>
+            </Form.Group>
+            {formErrors.categoryId && <div>Kategori wajib dipilih</div>}
 
-          <div className={`flex justify-between items-center mt-2`}>
-            <div className="mr-5 text-lg font-medium">Kode</div>
-            <input
-              type={'text'}
-              className="border border-black focus:outline-none px-2 py-1"
-              {...register('sku', { required: true })}
-            />
-          </div>
-          {formErrors.sku && <div>Kode wajib diisi</div>}
+            <Form.Group>
+              <Form.Label className="mr-5 text-lg font-medium">Nama</Form.Label>
+              <Form.Control
+                className="border border-black focus:outline-none px-2 py-1"
+                {...register('name', { required: true })}
+              />
+            </Form.Group>
+            {formErrors.name && <div>Nama wajib diisi</div>}
 
-          {/*  // TODO: Use the Input component instead, problem: register passing not working; example provided below
-           */}
-          {/* <TextArea
-            label="Deskripsi"
-            className="mt-2"
-            // pseudoRef={{ ...register('description') }}
-            {...register('description')}
-          /> */}
-          <div className={`flex justify-between mt-2`}>
-            <div className="mr-5 text-lg font-medium">Deskripsi</div>
-            <textarea
-              className="border border-black focus:outline-none px-2 py-1"
-              {...register('description')}
-            />
-          </div>
+            <Form.Group>
+              <Form.Label className="mr-5 text-lg font-medium">Kode</Form.Label>
+              <Form.Control
+                className="border border-black focus:outline-none px-2 py-1"
+                {...register('sku', { required: true })}
+              />
+            </Form.Group>
+            {formErrors.sku && <div>Kode wajib diisi</div>}
 
-          <div className={`flex justify-between items-center mt-2`}>
-            <div className="mr-5 text-lg font-medium">Harga modal</div>
-            <input
-              type={'text'}
-              className="border border-black focus:outline-none px-2 py-1"
-              {...register('purchasePrice', { required: true })}
-            />
-          </div>
+            <Form.Group>
+              <Form.Label className="mr-5 text-lg font-medium">
+                Deskripsi
+              </Form.Label>
+              <Form.Control
+                className="border border-black focus:outline-none px-2 py-1"
+                as="textarea"
+                rows={3}
+                {...register('description')}
+              />
+            </Form.Group>
 
-          {formErrors.purchasePrice && <div>Harga modal wajib diisi</div>}
+            <Form.Group>
+              <Form.Label className="mr-5 text-lg font-medium">
+                Harga modal
+              </Form.Label>
+              <Form.Control
+                className="border border-black focus:outline-none px-2 py-1"
+                {...register('purchasePrice', { required: true })}
+              />
+            </Form.Group>
+            {formErrors.purchasePrice && <div>Harga modal wajib diisi</div>}
 
-          <div className={`flex justify-between items-center mt-2`}>
-            <div className="mr-5 text-lg font-medium">Harga ecer</div>
-            <input
-              type={'text'}
-              className="border border-black focus:outline-none px-2 py-1"
-              {...register('retailPrice', { required: true })}
-            />
-          </div>
-          {formErrors.retailPrice && <div>Harga ecer wajib diisi</div>}
+            <Form.Group>
+              <Form.Label className="mr-5 text-lg font-medium">
+                Harga ecer
+              </Form.Label>
+              <Form.Control
+                className="border border-black focus:outline-none px-2 py-1"
+                {...register('retailPrice', { required: true })}
+              />
+            </Form.Group>
+            {formErrors.retailPrice && <div>Harga ecer wajib diisi</div>}
 
-          <div className={`flex justify-between items-center mt-2`}>
-            <div className="mr-5 text-lg font-medium">Harga grosir</div>
-            <input
-              type={'text'}
-              className="border border-black focus:outline-none px-2 py-1"
-              {...register('wholesalerPrice', { required: true })}
-            />
-          </div>
-          {formErrors.wholesalerPrice && <div>Harga grosir wajib diisi</div>}
+            <Form.Group>
+              <Form.Label className="mr-5 text-lg font-medium">
+                Harga grosir
+              </Form.Label>
+              <Form.Control
+                className="border border-black focus:outline-none px-2 py-1"
+                {...register('wholesalerPrice', { required: true })}
+              />
+            </Form.Group>
+            {formErrors.wholesalerPrice && <div>Harga grosir wajib diisi</div>}
 
-          <div className={`flex justify-between items-center mt-2`}>
-            <div className="mr-5 text-lg font-medium">Total stok</div>
-            <input
-              type={'text'}
-              className="border border-black focus:outline-none px-2 py-1"
-              {...register('totalStock', { required: true })}
-            />
-          </div>
-          {formErrors.totalStock && <div>Total stok wajib diisi</div>}
+            <Form.Group>
+              <Form.Label className="mr-5 text-lg font-medium">
+                Total stok
+              </Form.Label>
+              <Form.Control
+                className="border border-black focus:outline-none px-2 py-1"
+                {...register('totalStock', { required: true })}
+              />
+            </Form.Group>
+            {formErrors.totalStock && <div>Total stok wajib diisi</div>}
 
-          {/*  // TODO: Use the FormSubmitButton component instead, problem: handleSubmit function not working; example provided below
-           */}
-          {/* <FormSubmitButton className="mt-5" onClick={handleSubmit(onSubmit)}>
-            Simpan
-          </FormSubmitButton> */}
-          <div
-            className={`bg-black flex items-center p-2 text-white cursor-pointer mt-5`}
-            onClick={handleSubmit(onSubmit)}
-          >
-            Simpan
-          </div>
+            <Button
+              className="bg-black flex items-center p-2 text-white cursor-pointer mt-5"
+              onClick={handleSubmit(onSubmit)}
+            >
+              Simpan
+            </Button>
+          </Form>
         </div>
       </div>
     </Layout>

@@ -23,6 +23,7 @@ class ApiCallActionCreator {
   }
 
   createProduct(
+    categoryId,
     name,
     sku,
     description,
@@ -35,6 +36,7 @@ class ApiCallActionCreator {
       HTTP_METHODS.POST,
       `/products`,
       {
+        categoryId,
         name,
         sku,
         description,
