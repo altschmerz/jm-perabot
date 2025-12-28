@@ -1,6 +1,3 @@
-import React from 'react'
-import SearchBar from '../Native/SearchBar'
-
 // const TABS = [
 //   { label: 'New In', path: 'new-in' },
 //   { label: 'Sale', path: 'sale' },
@@ -28,7 +25,7 @@ const Navbar = () => {
             </div>
           ))}
         </div> */}
-        <SearchBar />
+        {/* <SearchBar /> */}
       </div>
     </div>
   )
