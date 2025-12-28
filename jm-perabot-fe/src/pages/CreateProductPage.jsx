@@ -1,6 +1,7 @@
 import { Button, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import useFromApi from '../hooks/useFromApi'
@@ -8,6 +9,7 @@ import useResourceMapper from '../hooks/useResourceMapper'
 
 const CreateProductPage = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const { register, formState, handleSubmit } = useForm()
   const formErrors = formState.errors
@@ -25,7 +27,7 @@ const CreateProductPage = () => {
         data.totalStock
       )
     )
-      .then((res) => console.log('RES', res))
+      .then((res) => navigate(`/products/${res?.data?.[0]?.id}`))
       .catch((err) => console.warn('ERROR', err))
   }
 
