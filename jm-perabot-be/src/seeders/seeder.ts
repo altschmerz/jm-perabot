@@ -23,37 +23,44 @@ async function seed() {
   })
 
   console.info('Creating products...')
-  const huggsyProduct = productService.createProduct({
-    sku: 'huggsy',
-    name: 'Huggsy',
-    description: "Joey's bedtime penguin pal",
-    categoryId: 1,
-    purchasePrice: 100000,
-    retailPrice: 100000,
-    wholesalerPrice: 100000,
-    totalStock: 11,
-    variants: [
-      {
-        name: 'Original',
-        stock: 1,
-      },
-      {
-        name: 'Fake',
-        stock: 10,
-      },
-    ],
-  })
+  const huggsyProduct = productService.createProduct(
+    {
+      sku: 'huggsy',
+      name: 'Huggsy',
+      description: "Joey's bedtime penguin pal",
+      categoryId: 1,
+      purchasePrice: 100000,
+      retailPrice: 100000,
+      wholesalerPrice: 100000,
+      totalStock: 11,
+      variants: [
+        {
+          name: 'Original',
+          stock: 1,
+        },
+        {
+          name: 'Fake',
+          stock: 10,
+        },
+      ],
+    },
+    null
+  )
 
-  const cloakProduct = await productService.createProduct({
-    sku: 'cloak-of-invisibility',
-    name: 'The Cloak of Invisibility',
-    description: 'Handy for sneaking into the private section of the library.',
-    categoryId: 1,
-    purchasePrice: 1000000,
-    retailPrice: 1000000,
-    wholesalerPrice: 1000000,
-    totalStock: 1,
-  })
+  const cloakProduct = await productService.createProduct(
+    {
+      sku: 'cloak-of-invisibility',
+      name: 'The Cloak of Invisibility',
+      description:
+        'Handy for sneaking into the private section of the library.',
+      categoryId: 1,
+      purchasePrice: 1000000,
+      retailPrice: 1000000,
+      wholesalerPrice: 1000000,
+      totalStock: 1,
+    },
+    null
+  )
 }
 
 seed().then(() => console.info('Seeding process finished.'))
