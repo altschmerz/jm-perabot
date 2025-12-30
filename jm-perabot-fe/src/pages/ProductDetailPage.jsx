@@ -35,7 +35,9 @@ const ProductDetailPage = () => {
               {product?.description && (
                 <div>
                   <div className="mt-5 section-subtitle">Deskripsi</div>
-                  <div>{product?.description}</div>
+                  <div className="whitespace-pre-line">
+                    {product?.description}
+                  </div>
                 </div>
               )}
               {product?.variants?.length > 0 && (
