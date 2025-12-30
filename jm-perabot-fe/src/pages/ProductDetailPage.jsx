@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Spinner } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
@@ -15,36 +16,44 @@ const ProductDetailPage = () => {
 
   return (
     <Layout>
-      <div>
-        <div className="mt-10">
-          <div className="section-title mb-5 text-center">{product?.name}</div>
-          <img
-            src={product?.imageUrl}
-            alt={product?.name}
-            className="w-full aspect-square"
-          />
-          <div className="mt-5">
-            {product?.description && (
-              <div>
-                <div className="mt-5 section-subtitle">Deskripsi</div>
-                <div>{product?.description}</div>
-              </div>
-            )}
-            {product?.variants?.length > 0 && (
-              <div>
-                <div className="mt-5 section-subtitle">Varian</div>
-                <div className="flex">
-                  {product?.variants?.map((variant) => (
-                    <div key={variant.id} className="mb-2">
-                      <div>{variant.name}</div>
-                      <div>Stok: {variant.stock}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+      <div className="mt-3">
+        {productsReq?.loading ? (
+          <div className="flex justify-center">
+            <Spinner animation="border" variant="dark" />
           </div>
-        </div>
+        ) : (
+          <div>
+            <div className="section-title mb-5 text-center">
+              {product?.name}
+            </div>
+            <img
+              src={product?.imageUrl}
+              alt={product?.name}
+              className="w-full aspect-square"
+            />
+            <div className="mt-5">
+              {product?.description && (
+                <div>
+                  <div className="mt-5 section-subtitle">Deskripsi</div>
+                  <div>{product?.description}</div>
+                </div>
+              )}
+              {product?.variants?.length > 0 && (
+                <div>
+                  <div className="mt-5 section-subtitle">Varian</div>
+                  <div className="flex">
+                    {product?.variants?.map((variant) => (
+                      <div key={variant.id} className="mb-2">
+                        <div>{variant.name}</div>
+                        <div>Stok: {variant.stock}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   )

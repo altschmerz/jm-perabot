@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Spinner } from 'react-bootstrap'
 import { NavLink, useParams } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
@@ -15,14 +16,22 @@ const ProductListPage = () => {
 
   return (
     <Layout>
-      <div className="flex flex-wrap justify-between">
-        {products.map(({ id, name, sku, imageUrl }) => (
-          <div key={id} className="w-[49%]">
-            <NavLink to={`/products/${id}`}>
-              <ProductCard name={name} sku={sku} imageSrc={imageUrl} />
-            </NavLink>
+      <div className="mt-3">
+        {productsReq?.loading ? (
+          <div className="flex justify-center">
+            <Spinner animation="border" variant="dark" />
           </div>
-        ))}
+        ) : (
+          <div className="flex flex-wrap justify-between">
+            {products.map(({ id, name, sku, imageUrl }) => (
+              <div key={id} className="w-[49%]">
+                <NavLink to={`/products/${id}`}>
+                  <ProductCard name={name} sku={sku} imageSrc={imageUrl} />
+                </NavLink>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </Layout>
   )

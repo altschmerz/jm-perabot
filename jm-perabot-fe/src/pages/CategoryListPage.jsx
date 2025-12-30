@@ -1,3 +1,4 @@
+import { Spinner } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
@@ -10,18 +11,24 @@ const CategoryListPage = () => {
 
   return (
     <Layout>
-      <div className="flex flex-wrap justify-between">
-        {categories?.map(({ id, name }) => (
-          <div
-            key={id}
-            className="bg-zinc-100 cursor-pointer p-[1rem] mb-3 w-[10rem] text-lg font-medium text-center"
-          >
-            <NavLink to={`/categories/${id}`}>
-              <div>{name}</div>
-            </NavLink>
-          </div>
-        ))}
-      </div>
+      {categoriesReq?.loading ? (
+        <div className="flex justify-center">
+          <Spinner animation="border" variant="dark" />
+        </div>
+      ) : (
+        <div className="flex flex-wrap justify-between">
+          {categories?.map(({ id, name }) => (
+            <div
+              key={id}
+              className="bg-zinc-100 cursor-pointer p-[1rem] mb-3 w-[10rem] text-lg font-medium text-center"
+            >
+              <NavLink to={`/categories/${id}`}>
+                <div>{name}</div>
+              </NavLink>
+            </div>
+          ))}
+        </div>
+      )}
     </Layout>
   )
 }
