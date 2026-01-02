@@ -23,6 +23,7 @@ export default class CategoryService extends BaseService {
     let findOptions: FindManyOptions<Category> = {
       take: options.pageSize,
       skip: options.page * options.pageSize,
+      order: { name: 'ASC' },
     }
 
     let whereFilters: FindOptionsWhere<Category> = {}
