@@ -7,9 +7,15 @@ import ProductCard from '../components/ProductCard'
 import useFromApi from '../hooks/useFromApi'
 import useResourceMapper from '../hooks/useResourceMapper'
 
+const PAGE = 0
+const PAGE_SIZE = 100
+
 const ProductListPage = () => {
   const categoryId = useParams().id
-  const productsReq = useFromApi(fromApi.getProductsByCategory(categoryId))
+
+  const productsReq = useFromApi(
+    fromApi.getProductsByCategory(categoryId, PAGE, PAGE_SIZE)
+  )
   const products = useResourceMapper('product', productsReq?.sortOrder)
 
   useEffect(() => console.log('PRODUCTS', products), [products])

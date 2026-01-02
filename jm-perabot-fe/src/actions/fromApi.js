@@ -41,13 +41,11 @@ class ApiCallActionCreator {
     )
   }
 
-  getProductsByCategory(categoryId) {
-    return makeApiRequestThunk(
-      HTTP_METHODS.GET,
-      `/products?categoryId=${categoryId}`,
-      null,
-      ACTION_TYPES.MERGE
-    )
+  getProductsByCategory(categoryId, page, pageSize) {
+    var url = `/products?categoryId=${categoryId}`
+    url += `&page=${page}&pageSize=${pageSize}`
+
+    return makeApiRequestThunk(HTTP_METHODS.GET, url, null, ACTION_TYPES.MERGE)
   }
 
   getProductById(id) {
