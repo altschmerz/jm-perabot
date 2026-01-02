@@ -81,6 +81,7 @@ export default class ProductService extends BaseService {
     let findOptions: FindManyOptions<Product> = {
       take: options.pageSize,
       skip: options.page * options.pageSize,
+      order: { name: 'ASC' },
     }
 
     let whereFilters: FindOptionsWhere<Product> = {}
