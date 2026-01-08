@@ -12,8 +12,10 @@ const CategoryListPage = () => {
   return (
     <Layout>
       {categoriesReq?.loading ? (
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center font-medium">
           <Spinner animation="border" variant="dark" />
+          <div className="mt-2">Memuat...</div>
+          <div>Mohon tunggu sebentar</div>
         </div>
       ) : (
         <div>
