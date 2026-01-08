@@ -23,6 +23,15 @@ class ApiCallActionCreator {
     )
   }
 
+  getCategoryById(id) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/categories/${id}`,
+      null,
+      ACTION_TYPES.MERGE
+    )
+  }
+
   createProduct(formData) {
     return makeApiRequestFileThunk(
       HTTP_METHODS.POST,

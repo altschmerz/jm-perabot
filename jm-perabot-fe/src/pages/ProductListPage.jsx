@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { NavLink, useParams } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
@@ -13,12 +12,13 @@ const PAGE_SIZE = 100
 const ProductListPage = () => {
   const categoryId = useParams().id
 
+  const categoryReq = useFromApi(fromApi.getCategoryById(categoryId))
+  const category = useResourceMapper('category', categoryReq?.sortOrder)?.[0]
+
   const productsReq = useFromApi(
     fromApi.getProductsByCategory(categoryId, PAGE, PAGE_SIZE)
   )
   const products = useResourceMapper('product', productsReq?.sortOrder)
-
-  useEffect(() => console.log('PRODUCTS', products), [products])
 
   return (
     <Layout>
@@ -28,14 +28,20 @@ const ProductListPage = () => {
             <Spinner animation="border" variant="dark" />
           </div>
         ) : (
-          <div className="flex flex-wrap justify-between">
-            {products.map(({ id, name, sku, imageUrl }) => (
-              <div key={id} className="w-[49%]">
-                <NavLink to={`/products/${id}`}>
-                  <ProductCard name={name} sku={sku} imageSrc={imageUrl} />
-                </NavLink>
-              </div>
-            ))}
+          <div>
+            <div className="section-title text-center mb-4">
+              {category?.name}
+            </div>
+
+            <div className="flex flex-wrap justify-between">
+              {products.map(({ id, name, sku, imageUrl }) => (
+                <div key={id} className="w-[49%]">
+                  <NavLink to={`/products/${id}`}>
+                    <ProductCard name={name} sku={sku} imageSrc={imageUrl} />
+                  </NavLink>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
