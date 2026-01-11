@@ -12,6 +12,7 @@ variantRouter.post(
   asyncHandler(async (req, res) => {
     const bodySchema = object().shape({
       name: string().required(),
+      sku: string().required(),
       stock: number().required(),
     })
     const body = bodySchema.validateSync(req.body)
@@ -19,6 +20,7 @@ variantRouter.post(
     const variant = await variantService.createVariant({
       productId: Number(req.context.productId),
       name: body.name,
+      sku: body.sku,
       stock: body.stock,
     })
     res.sendJsonApiResource(StatusCodes.CREATED, variant)

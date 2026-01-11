@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Form, Spinner } from 'react-bootstrap'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
@@ -14,8 +14,13 @@ const CreateProductPage = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const { register, formState, handleSubmit } = useForm()
+  const { register, control, formState, handleSubmit } = useForm()
   const formErrors = formState.errors
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'variants',
+  })
 
   const onSubmit = (data) => {
     setIsLoading(true)
@@ -31,6 +36,23 @@ const CreateProductPage = () => {
     formData.append('totalStock', data.totalStock)
 
     if (data.image && data.image[0]) formData.append('image', data.image[0])
+
+    if (data.variants) {
+      data.variants.forEach((variant, i) => {
+        formData.append(`variants[${i}][name]`, variant.name)
+        formData.append(`variants[${i}][sku]`, variant.sku)
+        formData.append(`variants[${i}][stock]`, variant.stock)
+
+        if (variant.image?.[0]) {
+          formData.append(`variantImages`, variant.image[0])
+        }
+      })
+    }
+
+    console.log('FORM DATA')
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1])
+    }
 
     dispatch(fromApi.createProduct(formData))
       .then((res) => navigate(`/products/${res?.data?.[0]?.id}`))
@@ -190,8 +212,95 @@ const CreateProductPage = () => {
                 )}
               </Form.Group>
 
+              {fields.map((field, idx) => (
+                <div className="mt-3 border rounded-md p-3" key={field.id}>
+                  <div className="mb-3 flex justify-between items-center">
+                    <div className="text-xl font-bold">Varian {idx + 1}</div>
+                    <Button variant="danger" onClick={() => remove(idx)}>
+                      Hapus
+                    </Button>
+                  </div>
+
+                  <Form.Group className="mb-3">
+                    <div className="flex justify-between">
+                      <Form.Label className="mr-5 text-lg font-medium">
+                        Nama
+                      </Form.Label>
+                      <Form.Control
+                        className="border border-black focus:outline-none px-2 py-1"
+                        {...register(`variants.${idx}.name`, {
+                          required: true,
+                        })}
+                      />
+                    </div>
+                    {formErrors.variants?.[idx]?.name && (
+                      <div className="text-red-600">
+                        Nama varian wajib diisi
+                      </div>
+                    )}
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <div className="flex justify-between">
+                      <Form.Label className="mr-5 text-lg font-medium">
+                        Kode
+                      </Form.Label>
+                      <Form.Control
+                        className="border border-black focus:outline-none px-2 py-1"
+                        {...register(`variants.${idx}.sku`, {
+                          required: true,
+                        })}
+                      />
+                    </div>
+                    {formErrors.variants?.[idx]?.sku && (
+                      <div className="text-red-600">
+                        Kode varian wajib diisi
+                      </div>
+                    )}
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <div className="flex justify-between">
+                      <Form.Label className="mr-5 text-lg font-medium">
+                        Stok
+                      </Form.Label>
+                      <Form.Control
+                        className="border border-black focus:outline-none px-2 py-1"
+                        {...register(`variants.${idx}.stock`, {
+                          required: true,
+                        })}
+                      />
+                    </div>
+                    {formErrors.variants?.[idx]?.stock && (
+                      <div className="text-red-600">
+                        Stok varian wajib diisi
+                      </div>
+                    )}
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mr-5 text-lg font-medium">
+                      Gambar varian
+                    </Form.Label>
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      {...register(`variants.${idx}.image`)}
+                    />
+                  </Form.Group>
+                </div>
+              ))}
+
               <Button
-                className="bg-black flex items-center p-2 text-white cursor-pointer mt-5"
+                className="mt-3"
+                variant="secondary"
+                onClick={() => append({ name: '', sku: '', image: null })}
+              >
+                Tambah Varian
+              </Button>
+
+              <Button
+                className="bg-black flex items-center p-2 text-white cursor-pointer mt-3"
                 onClick={handleSubmit(onSubmit)}
               >
                 Simpan

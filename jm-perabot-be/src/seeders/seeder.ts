@@ -36,10 +36,12 @@ async function seed() {
       variants: [
         {
           name: 'Original',
+          sku: 'huggsy-original',
           stock: 1,
         },
         {
           name: 'Fake',
+          sku: 'huggsy-fake',
           stock: 10,
         },
       ],

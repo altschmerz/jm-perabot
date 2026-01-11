@@ -19,7 +19,7 @@ const upload = multer({
 
 productRouter.post(
   '/',
-  upload.single('image'),
+  upload.fields([{ name: 'image' }, { name: 'variantImages' }]),
   asyncHandler(async (req, res) => {
     const bodySchema = object().shape({
       sku: string().required(),
@@ -34,6 +34,14 @@ productRouter.post(
     })
     const body = bodySchema.validateSync(req.body)
 
+    const files = req.files as {
+      image?: Express.Multer.File[]
+      variantImages?: Express.Multer.File[]
+    }
+
+    const productImage = files.image?.[0]
+    const variantImages = files.variantImages ?? []
+
     const product = await productService.createProduct(
       {
         sku: body.sku,
@@ -46,9 +54,11 @@ productRouter.post(
         totalStock: body.totalStock,
         variants: body.variants,
       },
-      req.file
+      productImage,
+      variantImages
     )
     res.sendJsonApiResource(StatusCodes.CREATED, product)
+    // res.sendJsonApiResource(StatusCodes.CREATED, [])
   })
 )
 

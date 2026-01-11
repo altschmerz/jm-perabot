@@ -6,6 +6,7 @@ import {
 } from '../errors/variant.error'
 import Product from '../models/Product'
 import Variant from '../models/Variant'
+import { supabase } from '../utils/supabase'
 import BaseService from './BaseService'
 
 export default class VariantService extends BaseService {
@@ -14,11 +15,15 @@ export default class VariantService extends BaseService {
    * This service currently doesn't check the productId. As it's only called by create product service as of now, the productId is guaranteed to be valid. We'll need to find a way to refactor this in the future
    */
 
-  async createVariant(options: {
-    productId: number
-    name: string
-    stock: number
-  }): Promise<Variant> {
+  async createVariant(
+    options: {
+      productId: number
+      name: string
+      sku: string
+      stock: number
+    },
+    image?: any
+  ): Promise<Variant> {
     await this.checkVariantUniqueness({
       productId: options.productId,
       name: options.name,
@@ -32,8 +37,21 @@ export default class VariantService extends BaseService {
 
     const variant = new Variant()
     variant.name = options.name
+    variant.sku = options.sku
     variant.stock = options.stock
     variant.productId = options.productId
+
+    if (image) {
+      const fileName = `var-${Date.now()}-${image.originalname}`
+
+      await supabase.storage
+        .from('product-images')
+        .upload(fileName, image.buffer, { contentType: image.mimetype })
+
+      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`
+      variant.imageUrl = imageUrl
+    }
+
     await variant.save()
 
     return variant

@@ -7,6 +7,9 @@ export default class Variant extends BaseEntity {
   @Column()
   name: string
 
+  @Column({ unique: true })
+  sku: string
+
   @Column()
   productId: number
 
@@ -16,4 +19,7 @@ export default class Variant extends BaseEntity {
 
   @Column({ default: 0 })
   stock: number
+
+  @Column({ nullable: true })
+  imageUrl: string
 }

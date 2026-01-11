@@ -24,7 +24,8 @@ export default class ProductService extends BaseService {
       totalStock: number
       variants?: VariantRequest[]
     },
-    image: any
+    image: any,
+    variantImages?: any[]
   ): Promise<Product> {
     await this.checkSkuUniqueness({ sku: options.sku })
 
@@ -56,12 +57,17 @@ export default class ProductService extends BaseService {
     await product.save()
 
     if (options.variants) {
-      for (const variant of options.variants) {
-        await variantService.createVariant({
-          productId: product.id,
-          name: variant.name,
-          stock: variant.stock,
-        })
+      for (let i = 0; i < options.variants.length; i++) {
+        const variant = options.variants[i]
+        await variantService.createVariant(
+          {
+            productId: product.id,
+            name: variant.name,
+            sku: variant.sku,
+            stock: variant.stock,
+          },
+          variantImages[i]
+        )
       }
     }
 
