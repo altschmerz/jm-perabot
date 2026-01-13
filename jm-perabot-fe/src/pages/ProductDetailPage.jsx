@@ -1,6 +1,8 @@
-import { useEffect } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick-theme.css'
+import 'slick-carousel/slick/slick.css'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import useFromApi from '../hooks/useFromApi'
@@ -11,8 +13,7 @@ const ProductDetailPage = () => {
   const productsReq = useFromApi(fromApi.getProductById(productId))
   const product = useResourceMapper('product', productsReq?.sortOrder)?.[0]
 
-  useEffect(() => console.log('PRODUCT', product))
-  useEffect(() => console.log('PRODUCTS REQ', productsReq), [productsReq])
+  const hasVariants = product?.variants?.length ? true : false
 
   return (
     <Layout>
@@ -28,11 +29,28 @@ const ProductDetailPage = () => {
             <div className="section-title mb-5 text-center">
               {product?.name}
             </div>
-            <img
-              src={product?.imageUrl}
-              alt={product?.name}
-              className="w-full aspect-square"
-            />
+            {hasVariants ? (
+              <Slider
+                dots
+                infinite
+                speed={500}
+                slidesToShow={1}
+                slidesToScroll={1}
+                swipeToSlide
+              >
+                <img src={product?.imageUrl} alt={product?.name} />
+
+                {product?.variants?.map((variant) => (
+                  <img
+                    key={variant?.id}
+                    src={variant?.imageUrl}
+                    alt={variant?.name}
+                  />
+                ))}
+              </Slider>
+            ) : (
+              <img src={product?.imageUrl} alt={product?.name} />
+            )}
             <div className="mt-5">
               {product?.description && (
                 <div>
@@ -42,7 +60,7 @@ const ProductDetailPage = () => {
                   </div>
                 </div>
               )}
-              {product?.variants?.length > 0 && (
+              {/* {product?.variants?.length > 0 && (
                 <div>
                   <div className="mt-5 section-subtitle">Varian</div>
                   <div className="flex">
@@ -54,7 +72,7 @@ const ProductDetailPage = () => {
                     ))}
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         )}
