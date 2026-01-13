@@ -21,11 +21,16 @@ const CategoryListPage = () => {
         <div>
           <div className="section-title text-center mt-2 mb-4">Kategori</div>
 
-          <div className="flex flex-wrap justify-between">
+          <div className="grid grid-cols-2 gap-3">
             {categories?.map(({ id, name }) => (
               <div
                 key={id}
-                className="bg-zinc-100 cursor-pointer p-[1rem] mb-3 w-[10rem] text-lg font-medium text-center"
+                className="
+                  h-20 bg-zinc-100
+                  flex justify-center items-center text-center 
+                  font-medium text-sm 
+                  px-3
+                "
               >
                 <NavLink to={`/categories/${id}`}>
                   <div>{name}</div>
