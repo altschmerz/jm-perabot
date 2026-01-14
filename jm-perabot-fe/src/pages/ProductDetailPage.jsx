@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import Slider from 'react-slick'
@@ -13,7 +14,10 @@ const ProductDetailPage = () => {
   const productsReq = useFromApi(fromApi.getProductById(productId))
   const product = useResourceMapper('product', productsReq?.sortOrder)?.[0]
 
-  const hasVariants = product?.variants?.length ? true : false
+  const variants = product?.variants
+
+  const [imageIndex, setImageIndex] = useState(0)
+  const imageCount = variants ? 1 + variants.length : 1
 
   return (
     <Layout>
@@ -29,25 +33,36 @@ const ProductDetailPage = () => {
             <div className="section-title mb-3 text-center">
               {product?.name}
             </div>
-            {hasVariants ? (
-              <Slider
-                dots
-                infinite
-                speed={500}
-                slidesToShow={1}
-                slidesToScroll={1}
-                swipeToSlide
-              >
-                <img src={product?.imageUrl} alt={product?.name} />
+            {variants?.length ? (
+              <div className="relative">
+                <Slider
+                  speed={500}
+                  slidesToShow={1}
+                  slidesToScroll={1}
+                  swipeToSlide
+                  afterChange={(index) => setImageIndex(index)}
+                >
+                  <img src={product?.imageUrl} alt={product?.name} />
 
-                {product?.variants?.map((variant) => (
-                  <img
-                    key={variant?.id}
-                    src={variant?.imageUrl}
-                    alt={variant?.name}
-                  />
-                ))}
-              </Slider>
+                  {product?.variants?.map((variant) => (
+                    <img
+                      key={variant?.id}
+                      src={variant?.imageUrl}
+                      alt={variant?.name}
+                    />
+                  ))}
+                </Slider>
+                <div
+                  className="
+                    absolute bottom-3 left-3
+                    bg-zinc-100 rounded
+                    px-2 py-1 mt-1
+                    text-xs
+                  "
+                >
+                  {imageIndex + 1} / {imageCount}
+                </div>
+              </div>
             ) : (
               <img src={product?.imageUrl} alt={product?.name} />
             )}
