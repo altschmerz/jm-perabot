@@ -17,7 +17,7 @@ const ProductDetailPage = () => {
 
   return (
     <Layout>
-      <div className="mt-3">
+      <div className="mt-1">
         {productsReq?.loading ? (
           <div className="flex flex-col items-center font-medium">
             <Spinner animation="border" variant="dark" />
@@ -26,7 +26,7 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div>
-            <div className="section-title mb-5 text-center">
+            <div className="section-title mb-3 text-center">
               {product?.name}
             </div>
             {hasVariants ? (
@@ -51,11 +51,11 @@ const ProductDetailPage = () => {
             ) : (
               <img src={product?.imageUrl} alt={product?.name} />
             )}
-            <div className="mt-5">
+            <div className="mt-3">
               {product?.description && (
                 <div>
-                  <div className="mt-5 section-subtitle">Deskripsi</div>
-                  <div className="whitespace-pre-line">
+                  <div className="section-subtitle">Deskripsi</div>
+                  <div className="text-sm whitespace-pre-line">
                     {product?.description}
                   </div>
                 </div>

@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-50">
-      <div className="title flex justify-center bg-zinc-100 p-5">
+      <div className="title flex justify-center bg-zinc-100 p-4">
         JM PERABOT
       </div>
       <div className="flex flex-row-reverse justify-between items-center bg-white px-5 py-2">

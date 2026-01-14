@@ -20,15 +20,15 @@ code {
 
 @layer base {
   .title {
-    @apply text-4xl font-bold tracking-widest font-['Josefin_Sans'];
+    @apply text-3xl font-bold tracking-widest font-['Josefin_Sans'];
   }
 
   .section-title {
-    @apply text-2xl font-bold;
+    @apply text-xl font-bold;
   }
 
   .section-subtitle {
-    @apply text-xl font-bold;
+    @apply text-lg font-bold;
   }
 
   .footer-section-title {
