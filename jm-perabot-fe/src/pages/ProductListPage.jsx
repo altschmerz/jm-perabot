@@ -18,7 +18,7 @@ const ProductListPage = () => {
   const productsReq = useFromApi(
     fromApi.getProductsByCategory(categoryId, PAGE, PAGE_SIZE)
   )
-  const products = useResourceMapper('product', productsReq?.sortOrder)
+  const products = useResourceMapper('shallowProduct', productsReq?.sortOrder)
 
   return (
     <Layout>

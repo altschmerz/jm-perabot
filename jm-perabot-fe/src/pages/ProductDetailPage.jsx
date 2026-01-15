@@ -12,7 +12,10 @@ import useResourceMapper from '../hooks/useResourceMapper'
 const ProductDetailPage = () => {
   const productId = useParams().id
   const productsReq = useFromApi(fromApi.getProductById(productId))
-  const product = useResourceMapper('product', productsReq?.sortOrder)?.[0]
+  const product = useResourceMapper(
+    'shallowProduct',
+    productsReq?.sortOrder
+  )?.[0]
 
   const variants = product?.variants
 

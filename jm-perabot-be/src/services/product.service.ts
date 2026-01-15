@@ -4,6 +4,7 @@ import {
   ProductNotFoundError,
 } from '../errors/product.error'
 import Product from '../models/Product'
+import ShallowProductResource from '../resources/shallowProduct.resource'
 import { supabase } from '../utils/supabase'
 import BaseService from './BaseService'
 import CategoryService from './category.service'
@@ -83,7 +84,7 @@ export default class ProductService extends BaseService {
     page: number
     pageSize: number
     categoryId?: number
-  }): Promise<{ products: Product[]; count: number }> {
+  }): Promise<{ products: ShallowProductResource[]; count: number }> {
     let findOptions: FindManyOptions<Product> = {
       take: options.pageSize,
       skip: options.page * options.pageSize,
@@ -97,17 +98,24 @@ export default class ProductService extends BaseService {
     findOptions.where = whereFilters
 
     const [products, count] = await Product.findAndCount(findOptions)
-    return { products, count }
+    const shallowProductRscs = products.map((product) =>
+      this.mapShallowProductResource(product)
+    )
+
+    return { products: shallowProductRscs, count }
   }
 
-  async getProductById(options: { id: number }): Promise<Product> {
+  async getProductById(options: {
+    id: number
+  }): Promise<ShallowProductResource> {
     const product = await Product.findOne({
       where: { id: options.id },
       relations: ['variants'],
     })
     if (!product) ProductNotFoundError({ attribute: 'ID', value: options.id })
 
-    return product
+    const shallowProductRsc = this.mapShallowProductResource(product)
+    return shallowProductRsc
   }
 
   async updateProduct(options: {
@@ -120,7 +128,7 @@ export default class ProductService extends BaseService {
     wholesalerPrice?: number
     totalStock?: number
   }): Promise<Product> {
-    const product = await this.getProductById({ id: options.id })
+    const product = await Product.findOne({ where: { id: options.id } })
 
     if (options.sku) {
       this.checkSkuUniqueness({ sku: options.sku })

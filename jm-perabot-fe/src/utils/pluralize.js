@@ -12,6 +12,9 @@ const pluralize = (singularWord) => {
     case 'product':
       return 'products'
 
+    case 'shallowProduct':
+      return 'shallowProducts'
+
     default:
       throw new Error(
         `we currently do not have a plural form of "${singularWord}". Please add the plural form into the dictionary in /utils/pluralize.js`
