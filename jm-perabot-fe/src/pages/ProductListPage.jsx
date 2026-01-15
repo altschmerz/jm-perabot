@@ -35,9 +35,9 @@ const ProductListPage = () => {
               {category?.name}
             </div>
 
-            <div className="flex flex-wrap justify-between">
+            <div className="grid grid-cols-2 gap-3">
               {products.map(({ id, name, sku, imageUrl }) => (
-                <div key={id} className="w-[49%]">
+                <div key={id}>
                   <NavLink to={`/products/${id}`}>
                     <ProductCard name={name} sku={sku} imageSrc={imageUrl} />
                   </NavLink>
