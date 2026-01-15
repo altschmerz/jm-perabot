@@ -38,7 +38,6 @@ export default class CategoryService extends BaseService {
   async getCategoryById(options: { id: number }): Promise<Category> {
     const category = await Category.findOne({
       where: { id: options.id },
-      relations: ['products'],
     })
     if (!category) CategoryNotFoundError({ attribute: 'ID', value: options.id })
 
