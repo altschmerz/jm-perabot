@@ -68,7 +68,11 @@ const CreateProductPage = () => {
   return (
     <Layout>
       {isLoading ? (
-        <Spinner animation="border" variant="dark" />
+        <div className="flex flex-col items-center font-medium">
+          <Spinner animation="border" variant="dark" />
+          <div className="mt-2">Menyimpan...</div>
+          <div>Mohon tunggu sebentar</div>
+        </div>
       ) : (
         <div>
           <div className="section-title text-center mt-10">Tambah Produk</div>
