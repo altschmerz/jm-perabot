@@ -1,28 +1,36 @@
 import { Router } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import multer from 'multer'
 import { number, object, string } from 'yup'
 import VariantService from '../services/variant.service'
+import { variantBodySchema } from '../ts/schemas/variant.schema'
 import { asyncHandler } from '../utils/asyncHandler'
 
 const variantRouter = Router()
 const variantService = new VariantService()
 
+const storage = multer.memoryStorage()
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+})
+
 variantRouter.post(
   '/',
+  upload.single('image'),
   asyncHandler(async (req, res) => {
-    const bodySchema = object().shape({
-      name: string().required(),
-      sku: string().required(),
-      stock: number().required(),
-    })
+    const bodySchema = variantBodySchema
     const body = bodySchema.validateSync(req.body)
 
-    const variant = await variantService.createVariant({
-      productId: Number(req.context.productId),
-      name: body.name,
-      sku: body.sku,
-      stock: body.stock,
-    })
+    const variant = await variantService.createVariant(
+      {
+        productId: Number(req.context.productId),
+        name: body.name,
+        sku: body.sku,
+        stock: body.stock,
+      },
+      req.file
+    )
     res.sendJsonApiResource(StatusCodes.CREATED, variant)
   })
 )
