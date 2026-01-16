@@ -69,7 +69,10 @@ export default class VariantService extends BaseService {
     return { variants, count }
   }
 
-  async updateVariant(options: { id: number; name: string; stock: number }) {
+  async updateVariant(
+    options: { id: number; name: string; sku: string; stock: number },
+    image?: any
+  ) {
     const variant = await Variant.findOne({ where: { id: options.id } })
     if (!variant) VariantNotFoundError({ id: options.id })
 
@@ -85,6 +88,32 @@ export default class VariantService extends BaseService {
     }
 
     if (options.stock !== null) variant.stock = options.stock
+
+    if (image) {
+      const oldImageUrl = variant.imageUrl
+
+      const newImageFileName = `var-${Date.now()}-${image.originalname}`
+
+      await supabase.storage
+        .from('product-images')
+        .upload(newImageFileName, image.buffer, {
+          contentType: image.mimetype,
+        })
+
+      if (oldImageUrl) {
+        const oldImagePath = decodeURIComponent(
+          oldImageUrl.split('/storage/v1/object/public/product-images/')[1]
+        )
+
+        if (oldImagePath) {
+          await supabase.storage.from('product-images').remove([oldImagePath])
+        }
+      }
+
+      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/product-images/${newImageFileName}`
+      variant.imageUrl = imageUrl
+    }
+
     await variant.save()
 
     return variant

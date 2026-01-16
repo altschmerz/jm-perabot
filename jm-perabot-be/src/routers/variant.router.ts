@@ -48,18 +48,24 @@ variantRouter.get(
 // TODO: Product ID redundant
 variantRouter.put(
   '/:id',
+  upload.single('image'),
   asyncHandler(async (req, res) => {
     const bodySchema = object().shape({
       name: string(),
+      sku: string(),
       stock: number().min(0),
     })
     const body = bodySchema.validateSync(req.body)
 
-    const variant = await variantService.updateVariant({
-      id: Number(req.params.id),
-      name: body.name,
-      stock: body.stock,
-    })
+    const variant = await variantService.updateVariant(
+      {
+        id: Number(req.params.id),
+        name: body.name,
+        sku: body.sku,
+        stock: body.stock,
+      },
+      req.file
+    )
     res.sendJsonApiResource(StatusCodes.OK, variant)
   })
 )
