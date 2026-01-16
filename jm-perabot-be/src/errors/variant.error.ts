@@ -1,11 +1,11 @@
 import { StatusCodes } from 'http-status-codes'
 import ApiError from './ApiError'
 
-export function VariantAlreadyExistsError() {
+export function VariantAlreadyExistsError(options: { attribute: string }) {
   throw new ApiError(
     StatusCodes.FORBIDDEN,
     'Variant already exists',
-    'There already exists a variant with this name associated with this product'
+    `There already exists a variant with this ${options.attribute} associated with this product`
   )
 }
 

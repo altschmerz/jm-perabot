@@ -24,9 +24,14 @@ export default class VariantService extends BaseService {
     },
     image?: any
   ): Promise<Variant> {
-    await this.checkVariantUniqueness({
+    await this.checkVariantNameUniqueness({
       productId: options.productId,
       name: options.name,
+    })
+
+    await this.checkVariantSkuUniqueness({
+      productId: options.productId,
+      sku: options.sku,
     })
 
     const product = await Product.findOne({
@@ -80,11 +85,19 @@ export default class VariantService extends BaseService {
       options.name &&
       options.name.toLowerCase() !== variant.name.toLowerCase()
     ) {
-      this.checkVariantUniqueness({
+      this.checkVariantNameUniqueness({
         productId: variant.productId,
         name: options.name,
       })
       variant.name = options.name
+    }
+
+    if (options.sku && options.sku !== variant.sku) {
+      this.checkVariantSkuUniqueness({
+        productId: variant.productId,
+        sku: options.sku,
+      })
+      variant.sku = options.sku
     }
 
     if (options.stock !== null) variant.stock = options.stock
@@ -129,13 +142,23 @@ export default class VariantService extends BaseService {
     return variant
   }
 
-  async checkVariantUniqueness(options: {
+  async checkVariantNameUniqueness(options: {
     productId: number
     name: string
   }): Promise<void> {
     const variant = await Variant.findOne({
       where: { productId: options.productId, name: ILike(options.name) },
     })
-    if (variant) VariantAlreadyExistsError()
+    if (variant) VariantAlreadyExistsError({ attribute: 'name' })
+  }
+
+  async checkVariantSkuUniqueness(options: {
+    productId: number
+    sku: string
+  }): Promise<void> {
+    const variant = await Variant.findOne({
+      where: { productId: options.productId, sku: options.sku },
+    })
+    if (variant) VariantAlreadyExistsError({ attribute: 'sku' })
   }
 }
