@@ -93,6 +93,7 @@ productRouter.get(
 
 productRouter.put(
   '/:id',
+  upload.single('image'),
   asyncHandler(async (req, res) => {
     const bodySchema = object().shape({
       sku: string(),
@@ -105,16 +106,19 @@ productRouter.put(
     })
     const body = bodySchema.validateSync(req.body)
 
-    const product = await productService.updateProduct({
-      id: Number(req.params.id),
-      sku: body.sku,
-      name: body.name,
-      description: body.description,
-      purchasePrice: body.purchasePrice,
-      retailPrice: body.retailPrice,
-      wholesalerPrice: body.wholesalerPrice,
-      totalStock: body.totalStock,
-    })
+    const product = await productService.updateProduct(
+      {
+        id: Number(req.params.id),
+        sku: body.sku,
+        name: body.name,
+        description: body.description,
+        purchasePrice: body.purchasePrice,
+        retailPrice: body.retailPrice,
+        wholesalerPrice: body.wholesalerPrice,
+        totalStock: body.totalStock,
+      },
+      req.file
+    )
     res.sendJsonApiResource(StatusCodes.OK, product)
   })
 )

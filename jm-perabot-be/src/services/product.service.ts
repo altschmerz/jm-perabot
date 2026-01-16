@@ -119,16 +119,19 @@ export default class ProductService extends BaseService {
     return shallowProductRsc
   }
 
-  async updateProduct(options: {
-    id: number
-    sku?: string
-    name?: string
-    description?: string
-    purchasePrice?: number
-    retailPrice?: number
-    wholesalerPrice?: number
-    totalStock?: number
-  }): Promise<Product> {
+  async updateProduct(
+    options: {
+      id: number
+      sku?: string
+      name?: string
+      description?: string
+      purchasePrice?: number
+      retailPrice?: number
+      wholesalerPrice?: number
+      totalStock?: number
+    },
+    image?: any
+  ): Promise<Product> {
     const product = await Product.findOne({ where: { id: options.id } })
 
     if (options.sku) {
@@ -142,6 +145,35 @@ export default class ProductService extends BaseService {
     if (options.wholesalerPrice)
       product.wholesalerPrice = options.wholesalerPrice
     if (options.totalStock) product.totalStock = options.totalStock
+
+    if (image) {
+      const oldImageUrl = product.imageUrl
+
+      const newImageFileName = `${Date.now()}-${image.originalname}`
+
+      await supabase.storage
+        .from(process.env.SUPABASE_BUCKET)
+        .upload(newImageFileName, image.buffer, {
+          contentType: image.mimetype,
+        })
+
+      if (oldImageUrl) {
+        const oldImagePath = decodeURIComponent(
+          oldImageUrl.split(
+            `/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/`
+          )[1]
+        )
+
+        if (oldImagePath) {
+          await supabase.storage
+            .from(process.env.SUPABASE_BUCKET)
+            .remove([oldImagePath])
+        }
+      }
+
+      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/${newImageFileName}`
+      product.imageUrl = imageUrl
+    }
 
     await product.save()
 
