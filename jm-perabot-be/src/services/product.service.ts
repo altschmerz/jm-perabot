@@ -111,6 +111,7 @@ export default class ProductService extends BaseService {
     const product = await Product.findOne({
       where: { id: options.id },
       relations: ['variants'],
+      order: { variants: { id: 'ASC' } },
     })
     if (!product) ProductNotFoundError({ attribute: 'ID', value: options.id })
 
