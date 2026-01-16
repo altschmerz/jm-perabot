@@ -116,7 +116,7 @@ export default class VariantService extends BaseService {
       if (oldImageUrl) {
         const oldImagePath = decodeURIComponent(
           oldImageUrl.split(
-            `/storage/v1/object/public/${process.env.SUPABASE_BUCKET}}/`
+            `/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/`
           )[1]
         )
 
