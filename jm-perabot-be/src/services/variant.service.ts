@@ -50,10 +50,10 @@ export default class VariantService extends BaseService {
       const fileName = `var-${Date.now()}-${image.originalname}`
 
       await supabase.storage
-        .from('product-images')
+        .from(process.env.SUPABASE_BUCKET)
         .upload(fileName, image.buffer, { contentType: image.mimetype })
 
-      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`
+      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/${fileName}`
       variant.imageUrl = imageUrl
     }
 
@@ -108,22 +108,26 @@ export default class VariantService extends BaseService {
       const newImageFileName = `var-${Date.now()}-${image.originalname}`
 
       await supabase.storage
-        .from('product-images')
+        .from(process.env.SUPABASE_BUCKET)
         .upload(newImageFileName, image.buffer, {
           contentType: image.mimetype,
         })
 
       if (oldImageUrl) {
         const oldImagePath = decodeURIComponent(
-          oldImageUrl.split('/storage/v1/object/public/product-images/')[1]
+          oldImageUrl.split(
+            `/storage/v1/object/public/${process.env.SUPABASE_BUCKET}}/`
+          )[1]
         )
 
         if (oldImagePath) {
-          await supabase.storage.from('product-images').remove([oldImagePath])
+          await supabase.storage
+            .from(process.env.SUPABASE_BUCKET)
+            .remove([oldImagePath])
         }
       }
 
-      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/product-images/${newImageFileName}`
+      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/${newImageFileName}`
       variant.imageUrl = imageUrl
     }
 

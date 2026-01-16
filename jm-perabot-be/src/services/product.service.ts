@@ -48,10 +48,10 @@ export default class ProductService extends BaseService {
       const fileName = `${Date.now()}-${image.originalname}`
 
       await supabase.storage
-        .from('product-images')
+        .from(process.env.SUPABASE_BUCKET)
         .upload(fileName, image.buffer, { contentType: image.mimetype })
 
-      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`
+      const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/${fileName}`
       product.imageUrl = imageUrl
     }
 
