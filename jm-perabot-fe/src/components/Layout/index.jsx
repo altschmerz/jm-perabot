@@ -1,4 +1,5 @@
 import { FaWhatsapp } from 'react-icons/fa'
+import Footer from '../Footer'
 import Navbar from '../Navbar'
 
 const Layout = ({ children }) => {
@@ -25,7 +26,7 @@ const Layout = ({ children }) => {
         <FaWhatsapp size={25} />
         Chat WA
       </a>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }
