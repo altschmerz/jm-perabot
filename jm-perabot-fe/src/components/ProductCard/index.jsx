@@ -5,7 +5,7 @@ const ProductCard = ({ name, sku, imageSrc, alt }) => {
         <img
           src={imageSrc}
           alt={alt}
-          className="w-full h-full object-cover rounded-tl rounded-tr"
+          className="aspect-square object-contain rounded-tl rounded-tr"
         />
       </div>
 
