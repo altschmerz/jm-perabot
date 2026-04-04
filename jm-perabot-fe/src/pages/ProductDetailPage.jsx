@@ -14,7 +14,7 @@ const ProductDetailPage = () => {
   const productsReq = useFromApi(fromApi.getProductById(productId))
   const product = useResourceMapper(
     'shallowProduct',
-    productsReq?.sortOrder
+    productsReq?.sortOrder,
   )?.[0]
 
   const variants = product?.variants
@@ -45,13 +45,18 @@ const ProductDetailPage = () => {
                   swipeToSlide
                   afterChange={(index) => setImageIndex(index)}
                 >
-                  <img src={product?.imageUrl} alt={product?.name} />
+                  <img
+                    src={product?.imageUrl}
+                    alt={product?.name}
+                    className="aspect-square object-contain object-center"
+                  />
 
                   {product?.variants?.map((variant) => (
                     <img
                       key={variant?.id}
                       src={variant?.imageUrl}
                       alt={variant?.name}
+                      className="aspect-square object-contain object-center"
                     />
                   ))}
                 </Slider>
