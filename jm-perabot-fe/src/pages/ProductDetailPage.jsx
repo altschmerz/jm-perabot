@@ -72,7 +72,11 @@ const ProductDetailPage = () => {
                 </div>
               </div>
             ) : (
-              <img src={product?.imageUrl} alt={product?.name} />
+              <img
+                src={product?.imageUrl}
+                alt={product?.name}
+                className="aspect-square object-contain object-center"
+              />
             )}
             <div className="mt-3">
               {product?.description && (
