@@ -9,7 +9,13 @@ const Footer = () => {
       </div>
 
       <div className="footer-section-title mb-1 mt-3">HUBUNGI KAMI</div>
-      <div>Telepon: 0811630256</div>
+      <div className="flex">
+        <div className="mr-1">Telepon:</div>
+        <div>
+          <div>0811630256</div>
+          <div>085372416111</div>
+        </div>
+      </div>
 
       <div className="mt-4 text-center">
         ©2026 JM Perabot. All rights reserved.
