@@ -144,7 +144,11 @@ const ProductDetailPage = () => {
                   sliderRef.current?.slickGoTo(index, true)
                 },
               }}
-              render={{ buttonNext: () => null, buttonPrev: () => null }}
+              render={{
+                buttonNext: () => null,
+                buttonPrev: () => null,
+                buttonZoom: () => null,
+              }}
               carousel={{
                 finite: lightboxSlides.length <= 1,
               }}
