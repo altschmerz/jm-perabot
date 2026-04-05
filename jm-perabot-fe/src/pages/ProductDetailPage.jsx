@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
+import Lightbox from 'yet-another-react-lightbox'
+import 'yet-another-react-lightbox/styles.css'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import useFromApi from '../hooks/useFromApi'
@@ -22,6 +24,21 @@ const ProductDetailPage = () => {
   const [imageIndex, setImageIndex] = useState(0)
   const imageCount = variants ? 1 + variants.length : 1
 
+  const sliderRef = useRef(null)
+
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [lightboxSlides, setLightboxSlides] = useState([])
+
+  useEffect(() => {
+    let slides = [{ src: product?.imageUrl }]
+    if (variants) {
+      const varSlides = variants?.map((variant) => ({ src: variant?.imageUrl }))
+      slides = slides.concat(varSlides)
+    }
+    setLightboxSlides(slides)
+  }, [product, variants])
+
   return (
     <Layout>
       <div className="mt-1">
@@ -39,6 +56,7 @@ const ProductDetailPage = () => {
             {variants?.length ? (
               <div className="relative">
                 <Slider
+                  ref={sliderRef}
                   speed={500}
                   slidesToShow={1}
                   slidesToScroll={1}
@@ -49,14 +67,22 @@ const ProductDetailPage = () => {
                     src={product?.imageUrl}
                     alt={product?.name}
                     className="aspect-square object-contain object-center"
+                    onClick={() => {
+                      setIsLightboxOpen(true)
+                      setLightboxIndex(0)
+                    }}
                   />
 
-                  {product?.variants?.map((variant) => (
+                  {product?.variants?.map((variant, idx) => (
                     <img
                       key={variant?.id}
                       src={variant?.imageUrl}
                       alt={variant?.name}
                       className="aspect-square object-contain object-center"
+                      onClick={() => {
+                        setIsLightboxOpen(true)
+                        setLightboxIndex(idx + 1)
+                      }}
                     />
                   ))}
                 </Slider>
@@ -76,6 +102,10 @@ const ProductDetailPage = () => {
                 src={product?.imageUrl}
                 alt={product?.name}
                 className="aspect-square object-contain object-center"
+                onClick={() => {
+                  setIsLightboxOpen(true)
+                  setLightboxIndex(0)
+                }}
               />
             )}
             <div className="mt-3">
@@ -101,6 +131,23 @@ const ProductDetailPage = () => {
                 </div>
               )} */}
             </div>
+
+            <Lightbox
+              open={isLightboxOpen}
+              close={() => setIsLightboxOpen(false)}
+              slides={lightboxSlides}
+              index={lightboxIndex}
+              on={{
+                view: ({ index }) => {
+                  setLightboxIndex(index)
+                  sliderRef.current?.slickGoTo(index, true)
+                },
+              }}
+              render={{ buttonNext: () => null, buttonPrev: () => null }}
+              carousel={{
+                finite: lightboxSlides.length <= 1,
+              }}
+            />
           </div>
         )}
       </div>
