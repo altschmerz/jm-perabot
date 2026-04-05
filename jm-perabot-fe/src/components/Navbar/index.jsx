@@ -12,8 +12,8 @@ const Navbar = () => {
       <div className="title flex justify-center bg-zinc-100 p-4">
         JM PERABOT
       </div>
-      <div className="flex flex-row-reverse justify-between items-center bg-white px-5 py-2">
-        {/* <div className="flex justify-between">
+      {/* <div className="flex flex-row-reverse justify-between items-center bg-white px-5 py-2"> */}
+      {/* <div className="flex justify-between">
           {TABS.map((tab) => (
             <div
               key={tab.label}
@@ -25,8 +25,8 @@ const Navbar = () => {
             </div>
           ))}
         </div> */}
-        {/* <SearchBar /> */}
-      </div>
+      {/* <SearchBar /> */}
+      {/* </div> */}
     </div>
   )
 }
