@@ -5,6 +5,7 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import Lightbox from 'yet-another-react-lightbox'
+import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
@@ -146,6 +147,15 @@ const ProductDetailPage = () => {
               render={{ buttonNext: () => null, buttonPrev: () => null }}
               carousel={{
                 finite: lightboxSlides.length <= 1,
+              }}
+              plugins={[Zoom]}
+              zoom={{
+                maxZoomPixelRatio: 3,
+                pinchZoomDistanceFactor: 50,
+                scrollToZoom: true,
+              }}
+              controller={{
+                touchAction: 'none',
               }}
             />
           </div>
