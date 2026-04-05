@@ -1,55 +1,49 @@
-import React from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
-import dress from '../assets/dress.png'
-import slide1 from '../assets/slide1.jpeg'
-import slide2 from '../assets/slide2.jpeg'
-import Card from '../components/Card'
 import Layout from '../components/Layout'
 
-const CATEGORIES = [
-  { label: 'Dresses', imageSrc: dress, alt: 'dress' },
-  { label: 'Beachwear', imageSrc: dress, alt: 'dress' },
-  { label: 'Tops', imageSrc: dress, alt: 'dress' },
-  { label: 'Tees', imageSrc: dress, alt: 'dress' },
-  { label: 'Denim', imageSrc: dress, alt: 'dress' },
-  { label: 'Bottoms', imageSrc: dress, alt: 'dress' },
-  { label: 'Jumpsuits & Two-pieces', imageSrc: dress, alt: 'dress' },
-  { label: 'Lingerie & Loungewear', imageSrc: dress, alt: 'dress' },
-  { label: 'Activewear', imageSrc: dress, alt: 'dress' },
-  { label: 'Shoes & Accessories', imageSrc: dress, alt: 'dress' },
+const REVIEWS = [
+  {
+    name: 'mukhsin saragih',
+    review:
+      'Koko nya ramah, jujur dalam berjualan, kalau ada hadiah dia kasih tau semuanya, harga juga cukup murah dan bersaing, diantar pula ketujuan kita, rekomended buat beli kasur 5 kaki dan 6 kaki',
+  },
+  {
+    name: 'Florencia Natanegara',
+    review:
+      'harganya lebih murah dari tempat lain, servicenya bagus👍🏻 pelayanan top …',
+  },
+  { name: 'luna', review: 'mantap otw langganan disini' },
 ]
 
 const LandingPage = () => {
   return (
     <Layout>
       <div>
-        <Slider
-          infinite
-          autoplay
-          autoplaySpeed={3000}
-          speed={500}
-          slidesToShow={1}
-          slidesToScroll={1}
-        >
-          <div>
-            <img src={slide1} alt="slide 1" />
-          </div>
-          <div>
-            <img src={slide2} alt="slide 2" />
-          </div>
-        </Slider>
-
-        <div className="mt-10">
-          <div className="section-title mb-5 text-center">Shop by Category</div>
-          <div className="flex flex-wrap">
-            {CATEGORIES.map(({ label, imageSrc, alt }, idx) => (
-              <div key={idx} className="w-[20%]">
-                <Card order={idx} label={label} imageSrc={imageSrc} alt={alt} />
+        <div className="landing-page-section-title mb-2">
+          Apa Kata Pelanggan Kami
+        </div>
+        <div>
+          <Slider
+            speed={500}
+            slidesToShow={1}
+            slidesToScroll={1}
+            swipeToSlide
+            centerMode
+            centerPadding="50px"
+            className="review-slider"
+            adaptiveHeight={false}
+          >
+            {REVIEWS.map(({ name, review }, idx) => (
+              <div key={idx} className="bg-zinc-100 p-3 h-[250px] rounded">
+                <div className="flex flex-col justify-between h-full">
+                  <div className="">{review}</div>
+                  <div className="text-xl font-medium">{name}</div>
+                </div>
               </div>
             ))}
-          </div>
+          </Slider>
         </div>
       </div>
     </Layout>
