@@ -29,7 +29,7 @@ const LandingPage = () => {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-          className="mb-5 py-3"
+          className="mb-3 py-3"
         >
           <div className="text-2xl/7 font-bold w-[55%]">
             Furnitur Pilihan untuk Setiap Sudut Kehidupan Anda
@@ -63,7 +63,7 @@ const LandingPage = () => {
             {REVIEWS.map(({ name, review }, idx) => (
               <div key={idx} className="bg-zinc-100 p-3 h-[250px] rounded">
                 <div className="flex flex-col justify-between h-full">
-                  <div className="">{review}</div>
+                  <div className="mb-3">{review}</div>
                   <div className="text-xl font-medium">{name}</div>
                 </div>
               </div>
