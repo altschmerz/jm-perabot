@@ -62,9 +62,9 @@ const LandingPage = () => {
               adaptiveHeight={false}
             >
               {REVIEWS.map(({ name, review }, idx) => (
-                <div key={idx} className="bg-zinc-100 p-3 h-[250px] rounded">
+                <div key={idx} className="bg-zinc-100 p-3 h-[270px] rounded">
                   <div className="flex flex-col justify-between h-full">
-                    <div className="mb-3">{review}</div>
+                    <div>{review}</div>
                     <div className="text-xl font-medium">{name}</div>
                   </div>
                 </div>
