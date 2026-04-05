@@ -1,6 +1,8 @@
+import { NavLink } from 'react-router-dom'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
+import heroBackground from '../assets/hero_background.png'
 import Layout from '../components/Layout'
 
 const REVIEWS = [
@@ -21,6 +23,29 @@ const LandingPage = () => {
   return (
     <Layout>
       <div>
+        <div
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)), url(${heroBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+          className="mb-5 py-3"
+        >
+          <div className="text-2xl/7 font-bold w-[55%]">
+            Furnitur Pilihan untuk Setiap Sudut Kehidupan Anda
+          </div>
+          <NavLink to="/categories">
+            <div
+              style={{
+                background: `rgba(0,0, 0, 0.2)`,
+              }}
+              className="mt-3 p-[10px] w-[150px] text-sm font-medium text-center rounded"
+            >
+              Jelajahi Katalog
+            </div>
+          </NavLink>
+        </div>
+
         <div className="landing-page-section-title mb-2">
           Apa Kata Pelanggan Kami
         </div>
