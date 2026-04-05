@@ -46,29 +46,64 @@ const LandingPage = () => {
           </NavLink>
         </div>
 
-        <div className="landing-page-section-title mb-2">
-          Apa Kata Pelanggan Kami
-        </div>
-        <div>
-          <Slider
-            speed={500}
-            slidesToShow={1}
-            slidesToScroll={1}
-            swipeToSlide
-            centerMode
-            centerPadding="50px"
-            className="review-slider"
-            adaptiveHeight={false}
-          >
-            {REVIEWS.map(({ name, review }, idx) => (
-              <div key={idx} className="bg-zinc-100 p-3 h-[250px] rounded">
-                <div className="flex flex-col justify-between h-full">
-                  <div className="mb-3">{review}</div>
-                  <div className="text-xl font-medium">{name}</div>
+        <div className="mb-3">
+          <div className="landing-page-section-title mb-2">
+            Apa Kata Pelanggan Kami
+          </div>
+          <div>
+            <Slider
+              speed={500}
+              slidesToShow={1}
+              slidesToScroll={1}
+              swipeToSlide
+              centerMode
+              centerPadding="50px"
+              className="review-slider"
+              adaptiveHeight={false}
+            >
+              {REVIEWS.map(({ name, review }, idx) => (
+                <div key={idx} className="bg-zinc-100 p-3 h-[250px] rounded">
+                  <div className="flex flex-col justify-between h-full">
+                    <div className="mb-3">{review}</div>
+                    <div className="text-xl font-medium">{name}</div>
+                  </div>
                 </div>
+              ))}
+            </Slider>
+          </div>
+        </div>
+
+        <div>
+          <div className="landing-page-section-title mb-2">Lokasi Kami</div>
+
+          <div className="overflow-hidden">
+            <iframe
+              title="Store location map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.161315392276!2d99.82726047508143!3d2.091131558744664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x302da194706b0d1d%3A0x372451211bcba31d!2sJakarta%20Metro%20(JM)%20%2F%20JM%20Era!5e0!3m2!1sen!2sid!4v1775379128756!5m2!1sen!2sid"
+              width="100%"
+              height="350"
+              style={{ border: 0 }}
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+
+          <div className="mt-2 flex justify-between">
+            <div className="w-[45%]">
+              <div className="font-bold">Alamat</div>
+              <div>
+                Jl. Gelugur no. 86-88, Rantauprapat, Labuhan Batu, Sumatra
+                Utara, 21412
               </div>
-            ))}
-          </Slider>
+            </div>
+
+            <div className="w-[45%]">
+              <div className="font-bold">Jam Operasional</div>
+              <div>Buka setiap hari</div>
+              <div>08:00 - 18:00</div>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>

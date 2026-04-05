@@ -5,7 +5,7 @@ const Footer = () => {
         TOKO PERABOT JAKARTA METRO
       </div>
       <div>
-        Jl. Gelugur no. 86-88, Rantauprapat, Labuhan Batu, Sumatra Utara
+        Jl. Gelugur no. 86-88, Rantauprapat, Labuhan Batu, Sumatra Utara, 21412
       </div>
 
       <div className="footer-section-title mb-1 mt-3">HUBUNGI KAMI</div>
