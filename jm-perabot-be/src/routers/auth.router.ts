@@ -17,12 +17,12 @@ authRouter.post(
         if (error) throw error
 
         const authRsc = await authService.createAuthResource({ id: user.id })
-        res.sendResource({ statusCode: StatusCodes.OK, data: authRsc })
+        res.sendJsonApiResource(StatusCodes.OK, authRsc)
       } catch (error) {
         next(error)
       }
     })(req, res, next)
-  }
+  },
 )
 
 authRouter.post(
@@ -31,8 +31,8 @@ authRouter.post(
   verifyLoggedIn,
   asyncHandler(async (req, res) => {
     await authService.logout({ id: req.context.user.id })
-    res.sendResource({ statusCode: StatusCodes.OK, data: [] })
-  })
+    res.sendJsonApiResource(StatusCodes.OK, [])
+  }),
 )
 
 export default authRouter
