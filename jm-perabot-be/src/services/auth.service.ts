@@ -1,11 +1,13 @@
 import jwt from 'jsonwebtoken'
 import { UserNotFound } from '../errors/user.error'
 import User from '../models/User'
-import AuthResource from '../resources/auth.resource'
+import AuthUserResource from '../resources/authUser.resource'
 import BaseService from './BaseService'
 
 class AuthService extends BaseService {
-  async createAuthResource(options: { id: number }): Promise<AuthResource> {
+  async createAuthUserResource(options: {
+    id: number
+  }): Promise<AuthUserResource> {
     const user = await User.findOne({ where: { id: options.id } })
     if (!user) UserNotFound({ attribute: 'ID', value: options.id })
 
@@ -15,7 +17,7 @@ class AuthService extends BaseService {
     user.accessToken = token
     await user.save()
 
-    return this.mapAuthResource({ user, token })
+    return this.mapAuthUserResource({ user, token })
   }
 
   async logout(options: { id: number }): Promise<void> {

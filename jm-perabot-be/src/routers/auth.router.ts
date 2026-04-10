@@ -16,7 +16,9 @@ authRouter.post(
       try {
         if (error) throw error
 
-        const authRsc = await authService.createAuthResource({ id: user.id })
+        const authRsc = await authService.createAuthUserResource({
+          id: user.id,
+        })
         res.sendJsonApiResource(StatusCodes.OK, authRsc)
       } catch (error) {
         next(error)

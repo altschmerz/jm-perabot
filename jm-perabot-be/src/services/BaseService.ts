@@ -1,12 +1,15 @@
 import Product from '../models/Product'
 import User from '../models/User'
-import AuthResource from '../resources/auth.resource'
+import AuthUserResource from '../resources/authUser.resource'
 import { SafeUserResource } from '../resources/safeUser.resource'
 import { default as ShallowProductResource } from '../resources/shallowProduct.resource'
 
 export default class BaseService {
-  mapAuthResource(options: { user: User; token: string }): AuthResource {
-    const authRsc = Object.assign(new AuthResource(), {
+  mapAuthUserResource(options: {
+    user: User
+    token: string
+  }): AuthUserResource {
+    const authRsc = Object.assign(new AuthUserResource(), {
       id: options.user?.id,
       token: options.token,
       safeUser: this.mapSafeUserResource(options.user),
