@@ -67,7 +67,7 @@ const LoginPage = () => {
               className="bg-black flex items-center p-2 text-white cursor-pointer mt-5"
               onClick={handleSubmit(onSubmit)}
             >
-              Simpan
+              Masuk
             </div>
           </div>
         </div>
