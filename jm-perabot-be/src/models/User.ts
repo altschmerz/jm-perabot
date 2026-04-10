@@ -22,5 +22,8 @@ export default class User extends BaseEntity {
   address: string
 
   @Column({ nullable: true })
+  referralCode: string
+
+  @Column({ nullable: true })
   accessToken: string
 }
