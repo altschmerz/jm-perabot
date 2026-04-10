@@ -19,6 +19,7 @@ userRouter.post(
       email: string().required(),
       name: string().required(),
       phoneNumber: string().required(),
+      address: string().required(),
     })
     const body = bodySchema.validateSync(req.body)
 
@@ -28,6 +29,7 @@ userRouter.post(
       email: body.email,
       name: body.name,
       phoneNumber: body.phoneNumber,
+      address: body.address,
     })
     res.sendResource({ statusCode: StatusCodes.CREATED, data: user })
   }),
@@ -54,6 +56,7 @@ userRouter.put(
       email: string(),
       name: string(),
       phoneNumber: string(),
+      address: string(),
     })
     const body = bodySchema.validateSync(req.body)
 
@@ -63,6 +66,7 @@ userRouter.put(
       email: body.email,
       name: body.name,
       phoneNumber: body.phoneNumber,
+      address: body.address,
     })
     res.sendResource({ statusCode: StatusCodes.OK, data: user })
   }),

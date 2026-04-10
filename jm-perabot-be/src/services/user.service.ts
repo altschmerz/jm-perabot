@@ -14,6 +14,7 @@ export default class UserService extends BaseService {
     email: string
     name: string
     phoneNumber: string
+    address: string
   }): Promise<SafeUserResource> {
     await this.checkAttributeUniqueness({
       attribute: 'username',
@@ -30,6 +31,7 @@ export default class UserService extends BaseService {
     user.email = options.email
     user.name = options.name
     user.phoneNumber = options.phoneNumber
+    user.address = options.address
     await user.save()
 
     return this.mapSafeUserResource(user)
@@ -47,6 +49,7 @@ export default class UserService extends BaseService {
     email?: string
     name?: string
     phoneNumber?: string
+    address?: string
   }): Promise<SafeUserResource> {
     const user = await User.findOne({ where: { id: options.id } })
     if (!user) UserNotFound({ attribute: 'ID', value: options.id })
@@ -68,8 +71,8 @@ export default class UserService extends BaseService {
     }
 
     if (options.name) user.name = options.name
-
     if (options.phoneNumber) user.phoneNumber = options.phoneNumber
+    if (options.address) user.address = options.address
 
     await user.save()
     return this.mapSafeUserResource(user)
