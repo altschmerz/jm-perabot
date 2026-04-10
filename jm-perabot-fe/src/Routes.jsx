@@ -4,6 +4,7 @@ import CreateCategoryPage from './pages/CreateCategoryPage'
 import CreateProductPage from './pages/CreateProductPage'
 import CreateUserPage from './pages/CreateUserPage'
 import LandingPage from './pages/LandingPage'
+import LoginPage from './pages/LoginPage'
 import ProductDetailPage from './pages/ProductDetailPage'
 import ProductListPage from './pages/ProductListPage'
 
@@ -12,6 +13,7 @@ export default function Routes() {
     <BrowserRouter>
       <RRRoutes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/users/add" element={<CreateUserPage />} />
         <Route path="/categories/add" element={<CreateCategoryPage />} />
         <Route path="/categories/:id" element={<ProductListPage />} />

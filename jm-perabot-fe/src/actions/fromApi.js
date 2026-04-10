@@ -5,6 +5,15 @@ import {
   makeApiRequestThunk,
 } from './makeApiRequest'
 class ApiCallActionCreator {
+  login(data) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.POST,
+      `/auth/login`,
+      data,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
   createUser(data) {
     return makeApiRequestThunk(
       HTTP_METHODS.POST,
