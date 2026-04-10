@@ -2,6 +2,7 @@ import bodyParser from 'body-parser'
 import express from 'express'
 import path from 'path'
 import { attachJsonApiSender } from './middlewares/attachJsonApiSender'
+import './middlewares/auth/configurePassport'
 import errorHandlingMiddleware from './middlewares/errorHandling.middleware'
 import authRouter from './routers/auth.router'
 import categoryRouter from './routers/category.router'
@@ -33,7 +34,7 @@ v1.use(
     mergeAttrs: true,
   }),
   jsonApiBodyValidatorAndFormatter,
-  express.urlencoded({ limit: '5mb', extended: true })
+  express.urlencoded({ limit: '5mb', extended: true }),
 )
 // NOTE: TEMPORARY FIX
 
@@ -52,6 +53,6 @@ if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
     '..',
     '..',
     'client_v3',
-    'build'
+    'build',
   )
 }
