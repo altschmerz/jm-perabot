@@ -17,7 +17,12 @@ export const app = express()
 const xmlparser = require('express-xml-bodyparser')
 const apiRouter = express.Router()
 const v1 = express.Router()
-app.use(cors())
+app.use(
+  cors({
+    origin: process.env.FRONTEND_API_URL,
+    exposedHeaders: ['Authorization'],
+  }),
+)
 app.use('/api', apiRouter)
 apiRouter.use('/v1', v1)
 app.set('view engine', 'ejs')
