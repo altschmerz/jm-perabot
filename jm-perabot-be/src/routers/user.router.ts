@@ -38,11 +38,27 @@ userRouter.post(
 )
 
 userRouter.get(
+  '/me',
+  convertTokenToUser,
+  verifyLoggedIn,
+  asyncHandler(async (req, res) => {
+    const me = await userService.getUserById({
+      id: req.user.id,
+      safeUser: false,
+    })
+    res.sendJsonApiResource(StatusCodes.OK, me)
+  }),
+)
+
+userRouter.get(
   '/:id',
   convertTokenToUser,
   verifyLoggedIn,
   asyncHandler(async (req, res) => {
-    const user = await userService.getUserById({ id: Number(req.params.id) })
+    const user = await userService.getUserById({
+      id: Number(req.params.id),
+      safeUser: true,
+    })
     res.sendJsonApiResource(StatusCodes.OK, user)
   }),
 )

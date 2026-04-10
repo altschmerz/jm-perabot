@@ -41,10 +41,13 @@ export default class UserService extends BaseService {
     return this.mapSafeUserResource(user)
   }
 
-  async getUserById(options: { id: number }): Promise<SafeUserResource> {
+  async getUserById(options: {
+    id: number
+    safeUser: boolean
+  }): Promise<SafeUserResource | User> {
     const user = await User.findOne({ where: { id: options.id } })
     if (!user) UserNotFound({ attribute: 'ID', value: options.id })
-    return this.mapSafeUserResource(user)
+    return options.safeUser ? this.mapSafeUserResource(user) : user
   }
 
   async updateUser(options: {
