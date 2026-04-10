@@ -15,6 +15,9 @@ export default class User extends BaseEntity {
   @Column()
   name: string
 
+  @Column()
+  phoneNumber: string
+
   @Column({ nullable: true })
   accessToken: string
 }

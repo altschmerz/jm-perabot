@@ -1,109 +1,114 @@
-import bcrypt from "bcrypt";
-import { FindOptionsWhere } from "typeorm";
-import { IncorrectPasswordError } from "../errors/auth.error";
-import { UserAlreadyExistsError, UserNotFound } from "../errors/user.error";
-import User from "../models/User";
-import { SafeUserResource } from "../resources/safeUser.resource";
-import hashPassword from "../utils/hashPassword";
-import BaseService from "./BaseService";
+import bcrypt from 'bcrypt'
+import { FindOptionsWhere } from 'typeorm'
+import { IncorrectPasswordError } from '../errors/auth.error'
+import { UserAlreadyExistsError, UserNotFound } from '../errors/user.error'
+import User from '../models/User'
+import { SafeUserResource } from '../resources/safeUser.resource'
+import hashPassword from '../utils/hashPassword'
+import BaseService from './BaseService'
 
 export default class UserService extends BaseService {
   async createUser(options: {
-    username: string;
-    password: string;
-    email: string;
-    name: string;
+    username: string
+    password: string
+    email: string
+    name: string
+    phoneNumber: string
   }): Promise<SafeUserResource> {
     await this.checkAttributeUniqueness({
-      attribute: "username",
+      attribute: 'username',
       value: options.username,
-    });
+    })
     await this.checkAttributeUniqueness({
-      attribute: "email",
+      attribute: 'email',
       value: options.email,
-    });
+    })
 
-    const user = new User();
-    user.username = options.username;
-    user.passwordHash = await hashPassword(options.password);
-    user.email = options.email;
-    user.name = options.name;
-    await user.save();
+    const user = new User()
+    user.username = options.username
+    user.passwordHash = await hashPassword(options.password)
+    user.email = options.email
+    user.name = options.name
+    user.phoneNumber = options.phoneNumber
+    await user.save()
 
-    return this.mapSafeUserResource(user);
+    return this.mapSafeUserResource(user)
   }
 
   async getUserById(options: { id: number }): Promise<SafeUserResource> {
-    const user = await User.findOne({ where: { id: options.id } });
-    if (!user) UserNotFound({ attribute: "ID", value: options.id });
-    return this.mapSafeUserResource(user);
+    const user = await User.findOne({ where: { id: options.id } })
+    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
+    return this.mapSafeUserResource(user)
   }
 
   async updateUser(options: {
-    id: number;
-    username?: string;
-    email?: string;
-    name?: string;
+    id: number
+    username?: string
+    email?: string
+    name?: string
+    phoneNumber?: string
   }): Promise<SafeUserResource> {
-    const user = await User.findOne({ where: { id: options.id } });
-    if (!user) UserNotFound({ attribute: "ID", value: options.id });
+    const user = await User.findOne({ where: { id: options.id } })
+    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
 
     if (options.username && options.username !== user.username) {
       await this.checkAttributeUniqueness({
-        attribute: "username",
+        attribute: 'username',
         value: options.username,
-      });
-      user.username = options.username;
+      })
+      user.username = options.username
     }
 
     if (options.email && options.email !== user.email) {
       await this.checkAttributeUniqueness({
-        attribute: "email",
+        attribute: 'email',
         value: options.email,
-      });
-      user.email = options.email;
+      })
+      user.email = options.email
     }
 
-    if (options.name) user.name = options.name;
+    if (options.name) user.name = options.name
 
-    await user.save();
-    return this.mapSafeUserResource(user);
+    if (options.phoneNumber) user.phoneNumber = options.phoneNumber
+
+    await user.save()
+    return this.mapSafeUserResource(user)
   }
 
   async changePassword(options: {
-    id: number;
-    oldPassword: string;
-    newPassword: string;
+    id: number
+    oldPassword: string
+    newPassword: string
   }): Promise<void> {
-    const user = await User.findOne({ where: { id: options.id } });
-    if (!user) UserNotFound({ attribute: "ID", value: options.id });
+    const user = await User.findOne({ where: { id: options.id } })
+    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
 
     const isPasswordCorrect = await bcrypt.compare(
       options.oldPassword,
-      user.passwordHash
-    );
-    if (!isPasswordCorrect) IncorrectPasswordError();
+      user.passwordHash,
+    )
+    if (!isPasswordCorrect) IncorrectPasswordError()
 
-    user.passwordHash = await hashPassword(options.newPassword);
-    await user.save();
+    user.passwordHash = await hashPassword(options.newPassword)
+    await user.save()
   }
 
   async checkAttributeUniqueness(options: {
-    attribute: "username" | "email";
-    value: string;
+    attribute: 'username' | 'email'
+    value: string
   }): Promise<boolean> {
-    const whereFilter: FindOptionsWhere<User> = {};
-    options.attribute === "username"
+    const whereFilter: FindOptionsWhere<User> = {}
+    options.attribute === 'username'
       ? (whereFilter.username = options.value)
-      : (whereFilter.email = options.value);
+      : (whereFilter.email = options.value)
 
-    const user = await User.findOne({ where: whereFilter });
+    const user = await User.findOne({ where: whereFilter })
     if (user)
       UserAlreadyExistsError({
         attribute: options.attribute,
         value: options.value,
-      });
+      })
 
-    return true;
+    return true
   }
 }
