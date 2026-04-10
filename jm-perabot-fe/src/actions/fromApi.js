@@ -5,12 +5,21 @@ import {
   makeApiRequestThunk,
 } from './makeApiRequest'
 class ApiCallActionCreator {
+  createUser(data) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.POST,
+      `/users`,
+      data,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
   createCategory(name) {
     return makeApiRequestThunk(
       HTTP_METHODS.POST,
       `/categories`,
       { name },
-      ACTION_TYPES.MERGE
+      ACTION_TYPES.MERGE,
     )
   }
 
@@ -19,7 +28,7 @@ class ApiCallActionCreator {
       HTTP_METHODS.GET,
       `/categories`,
       null,
-      ACTION_TYPES.MERGE
+      ACTION_TYPES.MERGE,
     )
   }
 
@@ -28,7 +37,7 @@ class ApiCallActionCreator {
       HTTP_METHODS.GET,
       `/categories/${id}`,
       null,
-      ACTION_TYPES.MERGE
+      ACTION_TYPES.MERGE,
     )
   }
 
@@ -37,7 +46,7 @@ class ApiCallActionCreator {
       HTTP_METHODS.POST,
       `/products`,
       formData,
-      ACTION_TYPES.MERGE
+      ACTION_TYPES.MERGE,
     )
   }
 
@@ -46,7 +55,7 @@ class ApiCallActionCreator {
       HTTP_METHODS.GET,
       `/products`,
       null,
-      ACTION_TYPES.MERGE
+      ACTION_TYPES.MERGE,
     )
   }
 
@@ -62,7 +71,7 @@ class ApiCallActionCreator {
       HTTP_METHODS.GET,
       `/products/${id}`,
       null,
-      ACTION_TYPES.MERGE
+      ACTION_TYPES.MERGE,
     )
   }
 }
