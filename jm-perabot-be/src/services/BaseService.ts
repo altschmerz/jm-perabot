@@ -5,10 +5,11 @@ import { SafeUserResource } from '../resources/safeUser.resource'
 import { default as ShallowProductResource } from '../resources/shallowProduct.resource'
 
 export default class BaseService {
-  mapAuthResource(options: { id: number; token: string }): AuthResource {
+  mapAuthResource(options: { user: User; token: string }): AuthResource {
     const authRsc = Object.assign(new AuthResource(), {
-      id: options.id,
+      id: options.user?.id,
       token: options.token,
+      safeUser: this.mapSafeUserResource(options.user),
     })
     return authRsc
   }
