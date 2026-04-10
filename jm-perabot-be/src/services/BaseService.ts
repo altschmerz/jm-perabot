@@ -19,6 +19,7 @@ export default class BaseService {
       username: user.username,
       email: user.email,
       name: user.name,
+      referralCode: user.referralCode,
     })
     return safeUserRsc
   }
