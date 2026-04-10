@@ -15,6 +15,7 @@ export default class UserService extends BaseService {
     name: string
     phoneNumber: string
     address: string
+    referralCode?: string
   }): Promise<SafeUserResource> {
     await this.checkAttributeUniqueness({
       attribute: 'username',
@@ -32,6 +33,9 @@ export default class UserService extends BaseService {
     user.name = options.name
     user.phoneNumber = options.phoneNumber
     user.address = options.address
+
+    if (options.referralCode) user.referralCode = options.referralCode
+
     await user.save()
 
     return this.mapSafeUserResource(user)

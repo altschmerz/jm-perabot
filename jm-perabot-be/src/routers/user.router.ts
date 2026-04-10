@@ -20,6 +20,7 @@ userRouter.post(
       name: string().required(),
       phoneNumber: string().required(),
       address: string().required(),
+      referralCode: string(),
     })
     const body = bodySchema.validateSync(req.body)
 
@@ -30,6 +31,7 @@ userRouter.post(
       name: body.name,
       phoneNumber: body.phoneNumber,
       address: body.address,
+      referralCode: body.referralCode,
     })
     res.sendJsonApiResource(StatusCodes.CREATED, user)
   }),
