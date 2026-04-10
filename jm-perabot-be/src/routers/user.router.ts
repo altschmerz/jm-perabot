@@ -31,7 +31,7 @@ userRouter.post(
       phoneNumber: body.phoneNumber,
       address: body.address,
     })
-    res.sendResource({ statusCode: StatusCodes.CREATED, data: user })
+    res.sendJsonApiResource(StatusCodes.CREATED, user)
   }),
 )
 
@@ -41,7 +41,7 @@ userRouter.get(
   verifyLoggedIn,
   asyncHandler(async (req, res) => {
     const user = await userService.getUserById({ id: Number(req.params.id) })
-    res.sendResource({ statusCode: StatusCodes.OK, data: user })
+    res.sendJsonApiResource(StatusCodes.OK, user)
   }),
 )
 
@@ -68,7 +68,7 @@ userRouter.put(
       phoneNumber: body.phoneNumber,
       address: body.address,
     })
-    res.sendResource({ statusCode: StatusCodes.OK, data: user })
+    res.sendJsonApiResource(StatusCodes.OK, user)
   }),
 )
 
@@ -89,7 +89,7 @@ userRouter.put(
       oldPassword: body.oldPassword,
       newPassword: body.newPassword,
     })
-    res.sendResource({ statusCode: StatusCodes.OK, data: [] })
+    res.sendJsonApiResource(StatusCodes.OK, [])
   }),
 )
 
