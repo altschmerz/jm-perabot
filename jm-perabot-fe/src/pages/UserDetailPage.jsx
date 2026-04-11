@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
 import { Spinner } from 'react-bootstrap'
+import toast from 'react-hot-toast'
 import { FaGift } from 'react-icons/fa'
-import { useParams } from 'react-router-dom'
+import { PiWarningCircleBold } from 'react-icons/pi'
+import { useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import 'yet-another-react-lightbox/styles.css'
@@ -10,6 +14,33 @@ import useFromApi from '../hooks/useFromApi'
 import useResourceMapper from '../hooks/useResourceMapper'
 
 const UserDetailPage = () => {
+  const navigate = useNavigate()
+
+  const authUser = useSelector((state) => state.authUser)
+
+  useEffect(() => {
+    if (window.location.pathname !== '/') {
+      if (!authUser) {
+        toast('Anda belum login. Silahkan login terlebih dahulu.', {
+          id: 'not-logged-in',
+          icon: <PiWarningCircleBold color="red" />,
+          className: 'bg-red-100',
+        })
+        navigate('/')
+        return
+      }
+
+      if (authUser.role !== 2) {
+        toast('Anda tidak memiliki akses untuk halaman ini', {
+          id: 'restricted-access',
+          icon: <PiWarningCircleBold color="red" />,
+          className: 'bg-red-100',
+        })
+        navigate('/')
+      }
+    }
+  }, [authUser, navigate])
+
   const userId = useParams().id
   const usersReq = useFromApi(fromApi.getUserById(userId, false))
   const user = useResourceMapper('user', usersReq?.sortOrder)?.[0]

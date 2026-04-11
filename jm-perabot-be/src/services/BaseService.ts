@@ -13,6 +13,7 @@ export default class BaseService {
       id: options.user?.id,
       token: options.token,
       safeUser: this.mapSafeUserResource(options.user),
+      role: options.user.roleTypeId,
     })
     return authRsc
   }
