@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 
 const CreateUserPage = () => {
   const dispatch = useDispatch()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const { register, formState, handleSubmit, watch } = useForm()
   const formErrors = formState.errors
@@ -18,7 +19,7 @@ const CreateUserPage = () => {
     setIsLoading(true)
 
     dispatch(fromApi.createUser(data))
-      // .then(() => navigate(`/categories`))
+      .then(() => navigate(`/login`))
       .catch((err) => console.warn('ERROR', err))
   }
 
