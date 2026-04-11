@@ -5,6 +5,7 @@ import {
 } from '../errors/product.error'
 import Product from '../models/Product'
 import ShallowProductResource from '../resources/shallowProduct.resource'
+import { VariantRequest } from '../ts/types/variant.types'
 import { supabase } from '../utils/supabase'
 import BaseService from './BaseService'
 import CategoryService from './category.service'
@@ -26,7 +27,7 @@ export default class ProductService extends BaseService {
       variants?: VariantRequest[]
     },
     image: any,
-    variantImages?: any[]
+    variantImages?: any[],
   ): Promise<Product> {
     await this.checkSkuUniqueness({ sku: options.sku })
 
@@ -67,7 +68,7 @@ export default class ProductService extends BaseService {
             sku: variant.sku,
             stock: variant.stock,
           },
-          variantImages[i]
+          variantImages[i],
         )
       }
     }
@@ -99,7 +100,7 @@ export default class ProductService extends BaseService {
 
     const [products, count] = await Product.findAndCount(findOptions)
     const shallowProductRscs = products.map((product) =>
-      this.mapShallowProductResource(product)
+      this.mapShallowProductResource(product),
     )
 
     return { products: shallowProductRscs, count }
@@ -130,7 +131,7 @@ export default class ProductService extends BaseService {
       wholesalerPrice?: number
       totalStock?: number
     },
-    image?: any
+    image?: any,
   ): Promise<Product> {
     const product = await Product.findOne({ where: { id: options.id } })
 
@@ -160,8 +161,8 @@ export default class ProductService extends BaseService {
       if (oldImageUrl) {
         const oldImagePath = decodeURIComponent(
           oldImageUrl.split(
-            `/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/`
-          )[1]
+            `/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/`,
+          )[1],
         )
 
         if (oldImagePath) {
