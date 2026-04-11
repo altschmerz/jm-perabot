@@ -41,6 +41,16 @@ class ApiCallActionCreator {
     )
   }
 
+  getUserById(id, safeUser) {
+    console.log('FROM API')
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/users/${id}?safeUser=${safeUser}`,
+      null,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
   createCategory(name) {
     return makeApiRequestThunk(
       HTTP_METHODS.POST,

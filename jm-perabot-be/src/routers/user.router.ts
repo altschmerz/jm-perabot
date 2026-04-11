@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { object, string } from 'yup'
+import { bool, object, string } from 'yup'
 import authenticateSelfRoute from '../middlewares/auth/authenticateSelfRoute'
 import convertTokenToUser from '../middlewares/auth/convertTokenToUser'
 import verifyLoggedIn from '../middlewares/auth/verifyLoggedIn'
@@ -55,9 +55,12 @@ userRouter.get(
   convertTokenToUser,
   verifyLoggedIn,
   asyncHandler(async (req, res) => {
+    const queryStrSchema = object().shape({ safeUser: bool().default(true) })
+    const queryStr = queryStrSchema.validateSync(req.query)
+
     const user = await userService.getUserById({
       id: Number(req.params.id),
-      safeUser: true,
+      safeUser: queryStr.safeUser,
     })
     res.sendJsonApiResource(StatusCodes.OK, user)
   }),
