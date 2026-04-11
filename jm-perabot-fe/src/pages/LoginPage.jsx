@@ -15,12 +15,19 @@ const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
+  const [loginErrorMsg, setLoginErrorMsg] = useState()
+
   const onSubmit = (data) => {
     setIsLoading(true)
 
     dispatch(fromApi.login(data))
       .then((res) => navigate('/me'))
-      .catch((err) => console.warn('ERROR', err))
+      .catch((err) => {
+        console.warn('ERROR', err)
+        setLoginErrorMsg(err.msg)
+      })
+
+    setIsLoading(false)
   }
 
   return (
@@ -62,11 +69,19 @@ const LoginPage = () => {
                 {formErrors.password.message}
               </div>
             )}
-            <div
-              className="bg-black flex items-center p-2 text-white cursor-pointer mt-5"
-              onClick={handleSubmit(onSubmit)}
-            >
-              Masuk
+
+            {loginErrorMsg && (
+              <div className="text-sm text-red-600 mt-3">{loginErrorMsg}</div>
+            )}
+
+            <div className="flex justify-end">
+              <button
+                className="bg-black px-4 py-2 text-white cursor-pointer mt-3"
+                disabled={isLoading}
+                onClick={handleSubmit(onSubmit)}
+              >
+                Masuk
+              </button>
             </div>
           </div>
         </div>
