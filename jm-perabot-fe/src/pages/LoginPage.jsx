@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 
 const LoginPage = () => {
   const dispatch = useDispatch()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const { register, formState, handleSubmit } = useForm()
   const formErrors = formState.errors
@@ -18,9 +19,7 @@ const LoginPage = () => {
     setIsLoading(true)
 
     dispatch(fromApi.login(data))
-      .then((res) => {
-        // navigate(`/categories`)
-      })
+      .then((res) => navigate('/me'))
       .catch((err) => console.warn('ERROR', err))
   }
 
