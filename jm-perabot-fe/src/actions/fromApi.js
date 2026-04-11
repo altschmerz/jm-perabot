@@ -14,6 +14,15 @@ class ApiCallActionCreator {
     )
   }
 
+  logout(data) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.POST,
+      `/auth/logout`,
+      data,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
   createUser(data) {
     return makeApiRequestThunk(
       HTTP_METHODS.POST,

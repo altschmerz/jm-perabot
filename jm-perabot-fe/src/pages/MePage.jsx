@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { FaGift } from 'react-icons/fa'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import 'yet-another-react-lightbox/styles.css'
@@ -9,16 +12,31 @@ import useFromApi from '../hooks/useFromApi'
 import useResourceMapper from '../hooks/useResourceMapper'
 
 const MePage = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const usersReq = useFromApi(fromApi.getMe())
   const user = useResourceMapper('user', usersReq?.sortOrder)?.[0]
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => setIsLoading(usersReq?.loading), [usersReq])
+
+  const onSubmit = () => {
+    setIsLoading(true)
+
+    dispatch(fromApi.logout())
+      .then((res) => navigate('/'))
+      .catch((err) => console.warn('ERROR', err))
+  }
 
   return (
     <Layout>
       <div className="mt-3">
-        {usersReq?.loading ? (
+        {isLoading ? (
           <div className="flex flex-col items-center font-medium">
             <Spinner animation="border" variant="dark" />
-            <div className="mt-2">Memuat...</div>
+            <div className="mt-2">Memproses...</div>
             <div>Mohon tunggu sebentar</div>
           </div>
         ) : (
@@ -68,6 +86,15 @@ const MePage = () => {
             </div>
           </div>
         )}
+
+        <div className="flex justify-end">
+          <div
+            className="bg-black px-3 py-2 text-white cursor-pointer mt-5"
+            onClick={onSubmit}
+          >
+            Logout
+          </div>
+        </div>
       </div>
     </Layout>
   )
