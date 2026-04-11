@@ -1,14 +1,42 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import toast from 'react-hot-toast'
+import { PiWarningCircleBold } from 'react-icons/pi'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
+import { ADMIN_ROLE_TYPE_ID } from '../utils/constants'
 
 const CreateCategoryPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const authUser = useSelector((state) => state.authUser)
+
+  useEffect(() => {
+    if (window.location.pathname !== '/') {
+      if (!authUser) {
+        toast('Anda belum login. Silahkan login terlebih dahulu.', {
+          id: 'not-logged-in',
+          icon: <PiWarningCircleBold color="red" />,
+          className: 'bg-red-100',
+        })
+        navigate('/')
+        return
+      }
+
+      if (authUser.role !== ADMIN_ROLE_TYPE_ID) {
+        toast('Anda tidak memiliki akses untuk halaman ini', {
+          id: 'restricted-access',
+          icon: <PiWarningCircleBold color="red" />,
+          className: 'bg-red-100',
+        })
+        navigate('/')
+      }
+    }
+  }, [authUser, navigate])
 
   const { register, formState, handleSubmit } = useForm()
   const formErrors = formState.errors
