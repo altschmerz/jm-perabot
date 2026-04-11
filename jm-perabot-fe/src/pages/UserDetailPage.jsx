@@ -12,6 +12,7 @@ import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import useFromApi from '../hooks/useFromApi'
 import useResourceMapper from '../hooks/useResourceMapper'
+import { ADMIN_ROLE_TYPE_ID } from '../utils/constants'
 
 const UserDetailPage = () => {
   const navigate = useNavigate()
@@ -30,7 +31,7 @@ const UserDetailPage = () => {
         return
       }
 
-      if (authUser.role !== 2) {
+      if (authUser.role !== ADMIN_ROLE_TYPE_ID) {
         toast('Anda tidak memiliki akses untuk halaman ini', {
           id: 'restricted-access',
           icon: <PiWarningCircleBold color="red" />,
