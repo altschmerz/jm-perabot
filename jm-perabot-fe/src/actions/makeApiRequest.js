@@ -188,8 +188,8 @@ export const makeApiRequestFileThunk =
             msg =
               'Internal error. Please contact support to resolve this issue.'
           } else {
-            console.error(body.error.description)
-            msg = body.error.description
+            console.error(body.error.message)
+            msg = body.error.message
           }
 
           dispatch({
