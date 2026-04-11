@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
+import toast from 'react-hot-toast'
 import { FaGift } from 'react-icons/fa'
-import { useDispatch } from 'react-redux'
+import { PiWarningCircleBold } from 'react-icons/pi'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
@@ -15,6 +17,19 @@ const MePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const authUser = useSelector((state) => state.authUser)
+
+  useEffect(() => {
+    if (!authUser && window.location.pathname !== '/') {
+      toast('Anda belum login. Silahkan login terlebih dahulu.', {
+        id: 'not-logged-in',
+        icon: <PiWarningCircleBold color="red" />,
+        className: 'bg-red-100',
+      })
+      navigate('/')
+    }
+  }, [authUser, navigate])
+
   const usersReq = useFromApi(fromApi.getMe())
   const user = useResourceMapper('user', usersReq?.sortOrder)?.[0]
 
@@ -22,12 +37,18 @@ const MePage = () => {
 
   useEffect(() => setIsLoading(usersReq?.loading), [usersReq])
 
-  const onSubmit = () => {
+  const onLogout = async () => {
     setIsLoading(true)
 
     dispatch(fromApi.logout())
-      .then((res) => navigate('/'))
-      .catch((err) => console.warn('ERROR', err))
+      .then(() => {
+        localStorage.clear()
+        dispatch({
+          type: 'authUsers/destroy',
+        })
+        navigate('/')
+      })
+      .catch((err) => console.log('ERROR', err))
   }
 
   return (
@@ -90,7 +111,7 @@ const MePage = () => {
         <div className="flex justify-end">
           <div
             className="bg-black px-3 py-2 text-white cursor-pointer mt-5"
-            onClick={onSubmit}
+            onClick={onLogout}
           >
             Logout
           </div>
