@@ -58,12 +58,12 @@ export const makeApiRequestThunk =
           // keep the body raw
         }
 
-        if (response.status === 401) {
-          localStorage.clear()
-          if (window.location.pathname !== '/') {
-            window.location.replace('/')
-          }
-        }
+        // if (response.status === 401) {
+        //   localStorage.clear()
+        //   if (window.location.pathname !== '/') {
+        //     window.location.replace('/')
+        //   }
+        // }
 
         // If response !== 2XX.
         if (response.status < 200 || response.status >= 300) {
