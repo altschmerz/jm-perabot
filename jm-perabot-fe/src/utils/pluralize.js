@@ -6,6 +6,9 @@ const pluralize = (singularWord) => {
     case 'authUser':
       return 'authUsers'
 
+    case 'safeUser':
+      return 'safeUsers'
+
     case 'user':
       return 'users'
 
