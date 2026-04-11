@@ -23,6 +23,15 @@ class ApiCallActionCreator {
     )
   }
 
+  getMe() {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/users/me`,
+      null,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
   createCategory(name) {
     return makeApiRequestThunk(
       HTTP_METHODS.POST,
