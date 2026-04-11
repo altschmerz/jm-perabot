@@ -5,11 +5,47 @@ import {
   makeApiRequestThunk,
 } from './makeApiRequest'
 class ApiCallActionCreator {
+  login(data) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.POST,
+      `/auth/login`,
+      data,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
+  logout(data) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.POST,
+      `/auth/logout`,
+      data,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
   createUser(data) {
     return makeApiRequestThunk(
       HTTP_METHODS.POST,
       `/users`,
       data,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
+  getMe() {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/users/me`,
+      null,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
+  getUserById(id, safeUser) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/users/${id}?safeUser=${safeUser}`,
+      null,
       ACTION_TYPES.MERGE,
     )
   }

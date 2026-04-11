@@ -16,10 +16,10 @@ const CreateUserPage = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = (data) => {
-    // setIsLoading(true)
+    setIsLoading(true)
 
     dispatch(fromApi.createUser(data))
-      // .then(() => navigate(`/categories`))
+      .then(() => navigate(`/login`))
       .catch((err) => console.warn('ERROR', err))
   }
 

@@ -16,10 +16,11 @@ authRouter.post(
       try {
         if (error) throw error
 
-        const authRsc = await authService.createAuthUserResource({
+        const authUserRsc = await authService.createAuthUserResource({
           id: user.id,
         })
-        res.sendJsonApiResource(StatusCodes.OK, authRsc)
+        res.setHeader('authorization', 'bearer ' + authUserRsc.token)
+        res.sendJsonApiResource(StatusCodes.OK, authUserRsc)
       } catch (error) {
         next(error)
       }

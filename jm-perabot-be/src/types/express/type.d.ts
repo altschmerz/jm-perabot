@@ -1,5 +1,5 @@
-import { BaseEntity } from "../../models/BaseEntity";
-import { Resource } from "../../resources/Resource";
+import { BaseEntity } from '../../models/BaseEntity'
+import { Resource } from '../../resources/Resource'
 
 declare global {
   namespace Express {
@@ -12,8 +12,8 @@ declare global {
       sendJsonApiResource(
         statusCode: number,
         data: Resource | Resource[] | BaseEntity | BaseEntity[],
-        totalPaginationCount?: string | number
-      ): void;
+        totalPaginationCount?: string | number,
+      ): void
 
       /**
        * Sends error as JSON API response.
@@ -23,23 +23,24 @@ declare global {
       sendJsonApiError(
         statusCode: number,
         title?: string,
-        description?: string
-      ): void;
+        description?: string,
+      ): void
 
       resourceMapper?: {
-        fromEntity: (datum: Resource) => Resource;
-      };
+        fromEntity: (datum: Resource) => Resource
+      }
     }
     /**
      * Extending the @types/passport definition to be more complete with our use-case.
      * Currently we are storing id and email in JWT token
      */
     interface User {
-      id: number;
-      email: string;
+      id: number
+      email: string
     }
     export interface Request {
-      user?: User;
+      context?: any
+      user?: User
     }
   }
 }
