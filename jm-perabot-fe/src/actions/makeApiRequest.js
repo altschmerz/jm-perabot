@@ -72,12 +72,12 @@ export const makeApiRequestThunk =
             response.status === 500 ||
             response.headers.get('content-type').includes('text/html')
           ) {
-            console.error(body?.error?.description)
+            console.error(body?.error?.message)
             msg =
               'Internal error. Please contact support to resolve this issue.'
           } else {
-            console.error(body?.error?.description)
-            msg = body?.error?.description
+            console.error(body?.error?.message)
+            msg = body?.error?.message
           }
 
           dispatch({
@@ -90,13 +90,13 @@ export const makeApiRequestThunk =
         if (response.headers.get('authorization')) {
           localStorage.setItem(
             localStorageKey,
-            response.headers.get('authorization')
+            response.headers.get('authorization'),
           )
         }
 
         if (!Array.isArray(body.data) || !Array.isArray(body.included)) {
           throw new Error(
-            `Expecting body.data or body.included to be an array, but rather a ${body.data} and ${body.included}.`
+            `Expecting body.data or body.included to be an array, but rather a ${body.data} and ${body.included}.`,
           )
         }
 
@@ -202,13 +202,13 @@ export const makeApiRequestFileThunk =
         if (response.headers.get('authorization')) {
           localStorage.setItem(
             localStorageKey,
-            response.headers.get('authorization')
+            response.headers.get('authorization'),
           )
         }
 
         if (!Array.isArray(body.data) || !Array.isArray(body.included)) {
           throw new Error(
-            `Expecting body.data or body.included to be an array, but rather a ${body.data} and ${body.included}.`
+            `Expecting body.data or body.included to be an array, but rather a ${body.data} and ${body.included}.`,
           )
         }
 
