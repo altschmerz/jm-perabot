@@ -50,6 +50,8 @@ const CreateProductPage = () => {
     name: 'variants',
   })
 
+  const [submitErrorMsg, setSubmitErrorMsg] = useState()
+
   const onSubmit = (data) => {
     setIsLoading(true)
 
@@ -77,15 +79,11 @@ const CreateProductPage = () => {
       })
     }
 
-    console.log('FORM DATA')
-    for (const pair of formData.entries()) {
-      console.log(pair[0], pair[1])
-    }
-
     dispatch(fromApi.createProduct(formData))
       .then((res) => navigate(`/products/${res?.data?.[0]?.id}`))
       .catch((err) => {
         console.warn('ERROR', err)
+        setSubmitErrorMsg(err.msg)
         setIsLoading(false)
       })
   }
@@ -330,6 +328,12 @@ const CreateProductPage = () => {
               >
                 Tambah Varian
               </Button>
+
+              {submitErrorMsg && (
+                <div className="text-sm text-red-600 mt-3">
+                  {submitErrorMsg}
+                </div>
+              )}
 
               <Button
                 className="bg-black flex items-center p-2 text-white cursor-pointer mt-3"
