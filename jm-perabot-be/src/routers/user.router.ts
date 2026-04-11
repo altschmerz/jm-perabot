@@ -45,6 +45,7 @@ userRouter.get(
     const me = await userService.getUserById({
       id: req.user.id,
       safeUser: false,
+      reqUserId: req.user.id,
     })
     res.sendJsonApiResource(StatusCodes.OK, me)
   }),
@@ -61,6 +62,7 @@ userRouter.get(
     const user = await userService.getUserById({
       id: Number(req.params.id),
       safeUser: queryStr.safeUser,
+      reqUserId: req.user.id,
     })
     res.sendJsonApiResource(StatusCodes.OK, user)
   }),

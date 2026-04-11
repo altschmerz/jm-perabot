@@ -1,8 +1,11 @@
 import bcrypt from 'bcrypt'
 import { FindOptionsWhere } from 'typeorm'
-import { IncorrectPasswordError } from '../errors/auth.error'
+import {
+  IncorrectPasswordError,
+  UnauthorizedAccessError,
+} from '../errors/auth.error'
 import { UserAlreadyExistsError, UserNotFound } from '../errors/user.error'
-import User from '../models/User'
+import User, { UserRoleTypeId } from '../models/User'
 import { SafeUserResource } from '../resources/safeUser.resource'
 import hashPassword from '../utils/hashPassword'
 import BaseService from './BaseService'
@@ -44,9 +47,20 @@ export default class UserService extends BaseService {
   async getUserById(options: {
     id: number
     safeUser: boolean
+    reqUserId?: number
   }): Promise<SafeUserResource | User> {
+    if (!options.safeUser && options.id !== options.reqUserId) {
+      const currentUser = await User.findOne({
+        where: { id: options.reqUserId },
+      })
+      if (!currentUser)
+        UserNotFound({ attribute: 'ID', value: options.reqUserId })
+      if (currentUser.roleTypeId !== UserRoleTypeId.Admin)
+        UnauthorizedAccessError()
+    }
     const user = await User.findOne({ where: { id: options.id } })
     if (!user) UserNotFound({ attribute: 'ID', value: options.id })
+
     return options.safeUser ? this.mapSafeUserResource(user) : user
   }
 
