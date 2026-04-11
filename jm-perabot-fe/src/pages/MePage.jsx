@@ -47,7 +47,7 @@ const MePage = () => {
 
               <div className="grid grid-cols-[160px_1fr] items-start">
                 <div className="font-medium">Alamat</div>
-                <div>{user?.address} asidnaiusndiansiodjn ioausndiani</div>
+                <div>{user?.address}</div>
               </div>
 
               <div className="grid grid-cols-[160px_1fr] items-start">
