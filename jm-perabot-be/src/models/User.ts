@@ -1,6 +1,10 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from './BaseEntity'
 
+export enum UserRoleTypeId {
+  Normal = 1,
+  Admin,
+}
 @Entity()
 export default class User extends BaseEntity {
   @Column({ unique: true })
@@ -26,4 +30,11 @@ export default class User extends BaseEntity {
 
   @Column({ nullable: true })
   accessToken: string
+
+  @Column({
+    type: 'enum',
+    enum: UserRoleTypeId,
+    default: UserRoleTypeId.Normal,
+  })
+  roleTypeId: UserRoleTypeId
 }
