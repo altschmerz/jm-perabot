@@ -44,6 +44,22 @@ export default class UserService extends BaseService {
     return this.mapSafeUserResource(user)
   }
 
+  async assignUserReferralCode(options: { id: number; referralCode: string }) {
+    const user = await User.findOne({ where: { id: options.id } })
+    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
+
+    if (user.referralCode !== options.referralCode)
+      await this.checkAttributeUniqueness({
+        attribute: 'referral code',
+        value: options.referralCode,
+      })
+
+    user.referralCode = options.referralCode
+    await user.save()
+
+    return user
+  }
+
   async getUserById(options: {
     id: number
     safeUser: boolean
@@ -118,13 +134,22 @@ export default class UserService extends BaseService {
   }
 
   async checkAttributeUniqueness(options: {
-    attribute: 'username' | 'email'
+    attribute: 'username' | 'email' | 'referral code'
     value: string
   }): Promise<boolean> {
     const whereFilter: FindOptionsWhere<User> = {}
-    options.attribute === 'username'
-      ? (whereFilter.username = options.value)
-      : (whereFilter.email = options.value)
+    switch (options.attribute) {
+      case 'email':
+        whereFilter.email = options.value
+        break
+      case 'username':
+        whereFilter.username = options.value
+        break
+      case 'referral code':
+        whereFilter.referralCode = options.value
+        break
+      default:
+    }
 
     const user = await User.findOne({ where: whereFilter })
     if (user)

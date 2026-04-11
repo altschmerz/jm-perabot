@@ -43,12 +43,19 @@ const CreateCategoryPage = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
+  const [submitErrorMsg, setSubmitErrorMsg] = useState()
+
   const onSubmit = (data) => {
     setIsLoading(true)
 
     dispatch(fromApi.createCategory(data.name))
       .then(() => navigate(`/categories`))
-      .catch((err) => console.warn('ERROR', err))
+      .catch((err) => {
+        console.warn('ERROR', err)
+        setSubmitErrorMsg(err.msg)
+      })
+
+    setIsLoading(false)
   }
 
   return (
@@ -80,17 +87,22 @@ const CreateCategoryPage = () => {
             </div>
             {formErrors.name && <div>Nama wajib diisi</div>}
 
+            {submitErrorMsg && (
+              <div className="text-sm text-red-600 mt-3">{submitErrorMsg}</div>
+            )}
+
             {/*  // TODO: Use the FormSubmitButton component instead, problem: handleSubmit function not working; example provided below
              */}
             {/* <FormSubmitButton className="mt-5" onClick={handleSubmit(onSubmit)}>
             Simpan
           </FormSubmitButton> */}
-            <div
-              className={`bg-black flex items-center p-2 text-white cursor-pointer mt-5`}
+            <button
+              className="bg-black px-4 py-2 text-white cursor-pointer mt-3"
+              disabled={isLoading}
               onClick={handleSubmit(onSubmit)}
             >
               Simpan
-            </div>
+            </button>
           </div>
         </div>
       )}

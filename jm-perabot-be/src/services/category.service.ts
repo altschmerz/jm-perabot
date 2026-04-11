@@ -8,6 +8,8 @@ import BaseService from './BaseService'
 
 export default class CategoryService extends BaseService {
   async createCategory(options: { name: string }): Promise<Category> {
+    await this.checkNameUniqueness({ name: options.name })
+
     const category = new Category()
     category.name = options.name
     await category.save()

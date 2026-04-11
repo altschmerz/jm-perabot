@@ -15,12 +15,18 @@ const CreateUserPage = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
+  const [submitErrorMsg, setSubmitErrorMsg] = useState()
+
   const onSubmit = (data) => {
     setIsLoading(true)
 
     dispatch(fromApi.createUser(data))
       .then(() => navigate(`/login`))
-      .catch((err) => console.warn('ERROR', err))
+      .catch((err) => {
+        console.warn('ERROR', err)
+        setSubmitErrorMsg(err.msg)
+        setIsLoading(false)
+      })
   }
 
   return (
@@ -140,12 +146,18 @@ const CreateUserPage = () => {
                 {formErrors.address.message}
               </div>
             )}
-            <div
-              className="bg-black flex items-center p-2 text-white cursor-pointer mt-5"
+
+            {submitErrorMsg && (
+              <div className="text-sm text-red-600 mt-3">{submitErrorMsg}</div>
+            )}
+
+            <button
+              className="bg-black px-4 py-2 text-white cursor-pointer mt-3"
+              disabled={isLoading}
               onClick={handleSubmit(onSubmit)}
             >
               Simpan
-            </div>
+            </button>
           </div>
         </div>
       )}
