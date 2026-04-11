@@ -42,7 +42,6 @@ class ApiCallActionCreator {
   }
 
   getUserById(id, safeUser) {
-    console.log('FROM API')
     return makeApiRequestThunk(
       HTTP_METHODS.GET,
       `/users/${id}?safeUser=${safeUser}`,
