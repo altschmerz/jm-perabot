@@ -44,9 +44,12 @@ export default class UserService extends BaseService {
     return this.mapSafeUserResource(user)
   }
 
-  async assignUserReferralCode(options: { id: number; referralCode: string }) {
-    const user = await User.findOne({ where: { id: options.id } })
-    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
+  async assignUserReferralCode(options: {
+    username: string
+    referralCode: string
+  }) {
+    const user = await User.findOne({ where: { username: options.username } })
+    if (!user) UserNotFound({ attribute: 'username', value: options.username })
 
     if (user.referralCode !== options.referralCode)
       await this.checkAttributeUniqueness({

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { bool, number, object, string } from 'yup'
+import { bool, object, string } from 'yup'
 import authenticateSelfRoute from '../middlewares/auth/authenticateSelfRoute'
 import convertTokenToUser from '../middlewares/auth/convertTokenToUser'
 import verifyLoggedIn from '../middlewares/auth/verifyLoggedIn'
@@ -43,13 +43,13 @@ userRouter.post(
   verifyLoggedIn,
   asyncHandler(async (req, res) => {
     const bodySchema = object().shape({
-      id: number().required(),
+      username: string().required(),
       referralCode: string().required(),
     })
     const body = bodySchema.validateSync(req.body)
 
     const user = await userService.assignUserReferralCode({
-      id: body.id,
+      username: body.username,
       referralCode: body.referralCode,
     })
     res.sendJsonApiResource(StatusCodes.OK, user)
