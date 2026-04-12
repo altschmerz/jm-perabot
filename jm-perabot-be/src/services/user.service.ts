@@ -44,6 +44,12 @@ export default class UserService extends BaseService {
     return this.mapSafeUserResource(user)
   }
 
+  async getUsers(): Promise<{ users: SafeUserResource[]; count: number }> {
+    const [users, count] = await User.findAndCount()
+    const userRscs = users.map((user) => this.mapSafeUserResource(user))
+    return { users: userRscs, count }
+  }
+
   async assignUserReferralCode(options: {
     username: string
     referralCode: string

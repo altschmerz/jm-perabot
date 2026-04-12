@@ -57,6 +57,16 @@ userRouter.post(
 )
 
 userRouter.get(
+  '/',
+  convertTokenToUser,
+  verifyLoggedIn,
+  asyncHandler(async (req, res) => {
+    const { users, count } = await userService.getUsers()
+    res.sendJsonApiResource(StatusCodes.OK, users, count)
+  }),
+)
+
+userRouter.get(
   '/me',
   convertTokenToUser,
   verifyLoggedIn,
