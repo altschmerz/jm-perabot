@@ -50,10 +50,10 @@ class ApiCallActionCreator {
     )
   }
 
-  getUsers() {
+  getUsers(search) {
     return makeApiRequestThunk(
       HTTP_METHODS.GET,
-      `/users`,
+      `/users?search=${search}`,
       null,
       ACTION_TYPES.MERGE,
     )

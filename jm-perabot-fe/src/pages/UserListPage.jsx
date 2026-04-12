@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
@@ -9,14 +9,21 @@ import useResourceMapper from '../hooks/useResourceMapper'
 const UserListPage = () => {
   const navigate = useNavigate()
 
-  const usersReq = useFromApi(fromApi.getUsers())
-  const users = useResourceMapper('safeUser', usersReq?.sortOrder)
+  const [search, setSearch] = useState('')
 
-  useEffect(() => console.log('USERS', users), [users])
+  const usersReq = useFromApi(fromApi.getUsers(search), [search])
+  const users = useResourceMapper('safeUser', usersReq?.sortOrder)
 
   return (
     <Layout>
       <div className="section-title text-center my-3">Daftar User</div>
+
+      <input
+        type="email"
+        placeholder="Cari berdasarkan nama atau username"
+        className="w-full border border-black focus:outline-none px-2 py-1 mb-3"
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
       <div className="flex flex-col gap-2">
         {users.map((user) => (
