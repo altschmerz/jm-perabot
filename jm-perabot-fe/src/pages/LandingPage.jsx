@@ -1,3 +1,4 @@
+import { FaChevronRight } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
@@ -26,10 +27,8 @@ const LandingPage = () => {
         <div
           style={{
             backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)), url(${heroBackground})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
           }}
-          className="mb-3 py-3"
+          className="mb-3 pt-3 bg-cover bg-bottom"
         >
           <div className="text-2xl/7 font-bold w-[55%]">
             Furnitur Pilihan untuk Setiap Sudut Kehidupan Anda
@@ -37,11 +36,12 @@ const LandingPage = () => {
           <NavLink to="/categories">
             <div
               style={{
-                background: `rgba(0,0, 0, 0.2)`,
+                background: `rgba(0, 0, 0, 0.6)`,
               }}
-              className="mt-3 p-[10px] w-[150px] text-sm font-medium text-center rounded"
+              className="mt-3 px-10 py-3 flex items-center text-white font-bold border-b-4 border-orange-700 uppercase tracking-[0.2em] backdrop-blur-sm"
             >
               Jelajahi Katalog
+              <FaChevronRight className="ml-2" />
             </div>
           </NavLink>
         </div>

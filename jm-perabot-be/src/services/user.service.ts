@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { FindOptionsWhere } from 'typeorm'
+import { FindOptionsWhere, ILike } from 'typeorm'
 import {
   IncorrectPasswordError,
   UnauthorizedAccessError,
@@ -44,9 +44,27 @@ export default class UserService extends BaseService {
     return this.mapSafeUserResource(user)
   }
 
-  async assignUserReferralCode(options: { id: number; referralCode: string }) {
-    const user = await User.findOne({ where: { id: options.id } })
-    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
+  async getUsers(options: {
+    search?: string
+  }): Promise<{ users: SafeUserResource[]; count: number }> {
+    const [users, count] = await User.findAndCount({
+      where: options.search
+        ? [
+            { name: ILike(`%${options.search}%`) },
+            { username: ILike(`%${options.search}%`) },
+          ]
+        : {},
+    })
+    const userRscs = users.map((user) => this.mapSafeUserResource(user))
+    return { users: userRscs, count }
+  }
+
+  async assignUserReferralCode(options: {
+    username: string
+    referralCode: string
+  }) {
+    const user = await User.findOne({ where: { username: options.username } })
+    if (!user) UserNotFound({ attribute: 'username', value: options.username })
 
     if (user.referralCode !== options.referralCode)
       await this.checkAttributeUniqueness({

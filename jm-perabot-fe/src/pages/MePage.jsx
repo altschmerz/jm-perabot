@@ -95,10 +95,24 @@ const MePage = () => {
                   {user?.referralCode ? (
                     user.referralCode
                   ) : (
-                    <div className="flex items-center bg-[#FFFBEB] px-2 py-1">
-                      <FaGift size={23} className="mr-3" />
-                      <div className="text-[#92400E]">
-                        Anda tidak memiliki kode referal
+                    <div>
+                      <div className="flex items-center bg-[#FFFBEB] px-2 py-1">
+                        <FaGift size={23} className="mr-3" />
+                        <div className="text-[#92400E]">
+                          Anda tidak memiliki kode referal
+                        </div>
+                      </div>
+                      <div className="mt-2 text-xs">
+                        Anda dapat mengajukan permintaan kode referal dengan
+                        menghubungi kami melalui
+                        <a
+                          href="https://wa.me/62811630256"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-green-500 ml-1"
+                        >
+                          WhatsApp
+                        </a>
                       </div>
                     </div>
                   )}

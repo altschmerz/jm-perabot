@@ -20,6 +20,7 @@ const rootReducer = persistReducer(
   combineReducers({
     authUser: authUserReducer,
     user: createSimpleReducer('users'),
+    safeUser: createSimpleReducer('safeUsers'),
     category: createSimpleReducer('categories'),
     product: createSimpleReducer('products'),
     shallowProduct: createSimpleReducer('shallowProducts'),
