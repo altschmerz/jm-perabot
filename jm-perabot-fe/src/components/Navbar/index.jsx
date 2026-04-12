@@ -13,7 +13,7 @@ import Sidebar from '../Sidebar'
 const Navbar = () => {
   const navigate = useNavigate()
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   // const [selected, setSelected] = useState();
 
@@ -23,7 +23,7 @@ const Navbar = () => {
         <GiHamburgerMenu
           size={20}
           className="absolute left-4"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsSidebarOpen(true)}
         />
         <div>JM PERABOT</div>
         <FaUser
@@ -33,7 +33,7 @@ const Navbar = () => {
         />
       </div>
 
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
       {/* <div className="flex flex-row-reverse justify-between items-center bg-white px-5 py-2"> */}
       {/* <div className="flex justify-between">
