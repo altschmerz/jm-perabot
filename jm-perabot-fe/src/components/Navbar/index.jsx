@@ -37,7 +37,7 @@ const Navbar = () => {
         <FaUser
           size={20}
           className="absolute right-4"
-          onClick={() => navigate('/login')}
+          onClick={() => (authUser ? navigate('/me') : navigate('/login'))}
         />
       </div>
 
