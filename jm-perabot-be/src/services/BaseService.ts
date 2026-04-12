@@ -20,12 +20,14 @@ export default class BaseService {
 
   mapSafeUserResource(user: User): SafeUserResource {
     const safeUserRsc = Object.assign(new SafeUserResource(), {
-      id: user.id,
+      id: user.id.toString(),
       username: user.username,
       email: user.email,
       name: user.name,
+      phoneNumber: user.phoneNumber,
+      address: user.address,
       referralCode: user.referralCode,
-    })
+    } as SafeUserResource)
     return safeUserRsc
   }
 
