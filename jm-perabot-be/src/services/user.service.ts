@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { FindOptionsWhere } from 'typeorm'
+import { FindOptionsWhere, ILike } from 'typeorm'
 import {
   IncorrectPasswordError,
   UnauthorizedAccessError,
@@ -44,8 +44,14 @@ export default class UserService extends BaseService {
     return this.mapSafeUserResource(user)
   }
 
-  async getUsers(): Promise<{ users: SafeUserResource[]; count: number }> {
-    const [users, count] = await User.findAndCount()
+  async getUsers(options: {
+    name?: string
+  }): Promise<{ users: SafeUserResource[]; count: number }> {
+    const whereFilter: FindOptionsWhere<User> = {}
+
+    if (options.name) whereFilter.name = ILike(`%${options.name}%`)
+
+    const [users, count] = await User.findAndCount({ where: whereFilter })
     const userRscs = users.map((user) => this.mapSafeUserResource(user))
     return { users: userRscs, count }
   }
