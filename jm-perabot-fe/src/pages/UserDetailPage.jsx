@@ -90,11 +90,20 @@ const UserDetailPage = () => {
                   {user?.referralCode ? (
                     user.referralCode
                   ) : (
-                    <div className="flex items-center bg-[#FFFBEB] px-2 py-1">
-                      <FaGift size={23} className="mr-3" />
-                      <div className="text-[#92400E]">
-                        User tidak memiliki kode referal
+                    <div>
+                      <div className="flex items-center bg-[#FFFBEB] px-2 py-1">
+                        <FaGift size={23} className="mr-3" />
+                        <div className="text-[#92400E]">
+                          User tidak memiliki kode referal
+                        </div>
                       </div>
+
+                      <button
+                        className="w-full bg-black px-4 py-2 text-white cursor-pointer mt-3"
+                        onClick={() => navigate('/referral/assign')}
+                      >
+                        Beri Kode Referal
+                      </button>
                     </div>
                   )}
                 </div>
