@@ -10,6 +10,7 @@ import MePage from './pages/MePage'
 import ProductDetailPage from './pages/ProductDetailPage'
 import ProductListPage from './pages/ProductListPage'
 import UserDetailPage from './pages/UserDetailPage'
+import UserListPage from './pages/UserListPage'
 
 export default function Routes() {
   return (
@@ -18,6 +19,7 @@ export default function Routes() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/me" element={<MePage />} />
+        <Route path="/users" element={<UserListPage />} />
         <Route path="/users/add" element={<CreateUserPage />} />
         <Route path="/users/:id" element={<UserDetailPage />} />
         <Route path="/referral/assign" element={<AssignReferralPage />} />
