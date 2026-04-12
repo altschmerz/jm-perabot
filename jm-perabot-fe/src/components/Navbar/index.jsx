@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { ADMIN_ROLE_TYPE_ID } from '../../utils/constants'
 import Sidebar from '../Sidebar'
 
 // const TABS = [
@@ -13,6 +15,8 @@ import Sidebar from '../Sidebar'
 const Navbar = () => {
   const navigate = useNavigate()
 
+  const authUser = useSelector((state) => state.authUser)
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   // const [selected, setSelected] = useState();
@@ -20,12 +24,16 @@ const Navbar = () => {
   return (
     <div className="sticky top-0 z-50">
       <div className="relative title flex justify-center items-center bg-zinc-100 p-4">
-        <GiHamburgerMenu
-          size={20}
-          className="absolute left-4"
-          onClick={() => setIsSidebarOpen(true)}
-        />
+        {authUser && authUser.role === ADMIN_ROLE_TYPE_ID && (
+          <GiHamburgerMenu
+            size={20}
+            className="absolute left-4"
+            onClick={() => setIsSidebarOpen(true)}
+          />
+        )}
+
         <div>JM PERABOT</div>
+
         <FaUser
           size={20}
           className="absolute right-4"
