@@ -4,9 +4,9 @@ import Navbar from '../Navbar'
 
 const Layout = ({ children }) => {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="px-3 pb-3">{children}</div>
+      <div className="px-3 pb-3 flex-grow">{children}</div>
       <a
         href="https://wa.me/62811630256"
         target="_blank"
