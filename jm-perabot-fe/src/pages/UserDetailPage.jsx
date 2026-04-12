@@ -57,7 +57,7 @@ const UserDetailPage = () => {
           </div>
         ) : (
           <div>
-            <div className="section-title text-center">Profil Saya</div>
+            <div className="section-title text-center">Profil User</div>
             <div className="flex flex-col gap-3 mt-3">
               <div className="grid grid-cols-[160px_1fr] items-start">
                 <div className="font-medium self-start">Nama</div>
