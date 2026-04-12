@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes as RRRoutes } from 'react-router-dom'
+import AssignReferralPage from './pages/AssignReferralPage'
 import CategoryListPage from './pages/CategoryListPage'
 import CreateCategoryPage from './pages/CreateCategoryPage'
 import CreateProductPage from './pages/CreateProductPage'
@@ -19,6 +20,7 @@ export default function Routes() {
         <Route path="/me" element={<MePage />} />
         <Route path="/users/add" element={<CreateUserPage />} />
         <Route path="/users/:id" element={<UserDetailPage />} />
+        <Route path="/referral/assign" element={<AssignReferralPage />} />
         <Route path="/categories/add" element={<CreateCategoryPage />} />
         <Route path="/categories/:id" element={<ProductListPage />} />
         <Route path="/categories" element={<CategoryListPage />} />
