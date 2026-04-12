@@ -83,6 +83,16 @@ const LoginPage = () => {
                 Masuk
               </button>
             </div>
+
+            <div className="text-center text-xs mt-5">
+              <div>Belum punya akun?</div>
+              <div
+                className="font-bold underline"
+                onClick={() => navigate('/users/add')}
+              >
+                Daftar sekarang!
+              </div>
+            </div>
           </div>
         </div>
       )}
