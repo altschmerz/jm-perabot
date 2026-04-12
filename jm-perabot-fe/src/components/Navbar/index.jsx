@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import { FaUser } from 'react-icons/fa'
+import { GiHamburgerMenu } from 'react-icons/gi'
 import { useNavigate } from 'react-router-dom'
+import Sidebar from '../Sidebar'
 
 // const TABS = [
 //   { label: 'New In', path: 'new-in' },
@@ -9,11 +12,19 @@ import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
   const navigate = useNavigate()
+
+  const [isOpen, setIsOpen] = useState(false)
+
   // const [selected, setSelected] = useState();
 
   return (
     <div className="sticky top-0 z-50">
       <div className="relative title flex justify-center items-center bg-zinc-100 p-4">
+        <GiHamburgerMenu
+          size={20}
+          className="absolute left-4"
+          onClick={() => setIsOpen(true)}
+        />
         <div>JM PERABOT</div>
         <FaUser
           size={20}
@@ -21,6 +32,8 @@ const Navbar = () => {
           onClick={() => navigate('/login')}
         />
       </div>
+
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {/* <div className="flex flex-row-reverse justify-between items-center bg-white px-5 py-2"> */}
       {/* <div className="flex justify-between">
