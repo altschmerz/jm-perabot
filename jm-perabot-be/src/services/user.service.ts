@@ -45,13 +45,16 @@ export default class UserService extends BaseService {
   }
 
   async getUsers(options: {
-    name?: string
+    search?: string
   }): Promise<{ users: SafeUserResource[]; count: number }> {
-    const whereFilter: FindOptionsWhere<User> = {}
-
-    if (options.name) whereFilter.name = ILike(`%${options.name}%`)
-
-    const [users, count] = await User.findAndCount({ where: whereFilter })
+    const [users, count] = await User.findAndCount({
+      where: options.search
+        ? [
+            { name: ILike(`%${options.search}%`) },
+            { username: ILike(`%${options.search}%`) },
+          ]
+        : {},
+    })
     const userRscs = users.map((user) => this.mapSafeUserResource(user))
     return { users: userRscs, count }
   }

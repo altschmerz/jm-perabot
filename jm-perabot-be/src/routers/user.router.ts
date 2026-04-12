@@ -61,10 +61,12 @@ userRouter.get(
   convertTokenToUser,
   verifyLoggedIn,
   asyncHandler(async (req, res) => {
-    const queryStrSchema = object().shape({ name: string() })
+    const queryStrSchema = object().shape({ search: string() })
     const queryStr = queryStrSchema.validateSync(req.query)
 
-    const { users, count } = await userService.getUsers({ name: queryStr.name })
+    const { users, count } = await userService.getUsers({
+      search: queryStr.search,
+    })
     res.sendJsonApiResource(StatusCodes.OK, users, count)
   }),
 )
