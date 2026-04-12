@@ -70,7 +70,9 @@ const AssignReferralPage = () => {
         </div>
       ) : (
         <div>
-          <div className="section-title text-center mt-10">Add Category</div>
+          <div className="section-title text-center mt-10">
+            Assign Kode Referal
+          </div>
           <div className="mt-5">
             <div className="flex justify-between items-center mt-3">
               <div className="mr-5 text-lg font-medium">Username</div>
@@ -106,13 +108,15 @@ const AssignReferralPage = () => {
               <div className="text-sm text-red-600 mt-3">{submitErrorMsg}</div>
             )}
 
-            <button
-              className="bg-black px-4 py-2 text-white cursor-pointer mt-3"
-              disabled={isLoading}
-              onClick={handleSubmit(onSubmit)}
-            >
-              Simpan
-            </button>
+            <div className="flex justify-end ">
+              <button
+                className="bg-black px-4 py-2 text-white cursor-pointer mt-3"
+                disabled={isLoading}
+                onClick={handleSubmit(onSubmit)}
+              >
+                Simpan
+              </button>
+            </div>
           </div>
         </div>
       )}
