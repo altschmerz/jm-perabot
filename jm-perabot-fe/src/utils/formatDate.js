@@ -1,4 +1,6 @@
 const formatDate = (isoDateString) => {
+  if (!isoDateString) return
+
   const isoDate = new Date(isoDateString)
   const formatter = new Intl.DateTimeFormat('id-ID', {
     timeZone: 'Asia/Jakarta',
