@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { FaCheckCircle } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
@@ -21,7 +23,14 @@ const CreateUserPage = () => {
     setIsLoading(true)
 
     dispatch(fromApi.createUser(data))
-      .then(() => navigate(`/login`))
+      .then(() => {
+        toast('User berhasil terdaftar. Silahkan login untuk masuk.', {
+          id: 'user-created',
+          icon: <FaCheckCircle color="green" />,
+          className: 'bg-green-100',
+        })
+        navigate(`/login`)
+      })
       .catch((err) => {
         console.warn('ERROR', err)
         setSubmitErrorMsg(err.msg)
