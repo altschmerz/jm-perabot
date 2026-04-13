@@ -1,10 +1,15 @@
+import { useEffect } from 'react'
 import { Spinner } from 'react-bootstrap'
+import toast from 'react-hot-toast'
+import { PiWarningCircleBold } from 'react-icons/pi'
+import { useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import TransactionRow from '../components/TransactionRow'
 import useFromApi from '../hooks/useFromApi'
 import useResourceMapper from '../hooks/useResourceMapper'
+import { ADMIN_ROLE_TYPE_ID } from '../utils/constants'
 
 const TransactionListPage = () => {
   const navigate = useNavigate()
@@ -14,6 +19,31 @@ const TransactionListPage = () => {
     'transaction',
     transactionsReq?.sortOrder,
   )
+
+  const authUser = useSelector((state) => state.authUser)
+
+  useEffect(() => {
+    if (window.location.pathname !== '/') {
+      if (!authUser) {
+        toast('Anda belum login. Silahkan login terlebih dahulu.', {
+          id: 'not-logged-in',
+          icon: <PiWarningCircleBold color="red" />,
+          className: 'bg-red-100',
+        })
+        navigate('/')
+        return
+      }
+
+      if (authUser.role !== ADMIN_ROLE_TYPE_ID) {
+        toast('Anda tidak memiliki akses untuk halaman ini', {
+          id: 'restricted-access',
+          icon: <PiWarningCircleBold color="red" />,
+          className: 'bg-red-100',
+        })
+        navigate('/')
+      }
+    }
+  }, [authUser, navigate])
 
   return (
     <Layout>
