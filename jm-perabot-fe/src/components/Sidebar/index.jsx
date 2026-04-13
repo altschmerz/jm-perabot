@@ -101,6 +101,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     Buat Transaksi
                   </div>
                 </DisclosurePanel>
+                <DisclosurePanel className="text-sm">
+                  <div
+                    className="text-sm mt-2"
+                    onClick={() => navigate('/transactions')}
+                  >
+                    Daftar Transaksi
+                  </div>
+                </DisclosurePanel>
               </Disclosure>
             </DialogPanel>
           </TransitionChild>
