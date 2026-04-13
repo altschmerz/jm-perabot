@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage'
 import MePage from './pages/MePage'
 import ProductDetailPage from './pages/ProductDetailPage'
 import ProductListPage from './pages/ProductListPage'
+import TransactionListPage from './pages/TransactionListPage'
 import UserDetailPage from './pages/UserDetailPage'
 import UserListPage from './pages/UserListPage'
 
@@ -30,6 +31,7 @@ export default function Routes() {
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/products/add" element={<CreateProductPage />} />
         <Route path="/transactions/add" element={<CreateTransactionPage />} />
+        <Route path="/transactions" element={<TransactionListPage />} />
       </RRRoutes>
     </BrowserRouter>
   )
