@@ -64,4 +64,14 @@ export default class TransactionService extends BaseService {
     })
     return refetchedTransaction
   }
+
+  async getTransactions(): Promise<{
+    transactions: Transaction[]
+    count: number
+  }> {
+    const [transactions, count] = await Transaction.findAndCount({
+      order: { date: 'DESC' },
+    })
+    return { transactions, count }
+  }
 }
