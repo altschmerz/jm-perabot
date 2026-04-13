@@ -87,6 +87,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   </div>
                 </DisclosurePanel>
               </Disclosure>
+
+              <Disclosure>
+                <DisclosureButton className="group flex justify-between items-center w-full mt-3">
+                  <div className="font-medium">Transaksi</div>
+                  <FaChevronDown className="group-data-[open]:rotate-180" />
+                </DisclosureButton>
+                <DisclosurePanel className="text-sm">
+                  <div
+                    className="text-sm mt-2"
+                    onClick={() => navigate('/transactions/add')}
+                  >
+                    Buat Transaksi
+                  </div>
+                </DisclosurePanel>
+              </Disclosure>
             </DialogPanel>
           </TransitionChild>
         </div>
