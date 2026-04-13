@@ -5,7 +5,7 @@ import Transaction from './Transaction'
 @Entity('transactionItem')
 export default class TransactionItem extends BaseEntity {
   @Column()
-  itemName: string
+  name: string
 
   @Column()
   note: string
