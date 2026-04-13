@@ -50,9 +50,12 @@ const CreateTransactionPage = () => {
     name: 'transactionItems',
   })
 
-  const transactionItems = watch('transactionItems')
+  const transactionItemsString = JSON.stringify(
+    watch('transactionItems') ? watch('transactionItems') : [],
+  )
 
   useEffect(() => {
+    const transactionItems = JSON.parse(transactionItemsString)
     let transactionTotal = 0
 
     transactionItems?.forEach((item, idx) => {
@@ -63,7 +66,7 @@ const CreateTransactionPage = () => {
     })
 
     setValue('total', transactionTotal)
-  }, [JSON.stringify(transactionItems), setValue])
+  }, [transactionItemsString, setValue])
 
   const [submitErrorMsg, setSubmitErrorMsg] = useState()
 
