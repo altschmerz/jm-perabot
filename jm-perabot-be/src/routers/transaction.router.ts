@@ -48,4 +48,16 @@ transactionRouter.get(
   }),
 )
 
+transactionRouter.get(
+  '/:id',
+  convertTokenToUser,
+  verifyLoggedIn,
+  wrapAsyncHandler(async (req, res) => {
+    const transaction = await transactionService.getTransactionById({
+      id: Number(req.params.id),
+    })
+    res.sendJsonApiResource(StatusCodes.OK, transaction)
+  }),
+)
+
 export default transactionRouter

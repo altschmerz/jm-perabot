@@ -1,4 +1,7 @@
-import { TransactionTotalMismatch } from '../errors/transaction.error'
+import {
+  TransactionNotFound,
+  TransactionTotalMismatch,
+} from '../errors/transaction.error'
 import { TransactionItemTotalMismatch } from '../errors/transactionItem.error'
 import { UserNotFound } from '../errors/user.error'
 import Transaction from '../models/Transaction'
@@ -73,5 +76,16 @@ export default class TransactionService extends BaseService {
       order: { date: 'DESC' },
     })
     return { transactions, count }
+  }
+
+  async getTransactionById(options: { id: number }): Promise<Transaction> {
+    const transaction = await Transaction.findOne({
+      where: { id: options.id },
+      relations: ['transactionItems'],
+    })
+    if (!transaction)
+      TransactionNotFound({ attribute: 'ID', value: options.id })
+
+    return transaction
   }
 }

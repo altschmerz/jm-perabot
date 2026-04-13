@@ -8,3 +8,14 @@ export function TransactionTotalMismatch() {
     `Transaction provided has different total from the total calculated in front-end`,
   )
 }
+
+export function TransactionNotFound(options: {
+  attribute: string
+  value: any
+}) {
+  throw new ApiError(
+    StatusCodes.NOT_FOUND,
+    'Transaction not found',
+    `Transaction with ${options.attribute} ${options.value} is not found.`,
+  )
+}
