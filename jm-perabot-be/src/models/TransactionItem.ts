@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
 import { BaseEntity } from './BaseEntity'
 import Transaction from './Transaction'
 
-@Entity('category')
+@Entity('transactionItem')
 export default class TransactionItem extends BaseEntity {
   @Column()
   itemName: string

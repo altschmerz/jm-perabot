@@ -3,7 +3,7 @@ import { BaseEntity } from './BaseEntity'
 import TransactionItem from './TransactionItem'
 import User from './User'
 
-@Entity('category')
+@Entity('transaction')
 export default class Transaction extends BaseEntity {
   @Column()
   buyerName: string
