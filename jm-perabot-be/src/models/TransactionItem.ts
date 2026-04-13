@@ -7,8 +7,8 @@ export default class TransactionItem extends BaseEntity {
   @Column()
   name: string
 
-  @Column()
-  note: string
+  @Column({ nullable: true })
+  note?: string
 
   @Column()
   quantity: number
