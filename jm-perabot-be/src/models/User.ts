@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
 import { BaseEntity } from './BaseEntity'
+import Transaction from './Transaction'
 
 export enum UserRoleTypeId {
   Normal = 1,
@@ -37,4 +38,7 @@ export default class User extends BaseEntity {
     default: UserRoleTypeId.Normal,
   })
   roleTypeId: UserRoleTypeId
+
+  @OneToMany(() => Transaction, (transaction) => transaction.buyer)
+  transactions: Transaction[]
 }
