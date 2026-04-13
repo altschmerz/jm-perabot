@@ -11,12 +11,10 @@ const formatDate = (isoDateString) => {
   })
 
   let formattedDate = formatter.format(isoDate)
-  console.log('FORMATTED', formattedDate)
   formattedDate = formattedDate
     .replace(/\//g, '-')
     .replace(/\./g, ':')
     .replace(/,/, '')
-  console.log('CLEANED', formattedDate)
 
   return formattedDate
 }
