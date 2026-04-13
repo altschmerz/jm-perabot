@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import { ADMIN_ROLE_TYPE_ID } from '../utils/constants'
-import { priceFormatter } from '../utils/priceFormatter'
+import formatPrice from '../utils/formatPrice'
 
 const CreateTransactionPage = () => {
   const dispatch = useDispatch()
@@ -213,7 +213,7 @@ const CreateTransactionPage = () => {
                           <Form.Control
                             ref={ref}
                             className="border border-black focus:outline-none px-2 py-1"
-                            value={value ? priceFormatter.format(value) : ''}
+                            value={value ? formatPrice(value) : ''}
                             onChange={(e) => {
                               const rawValue = e.target.value.replace(/\./g, '')
                               const numberValue = Number(rawValue)
@@ -252,7 +252,7 @@ const CreateTransactionPage = () => {
                             ref={ref}
                             className="px-2 py-1"
                             readOnly
-                            value={value ? priceFormatter.format(value) : 0}
+                            value={value ? formatPrice(value) : 0}
                           />
                         )}
                       />
@@ -275,7 +275,7 @@ const CreateTransactionPage = () => {
                         ref={ref}
                         className="px-2 py-1"
                         readOnly
-                        value={value ? priceFormatter.format(value) : 0}
+                        value={value ? formatPrice(value) : 0}
                       />
                     )}
                   />

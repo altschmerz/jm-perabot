@@ -1,7 +1,7 @@
 import { FaPhoneAlt, FaRegCalendar } from 'react-icons/fa'
 import { FaLocationDot } from 'react-icons/fa6'
 import formatDate from '../../utils/formatDate'
-import { priceFormatter } from '../../utils/priceFormatter'
+import formatPrice from '../../utils/formatPrice'
 
 const TransactionRow = ({
   buyerName,
@@ -35,7 +35,7 @@ const TransactionRow = ({
       </div>
 
       <div className="text-lg font-bold text-right">
-        Rp {priceFormatter.format(total)}
+        Rp {formatPrice(total)}
       </div>
     </div>
   )

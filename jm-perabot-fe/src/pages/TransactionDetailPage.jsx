@@ -15,7 +15,7 @@ import useFromApi from '../hooks/useFromApi'
 import useResourceMapper from '../hooks/useResourceMapper'
 import { ADMIN_ROLE_TYPE_ID } from '../utils/constants'
 import formatDate from '../utils/formatDate'
-import { priceFormatter } from '../utils/priceFormatter'
+import formatPrice from '../utils/formatPrice'
 
 const TransactionDetailPage = () => {
   const navigate = useNavigate()
@@ -102,17 +102,17 @@ const TransactionDetailPage = () => {
                   <div className="flex justify-between text-sm">
                     <div>
                       {transactionItem.quantity} x Rp{' '}
-                      {priceFormatter.format(transactionItem.price)}
+                      {formatPrice(transactionItem.price)}
                     </div>
                     <div className="font-medium">
-                      Rp {priceFormatter.format(transactionItem.total)}
+                      Rp {formatPrice(transactionItem.total)}
                     </div>
                   </div>
                 </div>
               ))}
               <div className="pt-2 flex justify-between font-bold">
                 <div className="">Total</div>
-                <div>Rp {priceFormatter.format(transaction?.total)}</div>
+                <div>Rp {formatPrice(transaction?.total)}</div>
               </div>
             </div>
           </div>
