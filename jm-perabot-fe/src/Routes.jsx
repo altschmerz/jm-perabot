@@ -3,6 +3,7 @@ import AssignReferralPage from './pages/AssignReferralPage'
 import CategoryListPage from './pages/CategoryListPage'
 import CreateCategoryPage from './pages/CreateCategoryPage'
 import CreateProductPage from './pages/CreateProductPage'
+import CreateTransactionPage from './pages/CreateTransactionPage'
 import CreateUserPage from './pages/CreateUserPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
@@ -28,6 +29,7 @@ export default function Routes() {
         <Route path="/categories" element={<CategoryListPage />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/products/add" element={<CreateProductPage />} />
+        <Route path="/transactions/add" element={<CreateTransactionPage />} />
       </RRRoutes>
     </BrowserRouter>
   )

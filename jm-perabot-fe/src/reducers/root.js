@@ -24,6 +24,7 @@ const rootReducer = persistReducer(
     category: createSimpleReducer('categories'),
     product: createSimpleReducer('products'),
     shallowProduct: createSimpleReducer('shallowProducts'),
+    transaction: createSimpleReducer('transactions'),
   }),
 )
 

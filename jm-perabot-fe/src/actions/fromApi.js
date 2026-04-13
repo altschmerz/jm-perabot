@@ -128,6 +128,15 @@ class ApiCallActionCreator {
       ACTION_TYPES.MERGE,
     )
   }
+
+  createTransaction(data) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.POST,
+      `/transactions`,
+      data,
+      ACTION_TYPES.MERGE,
+    )
+  }
 }
 
 const fromApi = new ApiCallActionCreator()
