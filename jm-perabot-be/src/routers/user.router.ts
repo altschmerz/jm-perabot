@@ -102,6 +102,18 @@ userRouter.get(
   }),
 )
 
+userRouter.get(
+  '/:id/referrals',
+  convertTokenToUser,
+  verifyLoggedIn,
+  asyncHandler(async (req, res) => {
+    const referrals = await userService.getUserReferrals({
+      userId: Number(req.params.id),
+    })
+    res.sendJsonApiResource(StatusCodes.OK, referrals)
+  }),
+)
+
 userRouter.put(
   '/:id',
   convertTokenToUser,

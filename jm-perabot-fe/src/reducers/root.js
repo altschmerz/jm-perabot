@@ -23,6 +23,7 @@ const rootReducer = persistReducer(
     safeUser: createSimpleReducer('safeUsers'),
     category: createSimpleReducer('categories'),
     product: createSimpleReducer('products'),
+    referral: createSimpleReducer('referrals'),
     shallowProduct: createSimpleReducer('shallowProducts'),
     transaction: createSimpleReducer('transactions'),
   }),

@@ -5,7 +5,9 @@ import {
   UnauthorizedAccessError,
 } from '../errors/auth.error'
 import { UserAlreadyExistsError, UserNotFound } from '../errors/user.error'
+import Referral from '../models/Referral'
 import User, { UserRoleTypeId } from '../models/User'
+import { ReferralResource } from '../resources/referral.resource'
 import { SafeUserResource } from '../resources/safeUser.resource'
 import hashPassword from '../utils/hashPassword'
 import BaseService from './BaseService'
@@ -96,6 +98,22 @@ export default class UserService extends BaseService {
     if (!user) UserNotFound({ attribute: 'ID', value: options.id })
 
     return options.safeUser ? this.mapSafeUserResource(user) : user
+  }
+
+  async getUserReferrals(options: {
+    userId: number
+  }): Promise<ReferralResource[]> {
+    const user = await User.findOne({
+      where: { id: options.userId },
+    })
+    if (!user) UserNotFound({ attribute: 'ID', value: options.userId })
+
+    const referrals = await Referral.find({
+      where: { referrerId: options.userId },
+      relations: ['transaction'],
+    })
+
+    return referrals.map((referral) => this.mapReferralResource(referral))
   }
 
   async updateUser(options: {

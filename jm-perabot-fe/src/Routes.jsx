@@ -15,6 +15,7 @@ import TransactionDetailPage from './pages/TransactionDetailPage'
 import TransactionListPage from './pages/TransactionListPage'
 import UserDetailPage from './pages/UserDetailPage'
 import UserListPage from './pages/UserListPage'
+import UserReferralListPage from './pages/UserReferralListPage'
 
 export default function Routes() {
   return (
@@ -26,6 +27,7 @@ export default function Routes() {
         <Route path="/users" element={<UserListPage />} />
         <Route path="/users/add" element={<CreateUserPage />} />
         <Route path="/users/:id" element={<UserDetailPage />} />
+        <Route path="/users/:id/referrals" element={<UserReferralListPage />} />
         <Route path="/referral/assign" element={<AssignReferralPage />} />
         <Route path="/categories/add" element={<CreateCategoryPage />} />
         <Route path="/categories/:id" element={<ProductListPage />} />

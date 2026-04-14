@@ -68,6 +68,15 @@ class ApiCallActionCreator {
     )
   }
 
+  getUserReferrals(userId) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.GET,
+      `/users/${userId}/referrals`,
+      null,
+      ACTION_TYPES.MERGE,
+    )
+  }
+
   createCategory(name) {
     return makeApiRequestThunk(
       HTTP_METHODS.POST,

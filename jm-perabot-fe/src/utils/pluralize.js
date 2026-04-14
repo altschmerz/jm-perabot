@@ -18,6 +18,9 @@ const pluralize = (singularWord) => {
     case 'product':
       return 'products'
 
+    case 'referral':
+      return 'referrals'
+
     case 'shallowProduct':
       return 'shallowProducts'
 
