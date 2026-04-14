@@ -1,10 +1,21 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
+import {
+  Column,
+  Entity,
+  Generated,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm'
 import { BaseEntity } from './BaseEntity'
 import TransactionItem from './TransactionItem'
 import User from './User'
 
 @Entity('transaction')
 export default class Transaction extends BaseEntity {
+  @Column()
+  @Generated('uuid')
+  code: string
+
   @Column()
   buyerName: string
 
