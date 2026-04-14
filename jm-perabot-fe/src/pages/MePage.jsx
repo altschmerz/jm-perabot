@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import toast from 'react-hot-toast'
-import { FaGift } from 'react-icons/fa'
+import { FaArrowRight, FaGift } from 'react-icons/fa'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -118,18 +118,29 @@ const MePage = () => {
                   )}
                 </div>
               </div>
+
+              {user?.referralCode && (
+                <button
+                  className="flex items-center mt-2 p-3 border border-black rounded"
+                  onClick={() => navigate(`/users/${authUser?.id}/referrals`)}
+                >
+                  <FaGift />
+                  <div className="ml-2">Riwayat Komisi Referal</div>
+                  <FaArrowRight className="ml-2" />
+                </button>
+              )}
+            </div>
+
+            <div className="flex justify-end">
+              <div
+                className="bg-black px-3 py-2 text-white cursor-pointer mt-3"
+                onClick={onLogout}
+              >
+                Logout
+              </div>
             </div>
           </div>
         )}
-
-        <div className="flex justify-end">
-          <div
-            className="bg-black px-3 py-2 text-white cursor-pointer mt-5"
-            onClick={onLogout}
-          >
-            Logout
-          </div>
-        </div>
       </div>
     </Layout>
   )
