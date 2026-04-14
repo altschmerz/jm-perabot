@@ -213,6 +213,21 @@ const CreateTransactionPage = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3">
+                    <div className="flex justify-between items-center">
+                      <Form.Label className="mr-5 text-lg font-medium">
+                        Berlaku untuk Referal
+                      </Form.Label>
+                      <Form.Check
+                        className=""
+                        defaultChecked={false}
+                        {...register(
+                          `transactionItems.${idx}.eligibleForReferral`,
+                        )}
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
                     <div className="flex justify-between">
                       <Form.Label className="mr-5 text-lg font-medium">
                         Harga Satuan
