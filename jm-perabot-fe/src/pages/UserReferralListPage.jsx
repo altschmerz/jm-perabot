@@ -57,7 +57,7 @@ const UserReferralListPage = () => {
         return
       }
     }
-  }, [authUser, navigate])
+  }, [authUser, userId, navigate])
 
   return (
     <Layout>
