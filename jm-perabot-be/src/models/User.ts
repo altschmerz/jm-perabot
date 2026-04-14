@@ -29,6 +29,9 @@ export default class User extends BaseEntity {
   @Column({ nullable: true })
   referralCode: string
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date
+
   @Column({ nullable: true })
   accessToken: string
 
