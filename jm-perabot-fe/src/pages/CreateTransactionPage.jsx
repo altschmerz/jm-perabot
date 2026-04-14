@@ -153,6 +153,18 @@ const CreateTransactionPage = () => {
                 )}
               </Form.Group>
 
+              <Form.Group className="mb-3">
+                <div className="flex justify-between">
+                  <Form.Label className="mr-5 text-lg font-medium">
+                    Kode Referal
+                  </Form.Label>
+                  <Form.Control
+                    className="border border-black focus:outline-none px-2 py-1"
+                    {...register('referrerCode')}
+                  />
+                </div>
+              </Form.Group>
+
               {fields.map((field, idx) => (
                 <div className="mt-3 border rounded-md p-3" key={field.id}>
                   <div className="mb-3 flex justify-between items-center">
