@@ -38,7 +38,7 @@ userRouter.post(
 )
 
 userRouter.post(
-  '/referral',
+  '/referralCode',
   convertTokenToUser,
   verifyLoggedIn,
   asyncHandler(async (req, res) => {

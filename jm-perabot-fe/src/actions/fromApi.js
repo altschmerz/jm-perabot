@@ -62,7 +62,7 @@ class ApiCallActionCreator {
   assignReferralCode(data) {
     return makeApiRequestThunk(
       HTTP_METHODS.POST,
-      `/users/referral`,
+      `/users/referralCode`,
       data,
       ACTION_TYPES.MERGE,
     )
