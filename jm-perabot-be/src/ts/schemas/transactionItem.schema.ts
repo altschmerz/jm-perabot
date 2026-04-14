@@ -1,4 +1,4 @@
-import { number, object, string } from 'yup'
+import { bool, number, object, string } from 'yup'
 
 export const transactionItemBodySchema = object().shape({
   name: string().required(),
@@ -6,4 +6,5 @@ export const transactionItemBodySchema = object().shape({
   quantity: number().required().min(1),
   price: number().required().min(0),
   total: number().required().min(0),
+  eligibleForReferral: bool().default(false),
 })

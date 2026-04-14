@@ -4,4 +4,5 @@ export type TransactionItemRequest = {
   quantity: number
   price: number
   total: number
+  eligibleForReferral: boolean
 }

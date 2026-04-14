@@ -38,6 +38,7 @@ export default class TransactionService extends BaseService {
       transactionItem.quantity = item.quantity
       transactionItem.price = item.price
       transactionItem.total = transactionItemTotal
+      transactionItem.eligibleForReferral = item.eligibleForReferral
       return transactionItem
     })
 
@@ -72,17 +73,26 @@ export default class TransactionService extends BaseService {
         await transactionalEntityManager.save(TransactionItem, transactionItems)
 
         if (referrer) {
-          const referral = new Referral()
-          referral.transaction = transaction
-          referral.referrer = referrer
+          let eligibleForReferralAmount = 0
 
-          const referralAmount =
-            0.01 * transaction.total <= MAX_REFERRAL_AMOUNT_PER_TRX
-              ? 0.01 * transaction.total
-              : MAX_REFERRAL_AMOUNT_PER_TRX
-          referral.amount = referralAmount
+          transactionItems.forEach((item) => {
+            if (item.eligibleForReferral)
+              eligibleForReferralAmount += item.total
+          })
 
-          await transactionalEntityManager.save(referral)
+          if (eligibleForReferralAmount !== 0) {
+            const referral = new Referral()
+            referral.transaction = transaction
+            referral.referrer = referrer
+
+            const referralAmount =
+              0.01 * eligibleForReferralAmount <= MAX_REFERRAL_AMOUNT_PER_TRX
+                ? 0.01 * eligibleForReferralAmount
+                : MAX_REFERRAL_AMOUNT_PER_TRX
+            referral.amount = referralAmount
+
+            await transactionalEntityManager.save(referral)
+          }
         }
       },
     )

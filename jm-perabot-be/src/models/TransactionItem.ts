@@ -19,6 +19,9 @@ export default class TransactionItem extends BaseEntity {
   @Column()
   total: number
 
+  @Column({ default: false })
+  eligibleForReferral: boolean
+
   @Column()
   transactionId: number
 
