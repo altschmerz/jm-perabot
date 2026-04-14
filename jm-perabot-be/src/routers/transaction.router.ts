@@ -22,6 +22,7 @@ transactionRouter.post(
       buyerPhoneNumber: string().required(),
       total: number().required().min(0),
       transactionItems: array().of(transactionItemBodySchema).required().min(1),
+      referrerCode: string().optional(),
       buyerId: number().optional(),
     })
     const body = bodySchema.validateSync(req.body)
@@ -32,6 +33,7 @@ transactionRouter.post(
       buyerPhoneNumber: body.buyerPhoneNumber,
       total: body.total,
       transactionItems: body.transactionItems as TransactionItemRequest[],
+      referrerCode: body.referrerCode,
       buyerId: body.buyerId,
     })
     res.sendJsonApiResource(StatusCodes.CREATED, transaction)

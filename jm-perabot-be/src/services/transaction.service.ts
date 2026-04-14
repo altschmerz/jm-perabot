@@ -4,12 +4,14 @@ import {
 } from '../errors/transaction.error'
 import { TransactionItemTotalMismatch } from '../errors/transactionItem.error'
 import { UserNotFound } from '../errors/user.error'
+import Referral from '../models/Referral'
 import Transaction from '../models/Transaction'
 import TransactionItem from '../models/TransactionItem'
 import User from '../models/User'
 import { TransactionItemRequest } from '../ts/types/transactionItem.types'
 import BaseService from './BaseService'
 
+const MAX_REFERRAL_AMOUNT_PER_TRX = 500000
 export default class TransactionService extends BaseService {
   async createTransaction(options: {
     buyerName: string
@@ -18,6 +20,7 @@ export default class TransactionService extends BaseService {
     total: number
     transactionItems: TransactionItemRequest[]
     buyerId?: number
+    referrerCode?: string
   }): Promise<Transaction> {
     const transactionTotal = options.transactionItems.reduce(
       (acc, item) => acc + item.total,
@@ -37,6 +40,15 @@ export default class TransactionService extends BaseService {
       transactionItem.total = transactionItemTotal
       return transactionItem
     })
+
+    let referrer: User | null
+    if (options.referrerCode) {
+      referrer = await User.findOne({
+        where: { referralCode: options.referrerCode },
+      })
+      if (!referrer)
+        UserNotFound({ attribute: 'kode referal', value: options.referrerCode })
+    }
 
     const transaction = new Transaction()
     transaction.buyerName = options.buyerName
@@ -58,6 +70,20 @@ export default class TransactionService extends BaseService {
           (transactionItem) => (transactionItem.transactionId = transaction.id),
         )
         await transactionalEntityManager.save(TransactionItem, transactionItems)
+
+        if (referrer) {
+          const referral = new Referral()
+          referral.transaction = transaction
+          referral.referrer = referrer
+
+          const referralAmount =
+            0.01 * transaction.total <= MAX_REFERRAL_AMOUNT_PER_TRX
+              ? 0.01 * transaction.total
+              : MAX_REFERRAL_AMOUNT_PER_TRX
+          referral.amount = referralAmount
+
+          await transactionalEntityManager.save(referral)
+        }
       },
     )
 
