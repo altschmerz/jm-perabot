@@ -5,8 +5,10 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from 'typeorm'
 import { BaseEntity } from './BaseEntity'
+import Referral from './Referral'
 import TransactionItem from './TransactionItem'
 import User from './User'
 
@@ -37,6 +39,13 @@ export default class Transaction extends BaseEntity {
 
   @Column()
   total: number
+
+  @Column({ nullable: true })
+  referralId?: number
+
+  @OneToOne(() => Referral)
+  @JoinColumn({ name: 'referralId' })
+  referral?: Referral
 
   @OneToMany(
     () => TransactionItem,

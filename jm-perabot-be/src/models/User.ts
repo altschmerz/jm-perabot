@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm'
 import { BaseEntity } from './BaseEntity'
+import Referral from './Referral'
 import Transaction from './Transaction'
 
 export enum UserRoleTypeId {
@@ -28,6 +29,9 @@ export default class User extends BaseEntity {
 
   @Column({ nullable: true })
   referralCode: string
+
+  @OneToMany(() => Referral, (referral) => referral.referrer)
+  referrals: Referral[]
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
