@@ -46,6 +46,16 @@ const UserReferralListPage = () => {
         navigate('/')
         return
       }
+
+      if (authUser.id !== Number(userId)) {
+        toast('Anda tidak memiliki akses untuk halaman ini', {
+          id: 'restricted-access',
+          icon: <PiWarningCircleBold color="red" />,
+          className: 'bg-red-100',
+        })
+        navigate('/')
+        return
+      }
     }
   }, [authUser, navigate])
 
