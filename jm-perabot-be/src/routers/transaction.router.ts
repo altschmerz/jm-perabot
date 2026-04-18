@@ -3,7 +3,10 @@ import { StatusCodes } from 'http-status-codes'
 import { array, number, object, string } from 'yup'
 import convertTokenToUser from '../middlewares/auth/convertTokenToUser'
 import verifyLoggedIn from '../middlewares/auth/verifyLoggedIn'
-import { TransactionDeliveryStatusEnum } from '../models/Transaction'
+import {
+  TransactionDeliveryStatusEnum,
+  TransactionPaymentStatusEnum,
+} from '../models/Transaction'
 import TransactionService from '../services/transaction.service'
 import { transactionItemBodySchema } from '../ts/schemas/transactionItem.schema'
 import { TransactionItemRequest } from '../ts/types/transactionItem.types'
@@ -11,6 +14,10 @@ import { wrapAsyncHandler } from '../utils/wrapAsyncHandler'
 
 const transactionRouter = Router()
 const transactionService = new TransactionService()
+
+const TRANSACTION_PAYMENT_STATUS_ENUM_VALIDATION = Object.values(
+  TransactionPaymentStatusEnum,
+).filter((value): value is number => typeof value === 'number')
 
 const TRANSACTION_DELIVERY_STATUS_ENUM_VALIDATION = Object.values(
   TransactionDeliveryStatusEnum,
@@ -73,6 +80,9 @@ transactionRouter.put(
   verifyLoggedIn,
   wrapAsyncHandler(async (req, res) => {
     const bodySchema = object().shape({
+      paymentStatus: number()
+        .oneOf(TRANSACTION_PAYMENT_STATUS_ENUM_VALIDATION)
+        .required(),
       deliveryStatus: number()
         .oneOf(TRANSACTION_DELIVERY_STATUS_ENUM_VALIDATION)
         .required(),
@@ -81,6 +91,7 @@ transactionRouter.put(
 
     const transaction = await transactionService.updateTransaction({
       id: Number(req.params.id),
+      paymentStatus: body.paymentStatus,
       deliveryStatus: body.deliveryStatus,
     })
     res.sendJsonApiResource(StatusCodes.OK, transaction)
