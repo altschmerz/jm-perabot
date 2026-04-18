@@ -3,6 +3,12 @@ import { BaseEntity } from './BaseEntity'
 import Transaction from './Transaction'
 import User from './User'
 
+export enum ReferralStatusEnum {
+  PENDING = 1,
+  CONFIRMED,
+  CANCELLED,
+}
+
 @Entity('referral')
 export default class Referral extends BaseEntity {
   @Column()
@@ -24,4 +30,11 @@ export default class Referral extends BaseEntity {
 
   @Column({ default: false })
   redeemed: boolean
+
+  @Column({
+    type: 'enum',
+    enum: ReferralStatusEnum,
+    default: ReferralStatusEnum.PENDING,
+  })
+  status: ReferralStatusEnum
 }
