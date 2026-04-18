@@ -6,6 +6,7 @@ import verifyLoggedIn from '../middlewares/auth/verifyLoggedIn'
 import {
   TransactionDeliveryStatusEnum,
   TransactionPaymentStatusEnum,
+  TransactionStatusEnum,
 } from '../models/Transaction'
 import TransactionService from '../services/transaction.service'
 import { transactionItemBodySchema } from '../ts/schemas/transactionItem.schema'
@@ -21,6 +22,10 @@ const TRANSACTION_PAYMENT_STATUS_ENUM_VALIDATION = Object.values(
 
 const TRANSACTION_DELIVERY_STATUS_ENUM_VALIDATION = Object.values(
   TransactionDeliveryStatusEnum,
+).filter((value): value is number => typeof value === 'number')
+
+const TRANSACTION_STATUS_ENUM_VALIDATION = Object.values(
+  TransactionStatusEnum,
 ).filter((value): value is number => typeof value === 'number')
 
 transactionRouter.post(
@@ -86,6 +91,7 @@ transactionRouter.put(
       deliveryStatus: number()
         .oneOf(TRANSACTION_DELIVERY_STATUS_ENUM_VALIDATION)
         .required(),
+      status: number().oneOf(TRANSACTION_STATUS_ENUM_VALIDATION).required(),
     })
     const body = bodySchema.validateSync(req.body)
 
@@ -93,6 +99,7 @@ transactionRouter.put(
       id: Number(req.params.id),
       paymentStatus: body.paymentStatus,
       deliveryStatus: body.deliveryStatus,
+      status: body.status,
     })
     res.sendJsonApiResource(StatusCodes.OK, transaction)
   }),

@@ -133,6 +133,7 @@ export default class TransactionService extends BaseService {
     id: number
     paymentStatus?: number
     deliveryStatus?: number
+    status?: number
   }): Promise<Transaction> {
     const transaction = await Transaction.findOne({
       where: { id: options.id },
@@ -144,6 +145,8 @@ export default class TransactionService extends BaseService {
 
     if (options.deliveryStatus)
       transaction.deliveryStatus = options.deliveryStatus
+
+    if (options.status) transaction.status = options.status
 
     await transaction.save()
 
