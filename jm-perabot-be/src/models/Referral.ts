@@ -5,6 +5,7 @@ import User from './User'
 
 export enum ReferralStatusEnum {
   PENDING = 1,
+  ELIGIBLE,
   CONFIRMED,
   CANCELLED,
 }
