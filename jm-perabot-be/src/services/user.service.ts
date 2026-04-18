@@ -4,7 +4,7 @@ import {
   IncorrectPasswordError,
   UnauthorizedAccessError,
 } from '../errors/auth.error'
-import { UserAlreadyExistsError, UserNotFound } from '../errors/user.error'
+import { UserAlreadyExistsError, UserNotFoundError } from '../errors/user.error'
 import Referral from '../models/Referral'
 import User, { UserRoleTypeId } from '../models/User'
 import { ReferralResource } from '../resources/referral.resource'
@@ -66,7 +66,8 @@ export default class UserService extends BaseService {
     referralCode: string
   }) {
     const user = await User.findOne({ where: { username: options.username } })
-    if (!user) UserNotFound({ attribute: 'username', value: options.username })
+    if (!user)
+      UserNotFoundError({ attribute: 'username', value: options.username })
 
     if (user.referralCode !== options.referralCode)
       await this.checkAttributeUniqueness({
@@ -90,12 +91,12 @@ export default class UserService extends BaseService {
         where: { id: options.reqUserId },
       })
       if (!currentUser)
-        UserNotFound({ attribute: 'ID', value: options.reqUserId })
+        UserNotFoundError({ attribute: 'ID', value: options.reqUserId })
       if (currentUser.roleTypeId !== UserRoleTypeId.Admin)
         UnauthorizedAccessError()
     }
     const user = await User.findOne({ where: { id: options.id } })
-    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
+    if (!user) UserNotFoundError({ attribute: 'ID', value: options.id })
 
     return options.safeUser ? this.mapSafeUserResource(user) : user
   }
@@ -106,7 +107,7 @@ export default class UserService extends BaseService {
     const user = await User.findOne({
       where: { id: options.userId },
     })
-    if (!user) UserNotFound({ attribute: 'ID', value: options.userId })
+    if (!user) UserNotFoundError({ attribute: 'ID', value: options.userId })
 
     const referrals = await Referral.find({
       where: { referrerId: options.userId },
@@ -125,7 +126,7 @@ export default class UserService extends BaseService {
     address?: string
   }): Promise<SafeUserResource> {
     const user = await User.findOne({ where: { id: options.id } })
-    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
+    if (!user) UserNotFoundError({ attribute: 'ID', value: options.id })
 
     if (options.username && options.username !== user.username) {
       await this.checkAttributeUniqueness({
@@ -157,7 +158,7 @@ export default class UserService extends BaseService {
     newPassword: string
   }): Promise<void> {
     const user = await User.findOne({ where: { id: options.id } })
-    if (!user) UserNotFound({ attribute: 'ID', value: options.id })
+    if (!user) UserNotFoundError({ attribute: 'ID', value: options.id })
 
     const isPasswordCorrect = await bcrypt.compare(
       options.oldPassword,

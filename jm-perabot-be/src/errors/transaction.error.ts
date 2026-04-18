@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import ApiError from './ApiError'
 
-export function TransactionTotalMismatch() {
+export function TransactionTotalMismatchError() {
   throw new ApiError(
     StatusCodes.UNPROCESSABLE_ENTITY,
     "Transaction totals don't match",
@@ -9,7 +9,7 @@ export function TransactionTotalMismatch() {
   )
 }
 
-export function TransactionNotFound(options: {
+export function TransactionNotFoundError(options: {
   attribute: string
   value: any
 }) {

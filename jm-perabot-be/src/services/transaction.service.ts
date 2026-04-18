@@ -1,9 +1,9 @@
 import {
-  TransactionNotFound,
-  TransactionTotalMismatch,
+  TransactionNotFoundError,
+  TransactionTotalMismatchError,
 } from '../errors/transaction.error'
-import { TransactionItemTotalMismatch } from '../errors/transactionItem.error'
-import { UserNotFound } from '../errors/user.error'
+import { TransactionItemTotalMismatchError } from '../errors/transactionItem.error'
+import { UserNotFoundError } from '../errors/user.error'
 import Referral from '../models/Referral'
 import Transaction from '../models/Transaction'
 import TransactionItem from '../models/TransactionItem'
@@ -26,11 +26,12 @@ export default class TransactionService extends BaseService {
       (acc, item) => acc + item.total,
       0,
     )
-    if (transactionTotal !== options.total) TransactionTotalMismatch()
+    if (transactionTotal !== options.total) TransactionTotalMismatchError()
 
     const transactionItems = options.transactionItems.map((item) => {
       const transactionItemTotal = item.quantity * item.price
-      if (transactionItemTotal !== item.total) TransactionItemTotalMismatch()
+      if (transactionItemTotal !== item.total)
+        TransactionItemTotalMismatchError()
 
       const transactionItem = new TransactionItem()
       transactionItem.name = item.name
@@ -48,7 +49,10 @@ export default class TransactionService extends BaseService {
         where: { referralCode: options.referrerCode },
       })
       if (!referrer)
-        UserNotFound({ attribute: 'kode referal', value: options.referrerCode })
+        UserNotFoundError({
+          attribute: 'kode referal',
+          value: options.referrerCode,
+        })
     }
 
     const transaction = new Transaction()
@@ -59,7 +63,7 @@ export default class TransactionService extends BaseService {
 
     if (options.buyerId) {
       const user = await User.findOne({ where: { id: options.buyerId } })
-      if (!user) UserNotFound({ attribute: 'ID', value: options.buyerId })
+      if (!user) UserNotFoundError({ attribute: 'ID', value: options.buyerId })
       transaction.buyerId = options.buyerId
     }
 
@@ -120,7 +124,7 @@ export default class TransactionService extends BaseService {
       relations: ['transactionItems'],
     })
     if (!transaction)
-      TransactionNotFound({ attribute: 'ID', value: options.id })
+      TransactionNotFoundError({ attribute: 'ID', value: options.id })
 
     return transaction
   }
@@ -134,7 +138,7 @@ export default class TransactionService extends BaseService {
       where: { id: options.id },
     })
     if (!transaction)
-      TransactionNotFound({ attribute: 'ID', value: options.id })
+      TransactionNotFoundError({ attribute: 'ID', value: options.id })
 
     if (options.paymentStatus) transaction.paymentStatus = options.paymentStatus
 

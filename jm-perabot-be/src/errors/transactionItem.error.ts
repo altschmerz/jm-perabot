@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import ApiError from './ApiError'
 
-export function TransactionItemTotalMismatch() {
+export function TransactionItemTotalMismatchError() {
   throw new ApiError(
     StatusCodes.UNPROCESSABLE_ENTITY,
     "Transaction item totals don't match",
