@@ -18,6 +18,13 @@ export enum TransactionPaymentStatusEnum {
   PAID,
 }
 
+export enum TransactionDeliveryStatusEnum {
+  TO_BE_DELIVERED = 1,
+  ON_DELIVERY,
+  DELIVERED,
+  SELF_PICK_UP,
+}
+
 @Entity('transaction')
 export default class Transaction extends BaseEntity {
   @Column()
@@ -58,7 +65,14 @@ export default class Transaction extends BaseEntity {
     enum: TransactionPaymentStatusEnum,
     default: TransactionPaymentStatusEnum.UNPAID,
   })
-  paymentStatus?: TransactionPaymentStatusEnum
+  paymentStatus: TransactionPaymentStatusEnum
+
+  @Column({
+    type: 'enum',
+    enum: TransactionDeliveryStatusEnum,
+    default: TransactionDeliveryStatusEnum.TO_BE_DELIVERED,
+  })
+  deliveryStatus: TransactionDeliveryStatusEnum
 
   @OneToMany(
     () => TransactionItem,
