@@ -25,6 +25,12 @@ export enum TransactionDeliveryStatusEnum {
   SELF_PICK_UP,
 }
 
+export enum TransactionStatusEnum {
+  PENDING = 1,
+  COMPLETED,
+  VOID,
+}
+
 @Entity('transaction')
 export default class Transaction extends BaseEntity {
   @Column()
@@ -73,6 +79,13 @@ export default class Transaction extends BaseEntity {
     default: TransactionDeliveryStatusEnum.TO_BE_DELIVERED,
   })
   deliveryStatus: TransactionDeliveryStatusEnum
+
+  @Column({
+    type: 'enum',
+    enum: TransactionStatusEnum,
+    default: TransactionStatusEnum.PENDING,
+  })
+  status: TransactionStatusEnum
 
   @OneToMany(
     () => TransactionItem,
