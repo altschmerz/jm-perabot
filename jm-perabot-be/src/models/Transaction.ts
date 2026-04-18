@@ -12,6 +12,12 @@ import Referral from './Referral'
 import TransactionItem from './TransactionItem'
 import User from './User'
 
+export enum TransactionPaymentStatusEnum {
+  UNPAID = 1,
+  DOWN_PAYMENT,
+  PAID,
+}
+
 @Entity('transaction')
 export default class Transaction extends BaseEntity {
   @Column()
@@ -46,6 +52,13 @@ export default class Transaction extends BaseEntity {
   @OneToOne(() => Referral)
   @JoinColumn({ name: 'referralId' })
   referral?: Referral
+
+  @Column({
+    type: 'enum',
+    enum: TransactionPaymentStatusEnum,
+    default: TransactionPaymentStatusEnum.UNPAID,
+  })
+  paymentStatus?: TransactionPaymentStatusEnum
 
   @OneToMany(
     () => TransactionItem,
