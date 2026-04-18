@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import { array, number, object, string } from 'yup'
 import convertTokenToUser from '../middlewares/auth/convertTokenToUser'
 import verifyLoggedIn from '../middlewares/auth/verifyLoggedIn'
+import { TransactionDeliveryStatusEnum } from '../models/Transaction'
 import TransactionService from '../services/transaction.service'
 import { transactionItemBodySchema } from '../ts/schemas/transactionItem.schema'
 import { TransactionItemRequest } from '../ts/types/transactionItem.types'
@@ -10,6 +11,10 @@ import { wrapAsyncHandler } from '../utils/wrapAsyncHandler'
 
 const transactionRouter = Router()
 const transactionService = new TransactionService()
+
+const TRANSACTION_DELIVERY_STATUS_ENUM_VALIDATION = Object.values(
+  TransactionDeliveryStatusEnum,
+).filter((value): value is number => typeof value === 'number')
 
 transactionRouter.post(
   '/',
@@ -57,6 +62,26 @@ transactionRouter.get(
   wrapAsyncHandler(async (req, res) => {
     const transaction = await transactionService.getTransactionById({
       id: Number(req.params.id),
+    })
+    res.sendJsonApiResource(StatusCodes.OK, transaction)
+  }),
+)
+
+transactionRouter.put(
+  '/:id',
+  convertTokenToUser,
+  verifyLoggedIn,
+  wrapAsyncHandler(async (req, res) => {
+    const bodySchema = object().shape({
+      deliveryStatus: number()
+        .oneOf(TRANSACTION_DELIVERY_STATUS_ENUM_VALIDATION)
+        .required(),
+    })
+    const body = bodySchema.validateSync(req.body)
+
+    const transaction = await transactionService.updateTransaction({
+      id: Number(req.params.id),
+      deliveryStatus: body.deliveryStatus,
     })
     res.sendJsonApiResource(StatusCodes.OK, transaction)
   }),

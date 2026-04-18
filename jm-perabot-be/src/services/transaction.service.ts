@@ -124,4 +124,22 @@ export default class TransactionService extends BaseService {
 
     return transaction
   }
+
+  async updateTransaction(options: {
+    id: number
+    deliveryStatus?: number
+  }): Promise<Transaction> {
+    const transaction = await Transaction.findOne({
+      where: { id: options.id },
+    })
+    if (!transaction)
+      TransactionNotFound({ attribute: 'ID', value: options.id })
+
+    if (options.deliveryStatus)
+      transaction.deliveryStatus = options.deliveryStatus
+
+    await transaction.save()
+
+    return transaction
+  }
 }
