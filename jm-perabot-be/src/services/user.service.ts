@@ -7,8 +7,8 @@ import {
 import { UserAlreadyExistsError, UserNotFoundError } from '../errors/user.error'
 import Referral from '../models/Referral'
 import User, { UserRoleTypeId } from '../models/User'
-import { ReferralResource } from '../resources/referral.resource'
 import { SafeUserResource } from '../resources/safeUser.resource'
+import { UserReferralResource } from '../resources/userReferral.resource'
 import hashPassword from '../utils/hashPassword'
 import BaseService from './BaseService'
 
@@ -103,7 +103,7 @@ export default class UserService extends BaseService {
 
   async getUserReferrals(options: {
     userId: number
-  }): Promise<ReferralResource[]> {
+  }): Promise<UserReferralResource[]> {
     const user = await User.findOne({
       where: { id: options.userId },
     })
@@ -114,7 +114,7 @@ export default class UserService extends BaseService {
       relations: ['transaction'],
     })
 
-    return referrals.map((referral) => this.mapReferralResource(referral))
+    return referrals.map((referral) => this.mapUserReferralResource(referral))
   }
 
   async updateUser(options: {

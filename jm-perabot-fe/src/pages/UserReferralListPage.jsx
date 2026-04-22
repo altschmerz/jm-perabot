@@ -16,8 +16,11 @@ const UserReferralListPage = () => {
 
   const userId = useParams().id
 
-  const referralsReq = useFromApi(fromApi.getUserReferrals(userId))
-  const referrals = useResourceMapper('referral', referralsReq?.sortOrder)
+  const userReferralsReq = useFromApi(fromApi.getUserReferrals(userId))
+  const userReferrals = useResourceMapper(
+    'userReferral',
+    userReferralsReq?.sortOrder,
+  )
 
   const [total, setTotal] = useState()
   const [totalUnredeemed, setTotalUnredeemed] = useState()
@@ -25,13 +28,13 @@ const UserReferralListPage = () => {
   useEffect(() => {
     let total = 0
     let totalUnredeemed = 0
-    referrals?.forEach((referral) => {
+    userReferrals?.forEach((referral) => {
       if (!referral.redeemed) totalUnredeemed += referral.amount
       total += referral.amount
     })
     setTotal(total)
     setTotalUnredeemed(totalUnredeemed)
-  }, [referrals])
+  }, [userReferrals])
 
   const authUser = useSelector((state) => state.authUser)
 
@@ -62,7 +65,7 @@ const UserReferralListPage = () => {
   return (
     <Layout>
       <div className="mt-3">
-        {referralsReq?.loading ? (
+        {userReferralsReq?.loading ? (
           <div className="flex flex-col items-center font-medium">
             <Spinner animation="border" variant="dark" />
             <div className="mt-2">Memuat...</div>
@@ -73,9 +76,9 @@ const UserReferralListPage = () => {
             <div className="section-title text-center mb-4">Daftar Referal</div>
 
             <div className="flex flex-col gap-2">
-              {referrals.length ? (
+              {userReferrals.length ? (
                 <div>
-                  {referrals?.map((referral) => (
+                  {userReferrals?.map((referral) => (
                     <div key={referral?.id}>
                       <UserReferralRow
                         date={referral?.transactionDate}

@@ -27,6 +27,9 @@ const pluralize = (singularWord) => {
     case 'transaction':
       return 'transactions'
 
+    case 'userReferral':
+      return 'userReferrals'
+
     default:
       throw new Error(
         `we currently do not have a plural form of "${singularWord}". Please add the plural form into the dictionary in /utils/pluralize.js`,

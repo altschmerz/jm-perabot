@@ -26,6 +26,7 @@ const rootReducer = persistReducer(
     referral: createSimpleReducer('referrals'),
     shallowProduct: createSimpleReducer('shallowProducts'),
     transaction: createSimpleReducer('transactions'),
+    userReferral: createSimpleReducer('userReferrals'),
   }),
 )
 
