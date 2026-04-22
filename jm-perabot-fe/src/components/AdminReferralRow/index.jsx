@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { REFERRAL_STATUS } from '../../utils/constants'
 import formatDate from '../../utils/formatDate'
 import formatPrice from '../../utils/formatPrice'
@@ -31,8 +32,13 @@ const AdminReferralRow = ({
   status,
   redeemed,
 }) => {
+  const navigate = useNavigate()
+
   return (
-    <div className="bg-white rounded-xl mb-2 shadow-sm border border-gray-50 text-sm">
+    <div
+      className="bg-white rounded-xl mb-2 shadow-sm border border-gray-50 text-sm"
+      onClick={() => navigate(`/transactions/${transaction?.id}`)}
+    >
       <div className="font-bold border-b px-3 py-2">
         {transaction?.code?.substring(0, 8)?.toUpperCase()}
       </div>
