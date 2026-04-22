@@ -2,6 +2,7 @@ import Product from '../models/Product'
 import Referral from '../models/Referral'
 import User from '../models/User'
 import AuthUserResource from '../resources/authUser.resource'
+import { ReferralResource } from '../resources/referral.resource'
 import { SafeUserResource } from '../resources/safeUser.resource'
 import { default as ShallowProductResource } from '../resources/shallowProduct.resource'
 import { UserReferralResource } from '../resources/userReferral.resource'
@@ -20,14 +21,15 @@ export default class BaseService {
     return authRsc
   }
 
-  mapUserReferralResource(referral: Referral): UserReferralResource {
-    const referralRsc = Object.assign(new UserReferralResource(), {
+  mapReferralResource(referral: Referral): ReferralResource {
+    const referralRsc = Object.assign(new ReferralResource(), {
       id: referral.id.toString(),
-      transactionDate: referral.transaction?.date,
-      buyerName: referral.transaction.buyerName,
+      transaction: referral.transaction,
+      referrer: this.mapSafeUserResource(referral.referrer),
       amount: referral.amount,
+      status: referral.status,
       redeemed: referral.redeemed,
-    } as UserReferralResource)
+    } as ReferralResource)
     return referralRsc
   }
 
@@ -54,5 +56,16 @@ export default class BaseService {
       variants: product.variants,
     })
     return shallowProductRsc
+  }
+
+  mapUserReferralResource(referral: Referral): UserReferralResource {
+    const referralRsc = Object.assign(new UserReferralResource(), {
+      id: referral.id.toString(),
+      transactionDate: referral.transaction?.date,
+      buyerName: referral.transaction.buyerName,
+      amount: referral.amount,
+      redeemed: referral.redeemed,
+    } as UserReferralResource)
+    return referralRsc
   }
 }
