@@ -18,3 +18,10 @@ export const TRANSACTION_STATUS = {
   2: 'BERHASIL',
   3: 'BATAL',
 }
+
+export const REFERRAL_STATUS = {
+  1: 'PENDING',
+  2: 'MENUNGGU KONFIRMASI',
+  3: 'TERKONFIRMASI',
+  4: 'DIBATALKAN',
+}
