@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { Spinner } from 'react-bootstrap'
 import toast from 'react-hot-toast'
-import { FaPhoneAlt } from 'react-icons/fa'
-import { FaLocationDot } from 'react-icons/fa6'
+import { FaMoneyBill, FaPhoneAlt } from 'react-icons/fa'
+import { FaLocationDot, FaTruck } from 'react-icons/fa6'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -13,9 +13,69 @@ import fromApi from '../actions/fromApi'
 import Layout from '../components/Layout'
 import useFromApi from '../hooks/useFromApi'
 import useResourceMapper from '../hooks/useResourceMapper'
-import { ADMIN_ROLE_TYPE_ID } from '../utils/constants'
+import {
+  ADMIN_ROLE_TYPE_ID,
+  TRANSACTION_DELIVERY_STATUS,
+  TRANSACTION_PAYMENT_STATUS,
+  TRANSACTION_STATUS,
+} from '../utils/constants'
 import formatDate from '../utils/formatDate'
 import formatPrice from '../utils/formatPrice'
+
+function generatePaymentStatusStyles(paymentStatusId) {
+  let className = 'w-fit ml-2 px-2 py-0.5 text-xs font-bold rounded uppercase'
+
+  switch (paymentStatusId) {
+    case 1:
+      className += ' bg-red-50 text-red-700'
+      break
+    case 2:
+      className += ' bg-yellow-50 text-yellow-700'
+      break
+    case 3:
+      className += ' bg-green-50 text-green-700'
+      break
+    default:
+  }
+  return className
+}
+
+function generateDeliveryStatusStyles(deliveryStatusId) {
+  let className = 'w-fit ml-2 px-2 py-0.5 text-xs font-bold rounded uppercase'
+
+  switch (deliveryStatusId) {
+    case 1:
+      className += ' bg-red-50 text-red-700'
+      break
+    case 2:
+      className += ' bg-yellow-50 text-yellow-700'
+      break
+    case 3:
+    case 4:
+      className += ' bg-green-50 text-green-700'
+      break
+    default:
+  }
+  return className
+}
+
+function generateStatusStyles(statusId) {
+  let className = 'h-fit ml-2 px-2 py-0.5 text-xs font-bold rounded uppercase'
+
+  switch (statusId) {
+    case 1:
+      className += ' bg-yellow-50 text-yellow-700'
+      break
+    case 2:
+      className += ' bg-green-50 text-green-700'
+      break
+    case 3:
+      className += ' bg-red-50 text-red-700'
+      break
+    default:
+  }
+  return className
+}
 
 const TransactionDetailPage = () => {
   const navigate = useNavigate()
@@ -72,6 +132,35 @@ const TransactionDetailPage = () => {
                 {transaction?.code?.substring(0, 8)?.toUpperCase()}
               </div>
               <div className="text-sm">{formatDate(transaction?.date)}</div>
+            </div>
+
+            <div className="mt-3 shadow-[0_10px_35px_rgba(0,0,0,0.2)] p-3 rounded">
+              <div className="flex justify-between items-center border-b pb-2 font-bold">
+                <div>Status Transaksi</div>
+                <div className={generateStatusStyles(transaction?.status)}>
+                  {TRANSACTION_STATUS[transaction?.status]}
+                </div>
+              </div>
+              <div className="grid grid-cols-[10px_1fr] gap-1 items-center mt-2">
+                <FaMoneyBill size={12} />
+                <div
+                  className={generatePaymentStatusStyles(
+                    transaction?.paymentStatus,
+                  )}
+                >
+                  {TRANSACTION_PAYMENT_STATUS[transaction?.paymentStatus]}
+                </div>
+              </div>
+              <div className="grid grid-cols-[10px_1fr] gap-1 items-center mt-2">
+                <FaTruck size={12} />
+                <div
+                  className={generateDeliveryStatusStyles(
+                    transaction?.deliveryStatus,
+                  )}
+                >
+                  {TRANSACTION_DELIVERY_STATUS[transaction?.deliveryStatus]}
+                </div>
+              </div>
             </div>
 
             <div className="mt-3 shadow-[0_10px_35px_rgba(0,0,0,0.2)] p-3 rounded">

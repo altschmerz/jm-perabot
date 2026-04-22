@@ -1,1 +1,20 @@
 export const ADMIN_ROLE_TYPE_ID = 2
+
+export const TRANSACTION_PAYMENT_STATUS = {
+  1: 'BELUM DIBAYAR',
+  2: 'DP',
+  3: 'LUNAS',
+}
+
+export const TRANSACTION_DELIVERY_STATUS = {
+  1: 'MENUNGGU PENGIRIMAN',
+  2: 'SEDANG DIKIRIM',
+  3: 'TIBA DI TUJUAN',
+  4: 'BAWA SENDIRI',
+}
+
+export const TRANSACTION_STATUS = {
+  1: 'PENDING',
+  2: 'BERHASIL',
+  3: 'BATAL',
+}
