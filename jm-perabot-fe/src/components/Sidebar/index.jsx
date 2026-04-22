@@ -110,6 +110,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   </div>
                 </DisclosurePanel>
               </Disclosure>
+
+              <Disclosure>
+                <DisclosureButton className="group flex justify-between items-center w-full mt-3">
+                  <div className="font-medium">Referal</div>
+                  <FaChevronDown className="group-data-[open]:rotate-180" />
+                </DisclosureButton>
+                <DisclosurePanel className="text-sm">
+                  <div
+                    className="text-sm mt-2"
+                    onClick={() => navigate('/referrals')}
+                  >
+                    Daftar Referal
+                  </div>
+                </DisclosurePanel>
+              </Disclosure>
             </DialogPanel>
           </TransitionChild>
         </div>
