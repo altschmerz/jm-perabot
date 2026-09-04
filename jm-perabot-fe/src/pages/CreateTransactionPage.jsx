@@ -80,6 +80,21 @@ const CreateTransactionPage = () => {
         className: 'bg-yellow-100',
       })
 
+    for (const item of data.transactionItems) {
+      if (item?.eligibleForReferral && !data.referrerCode) {
+        setIsLoading(false)
+        toast(
+          'Wajib memasukkan kode referal apabila terdapat item yang eligible untuk referal',
+          {
+            id: 'no-referral-code',
+            icon: <PiWarningCircleBold />,
+            className: 'bg-yellow-100',
+          },
+        )
+        return
+      }
+    }
+
     dispatch(fromApi.createTransaction(data))
       .then((res) => {
         navigate(`/transactions/${res?.data?.[0]?.id}`)
