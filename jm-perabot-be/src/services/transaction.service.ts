@@ -11,7 +11,9 @@ import User from '../models/User'
 import { TransactionItemRequest } from '../ts/types/transactionItem.types'
 import BaseService from './BaseService'
 
+const REFERRAL_COMMISSION_PERCENTAGE = 0.01
 const MAX_REFERRAL_AMOUNT_PER_TRX = 500000
+
 export default class TransactionService extends BaseService {
   async createTransaction(options: {
     buyerName: string
@@ -90,8 +92,9 @@ export default class TransactionService extends BaseService {
             referral.referrer = referrer
 
             const referralAmount =
-              0.01 * eligibleForReferralAmount <= MAX_REFERRAL_AMOUNT_PER_TRX
-                ? 0.01 * eligibleForReferralAmount
+              REFERRAL_COMMISSION_PERCENTAGE * eligibleForReferralAmount <=
+              MAX_REFERRAL_AMOUNT_PER_TRX
+                ? REFERRAL_COMMISSION_PERCENTAGE * eligibleForReferralAmount
                 : MAX_REFERRAL_AMOUNT_PER_TRX
             referral.amount = referralAmount
 
