@@ -59,11 +59,7 @@ export default class Transaction extends BaseEntity {
   @Column()
   total: number
 
-  @Column({ nullable: true })
-  referralId?: number
-
-  @OneToOne(() => Referral)
-  @JoinColumn({ name: 'referralId' })
+  @OneToOne(() => Referral, (referral) => referral.transaction)
   referral?: Referral
 
   @Column({
