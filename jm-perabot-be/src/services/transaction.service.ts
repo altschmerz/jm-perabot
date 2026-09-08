@@ -124,7 +124,7 @@ export default class TransactionService extends BaseService {
   async getTransactionById(options: { id: number }): Promise<Transaction> {
     const transaction = await Transaction.findOne({
       where: { id: options.id },
-      relations: ['transactionItems'],
+      relations: ['transactionItems', 'referral'],
     })
     if (!transaction)
       TransactionNotFoundError({ attribute: 'ID', value: options.id })

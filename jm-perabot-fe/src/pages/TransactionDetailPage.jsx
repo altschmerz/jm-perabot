@@ -22,6 +22,8 @@ import {
 import formatDate from '../utils/formatDate'
 import formatPrice from '../utils/formatPrice'
 
+const REFERRAL_COMMISSION_PERCENT = 1
+
 function generatePaymentStatusStyles(paymentStatusId) {
   let className = 'w-fit ml-2 px-2 py-0.5 text-xs font-bold rounded uppercase'
 
@@ -114,6 +116,9 @@ const TransactionDetailPage = () => {
     transactionsReq?.sortOrder,
   )?.[0]
 
+  const referralState = useSelector((state) => state.referral)
+  const referral = referralState?.[transaction?.referralId]
+
   return (
     <Layout>
       <div className="mt-3">
@@ -200,9 +205,47 @@ const TransactionDetailPage = () => {
                 </div>
               ))}
               <div className="pt-2 flex justify-between font-bold">
-                <div className="">Total</div>
+                <div>Total</div>
                 <div>Rp {formatPrice(transaction?.total)}</div>
               </div>
+            </div>
+
+            <div className="mt-3 shadow-[0_10px_35px_rgba(0,0,0,0.2)] p-3 rounded">
+              <div className="border-b pb-2 font-bold">Komisi Referal </div>
+
+              {referral ? (
+                <div>
+                  {transaction?.transactionItems?.map(
+                    (transactionItem) =>
+                      transactionItem.eligibleForReferral && (
+                        <div className="border-b py-2">
+                          <div className="font-medium">
+                            {transactionItem.name}
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <div>
+                              {REFERRAL_COMMISSION_PERCENT}% x Rp{' '}
+                              {formatPrice(transactionItem.total)}
+                            </div>
+                            <div className="font-medium">
+                              Rp{' '}
+                              {formatPrice(
+                                (REFERRAL_COMMISSION_PERCENT / 100) *
+                                  transactionItem.total,
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ),
+                  )}
+                  <div className="pt-2 flex justify-between font-bold">
+                    <div>Total</div>
+                    <div>Rp {formatPrice(referral?.amount)}</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="pt-2">Tidak ada komisi referal</div>
+              )}
             </div>
           </div>
         )}
