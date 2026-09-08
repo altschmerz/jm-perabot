@@ -19,7 +19,7 @@ categoryRouter.post(
       name: body.name,
     })
     res.sendJsonApiResource(StatusCodes.CREATED, category)
-  })
+  }),
 )
 
 categoryRouter.get(
@@ -27,7 +27,7 @@ categoryRouter.get(
   asyncHandler(async (req, res) => {
     const queryStrSchema = object().shape({
       page: number().integer().min(0).default(0),
-      pageSize: number().integer().min(0).default(10),
+      pageSize: number().integer().min(0).default(100),
       name: string(),
     })
     const queryStr = queryStrSchema.validateSync(req.query)
@@ -38,7 +38,7 @@ categoryRouter.get(
       name: queryStr.name,
     })
     res.sendJsonApiResource(StatusCodes.OK, categories, count)
-  })
+  }),
 )
 
 categoryRouter.get(
@@ -48,7 +48,7 @@ categoryRouter.get(
       id: Number(req.params.id),
     })
     res.sendJsonApiResource(StatusCodes.OK, category)
-  })
+  }),
 )
 
 categoryRouter.put(
@@ -65,7 +65,7 @@ categoryRouter.put(
       name: body.name,
     })
     res.sendJsonApiResource(StatusCodes.OK, category)
-  })
+  }),
 )
 
 categoryRouter.delete('/:id', async (req, res) => {
