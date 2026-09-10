@@ -105,4 +105,26 @@ transactionRouter.put(
   }),
 )
 
+transactionRouter.put(
+  '/:id/paymentStatus',
+  convertTokenToUser,
+  verifyLoggedIn,
+  wrapAsyncHandler(async (req, res) => {
+    const bodySchema = object().shape({
+      paymentStatus: number()
+        .oneOf(TRANSACTION_PAYMENT_STATUS_ENUM_VALIDATION)
+        .required(),
+    })
+    const body = bodySchema.validateSync(req.body)
+
+    const transaction = await transactionService.updateTransactionPaymentStatus(
+      {
+        id: Number(req.params.id),
+        paymentStatus: body.paymentStatus,
+      },
+    )
+    res.sendJsonApiResource(StatusCodes.OK, transaction)
+  }),
+)
+
 export default transactionRouter

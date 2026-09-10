@@ -173,6 +173,15 @@ class ApiCallActionCreator {
       ACTION_TYPES.MERGE,
     )
   }
+
+  updateTransactionPaymentStatus(id, data) {
+    return makeApiRequestThunk(
+      HTTP_METHODS.PUT,
+      `/transactions/${id}/paymentStatus`,
+      data,
+      ACTION_TYPES.MERGE,
+    )
+  }
 }
 
 const fromApi = new ApiCallActionCreator()

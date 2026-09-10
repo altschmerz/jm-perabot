@@ -5,7 +5,11 @@ import {
 import { TransactionItemTotalMismatchError } from '../errors/transactionItem.error'
 import { UserNotFoundError } from '../errors/user.error'
 import Referral from '../models/Referral'
-import Transaction from '../models/Transaction'
+import Transaction, {
+  TransactionDeliveryStatusEnum,
+  TransactionPaymentStatusEnum,
+  TransactionStatusEnum,
+} from '../models/Transaction'
 import TransactionItem from '../models/TransactionItem'
 import User from '../models/User'
 import { TransactionItemRequest } from '../ts/types/transactionItem.types'
@@ -150,6 +154,29 @@ export default class TransactionService extends BaseService {
       transaction.deliveryStatus = options.deliveryStatus
 
     if (options.status) transaction.status = options.status
+
+    await transaction.save()
+
+    return transaction
+  }
+
+  async updateTransactionPaymentStatus(options: {
+    id: number
+    paymentStatus: number
+  }): Promise<Transaction> {
+    const transaction = await Transaction.findOne({
+      where: { id: options.id },
+    })
+    if (!transaction)
+      TransactionNotFoundError({ attribute: 'ID', value: options.id })
+
+    transaction.paymentStatus = options.paymentStatus
+
+    if (
+      options.paymentStatus === TransactionPaymentStatusEnum.PAID &&
+      transaction.deliveryStatus === TransactionDeliveryStatusEnum.DELIVERED
+    )
+      transaction.status = TransactionStatusEnum.COMPLETED
 
     await transaction.save()
 

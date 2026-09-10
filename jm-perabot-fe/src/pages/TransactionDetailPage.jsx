@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
-import { Spinner } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import { Button, Dropdown, Modal, Spinner } from 'react-bootstrap'
 import toast from 'react-hot-toast'
-import { FaMoneyBill, FaPhoneAlt } from 'react-icons/fa'
+import { FaCheckCircle, FaMoneyBill, FaPhoneAlt } from 'react-icons/fa'
 import { FaLocationDot, FaTruck } from 'react-icons/fa6'
 import { PiWarningCircleBold } from 'react-icons/pi'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
@@ -23,9 +23,15 @@ import formatDate from '../utils/formatDate'
 import formatPrice from '../utils/formatPrice'
 
 const REFERRAL_COMMISSION_PERCENT = 1
+const TRANSACTION_STATUS_OPTIONS = [
+  { id: 1, name: 'BELUM DIBAYAR' },
+  { id: 2, name: 'DP' },
+  { id: 3, name: 'LUNAS' },
+]
 
 function generatePaymentStatusStyles(paymentStatusId) {
-  let className = 'w-fit ml-2 px-2 py-0.5 text-xs font-bold rounded uppercase'
+  let className =
+    'w-fit ml-2 px-2 py-0.5 text-xs font-bold rounded uppercase border-none'
 
   switch (paymentStatusId) {
     case 1:
@@ -81,6 +87,7 @@ function generateStatusStyles(statusId) {
 
 const TransactionDetailPage = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const authUser = useSelector((state) => state.authUser)
 
@@ -119,6 +126,26 @@ const TransactionDetailPage = () => {
   const referralState = useSelector((state) => state.referral)
   const referral = referralState?.[transaction?.referralId]
 
+  const [isUpdating, setIsUpdating] = useState(false)
+  const [newPaymentStatus, setNewPaymentStatus] = useState()
+
+  function changePaymentStatus() {
+    setIsUpdating(true)
+    dispatch(
+      fromApi.updateTransactionPaymentStatus(transactionId, {
+        paymentStatus: newPaymentStatus,
+      }),
+    ).then(() =>
+      toast('Status pembayaran berhasil diubah.', {
+        icon: <FaCheckCircle color="green" />,
+        className: 'bg-green-100',
+      }),
+    )
+    setIsUpdating(false)
+  }
+
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <Layout>
       <div className="mt-3">
@@ -148,13 +175,31 @@ const TransactionDetailPage = () => {
               </div>
               <div className="grid grid-cols-[10px_1fr] gap-1 items-center mt-2">
                 <FaMoneyBill size={12} />
-                <div
-                  className={generatePaymentStatusStyles(
-                    transaction?.paymentStatus,
-                  )}
-                >
-                  {TRANSACTION_PAYMENT_STATUS[transaction?.paymentStatus]}
-                </div>
+                <Dropdown>
+                  <Dropdown.Toggle
+                    className={generatePaymentStatusStyles(
+                      transaction?.paymentStatus,
+                    )}
+                  >
+                    {TRANSACTION_PAYMENT_STATUS[transaction?.paymentStatus]}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="p-2">
+                    {TRANSACTION_STATUS_OPTIONS.map(
+                      (option) =>
+                        option.id !== transaction?.paymentStatus && (
+                          <Dropdown.Item
+                            className={`mb-2 ${generatePaymentStatusStyles(option.id)}`}
+                            onClick={() => {
+                              setNewPaymentStatus(option.id)
+                              setShowModal(true)
+                            }}
+                          >
+                            {option.name}
+                          </Dropdown.Item>
+                        ),
+                    )}
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
               <div className="grid grid-cols-[10px_1fr] gap-1 items-center mt-2">
                 <FaTruck size={12} />
@@ -250,6 +295,39 @@ const TransactionDetailPage = () => {
           </div>
         )}
       </div>
+
+      <Modal show={showModal}>
+        <Modal.Body>
+          <div>
+            Apakah Anda yakin ingin mengganti status pembayaran transaksi dari{' '}
+            <b>
+              {TRANSACTION_STATUS_OPTIONS[transaction?.paymentStatus - 1]?.name}
+            </b>{' '}
+            menjadi{' '}
+            <b>{TRANSACTION_STATUS_OPTIONS[newPaymentStatus - 1]?.name}</b>?
+          </div>
+          <div className="flex justify-end">
+            <Button
+              className="flex items-center py-1 px-3 text-white cursor-pointer mt-3 mr-3"
+              variant="danger"
+              disabled={isUpdating}
+              onClick={() => {
+                changePaymentStatus(newPaymentStatus?.name)
+                setShowModal(false)
+              }}
+            >
+              Iya
+            </Button>
+            <Button
+              className="bg-black flex items-center py-1 px-3 text-white cursor-pointer mt-3"
+              disabled={isUpdating}
+              onClick={() => setShowModal(false)}
+            >
+              Batal
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </Layout>
   )
 }
